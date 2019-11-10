@@ -1,0 +1,14 @@
+
+# MacOS
+.DS_Store
+
+# npm
+node_modules/
+package-lock.json
+
+#yarn
+yarn-error.log
+
+# truffle
+build/
+

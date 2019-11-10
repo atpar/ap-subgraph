@@ -1,0 +1,6 @@
+type AssetIssuance @entity {
+  id: ID!
+  assetId: Bytes!
+  recordCreator: Bytes!
+  counterparty: Bytes!
+}

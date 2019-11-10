@@ -1,0 +1,25 @@
+specVersion: 0.0.2
+description: ACTUS Protocol
+repository: https://github.com/atpar/ap-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: AssetIssuer
+    network: goerli
+    source:
+      address: '0xe814f7090E4E12Aa4F4D852565C5F0CD3F9d569E'
+      abi: AssetIssuer
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetIssuance
+      abis:
+        - name: AssetIssuer
+          file: ./build/contracts/AssetIssuer.json
+      eventHandlers:
+        - event: AssetIssued(indexed bytes32,indexed address,indexed address)
+          handler: handleIssuance
+      file: ./src/mapping.ts
