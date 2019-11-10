@@ -21,5 +21,43 @@ dataSources:
           file: ./build/contracts/AssetIssuer.json
       eventHandlers:
         - event: AssetIssued(indexed bytes32,indexed address,indexed address)
-          handler: handleIssuance
+          handler: handleAssetIssuance
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: DemoAssetActor
+    network: goerli
+    source:
+      address: '0xBB7f77CeA5c247Da00A7EcDA85f5b53c704720E1'
+      abi: DemoAssetActor
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetProgressed
+      abis:
+        - name: DemoAssetActor
+          file: ./build/contracts/DemoAssetActor.json
+      eventHandlers:
+        - event: AssetProgressed(indexed bytes32,uint256)
+          handler: handleAssetProgressed
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: PaymentRegistry
+    network: goerli
+    source:
+      address: '0xf84cB3E71C0F210B8C51326B4679b077E0cCeB78'
+      abi: PaymentRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Paid
+      abis:
+        - name: PaymentRegistry
+          file: ./build/contracts/PaymentRegistry.json
+      eventHandlers:
+        - event: Paid(indexed bytes32,uint256,uint256)
+          handler: handlePayment
       file: ./src/mapping.ts

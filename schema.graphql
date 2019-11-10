@@ -1,6 +1,19 @@
-type AssetIssuance @entity {
+type Issuance @entity {
   id: ID!
   assetId: Bytes!
   recordCreator: Bytes!
   counterparty: Bytes!
+}
+
+type Progression @entity {
+  id: ID!
+  assetId: Bytes!
+  eventId: BigInt!
+}
+
+type Payment @entity {
+  id: ID!
+  assetId: Bytes!
+  eventId: BigInt!
+  amount: BigInt!
 }
