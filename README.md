@@ -2,14 +2,14 @@
 
 - smart contracts from https://github.com/atpar/ap-monorepo/tree/app/packages/ap-contracts
 - addresses used by the ACTUS Protocol Portal
-- setup only AssetIssuer contract at the moment
+- see `queries.gql` for examples
 
 ## Development
 
 ```sh
 yarn install
-yarn build-contract && yarn build
-# after making changes to the schema
+yarn build-contract
 yarn codegen
+yarn build
 yarn deploy
 ```
