@@ -10,15 +10,16 @@
     "deploy-local": "graph deploy atpar/actus-protocol --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
   },
   "devDependencies": {
+    "@atpar/ap-contracts": "^0.2.1-beta.6",
     "@graphprotocol/graph-cli": "^0.16.0",
     "@graphprotocol/graph-ts": "^0.16.0",
     "actus-solidity": "0.2.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
     "funds-distribution-token": "0.1.2",
     "openzeppelin-solidity": "2.1.2",
     "truffle": "^5.0.4",
     "truffle-contract": "^4.0.5",
-    "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0",
     "truffle-hdwallet-provider": "^1.0.4"
   }
 }

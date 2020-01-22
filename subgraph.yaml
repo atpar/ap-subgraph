@@ -5,59 +5,40 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: AssetIssuer
+    name: AssetRegistry
     network: goerli
     source:
-      address: '0xe814f7090E4E12Aa4F4D852565C5F0CD3F9d569E'
-      abi: AssetIssuer
+      address: '0x34a0dC05DF6dA73E9042E2E63c849F95D84ACb91'
+      abi: AssetRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - AssetIssuance
+        - Asset
       abis:
-        - name: AssetIssuer
-          file: ./build/contracts/AssetIssuer.json
+        - name: AssetRegistry
+          file: ./build/contracts/AssetRegistry.json
       eventHandlers:
-        - event: AssetIssued(indexed bytes32,indexed address,indexed address)
-          handler: handleAssetIssuance
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAsset
       file: ./src/mapping.ts
   - kind: ethereum/contract
-    name: DemoAssetActor
+    name: AssetActor
     network: goerli
     source:
-      address: '0xBB7f77CeA5c247Da00A7EcDA85f5b53c704720E1'
-      abi: DemoAssetActor
+      address: '0x34f39cC7730462643Dfc42f34A7a467720675099'
+      abi: AssetActor
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - AssetProgressed
+        - Asset
       abis:
-        - name: DemoAssetActor
-          file: ./build/contracts/DemoAssetActor.json
+        - name: AssetActor
+          file: ./build/contracts/AssetActor.json
       eventHandlers:
-        - event: AssetProgressed(indexed bytes32,uint256)
-          handler: handleAssetProgressed
-      file: ./src/mapping.ts
-  - kind: ethereum/contract
-    name: PaymentRegistry
-    network: goerli
-    source:
-      address: '0xf84cB3E71C0F210B8C51326B4679b077E0cCeB78'
-      abi: PaymentRegistry
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Paid
-      abis:
-        - name: PaymentRegistry
-          file: ./build/contracts/PaymentRegistry.json
-      eventHandlers:
-        - event: Paid(indexed bytes32,uint256,uint256)
-          handler: handlePayment
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256)
+          handler: handleProgressedAsset
       file: ./src/mapping.ts
