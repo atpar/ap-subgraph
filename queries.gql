@@ -1,0 +1,81 @@
+{
+  assets(first: 10) {
+    assetId
+  }
+}
+
+{
+  assets(first: 1) {
+    assetId
+    templateId
+    ownership {
+      creatorObligor
+      creatorBeneficiary
+      counterpartyObligor
+      counterpartyBeneficiary
+    }
+    lifecycleTerms {
+      notionalPrincipal
+      nominalInterestRate
+    }
+    state {
+      statusDate
+    }
+    schedule {
+      nextEvent
+    }
+  }
+}
+
+{
+  templates(first: 10) {
+    templateId
+  }
+}
+
+{
+  templates(first: 1) {
+    templateId
+    templateTerms {
+      calendar
+      contractRole
+      dayCountConvention
+      businessDayConvention
+      endOfMonthConvention
+      scalingEffect
+      penaltyType
+      feeBasis
+      creditEventTypeCovered
+      currency
+      settlementCurrency
+      marketObjectCodeRateReset
+      statusDateOffset
+      maturityDateOffset
+      feeAccrued
+      accruedInterest
+      rateMultiplier
+      feeRate
+      nextResetRate
+      penaltyRate
+      priceAtPurchaseDate
+      nextPrincipalRedemptionPayment
+      gracePeriod_i
+      gracePeriod_p
+      gracePeriod_isSet
+      delinquencyPeriod_i
+      delinquencyPeriod_p
+      delinquencyPeriod_isSet
+      periodCap
+      periodFloor
+    }
+    templateSchedule {
+      nonCyclicSchedule
+      cyclicIPSchedule
+      cyclicPRSchedule
+      cyclicSCSchedule
+      cyclicRRSchedule
+      cyclicFPSchedule
+      cyclicPYSchedule
+    }
+  }
+}

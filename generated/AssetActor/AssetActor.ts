@@ -113,7 +113,10 @@ export class AssetActor__decodeEventResult {
 
   toMap(): TypedMap<string, EthereumValue> {
     let map = new TypedMap<string, EthereumValue>();
-    map.set("value0", EthereumValue.fromI32(this.value0));
+    map.set(
+      "value0",
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(this.value0))
+    );
     map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
     return map;
   }
@@ -524,7 +527,7 @@ export class AssetActor extends SmartContract {
 
   getEpochOffset(eventType: i32): BigInt {
     let result = super.call("getEpochOffset", [
-      EthereumValue.fromI32(eventType)
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType))
     ]);
 
     return result[0].toBigInt();
@@ -532,7 +535,7 @@ export class AssetActor extends SmartContract {
 
   try_getEpochOffset(eventType: i32): CallResult<BigInt> {
     let result = super.tryCall("getEpochOffset", [
-      EthereumValue.fromI32(eventType)
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType))
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -615,7 +618,7 @@ export class AssetActor extends SmartContract {
 
   encodeEvent(eventType: i32, scheduleTime: BigInt): Bytes {
     let result = super.call("encodeEvent", [
-      EthereumValue.fromI32(eventType),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType)),
       EthereumValue.fromUnsignedBigInt(scheduleTime)
     ]);
 
@@ -624,7 +627,7 @@ export class AssetActor extends SmartContract {
 
   try_encodeEvent(eventType: i32, scheduleTime: BigInt): CallResult<Bytes> {
     let result = super.tryCall("encodeEvent", [
-      EthereumValue.fromI32(eventType),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType)),
       EthereumValue.fromUnsignedBigInt(scheduleTime)
     ]);
     if (result.reverted) {

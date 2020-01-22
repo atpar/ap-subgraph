@@ -19,6 +19,8 @@ dataSources:
       abis:
         - name: AssetRegistry
           file: ./build/contracts/AssetRegistry.json
+        - name: TemplateRegistry
+          file: ./build/contracts/TemplateRegistry.json
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAsset
@@ -44,3 +46,25 @@ dataSources:
         - event: ProgressedAsset(indexed bytes32,uint8,uint256)
           handler: handleProgressedAsset
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: TemplateRegistry
+    network: goerli
+    source:
+      address: '0x5E569ba9d959adDf679A7177e241AE262C305789'
+      abi: TemplateRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Template
+        - TemplateTerms
+        - TemplateSchedule
+      abis:
+        - name: TemplateRegistry
+          file: ./build/contracts/TemplateRegistry.json
+      eventHandlers:
+        - event: RegisteredTemplate(indexed bytes32)
+          handler: handleRegisteredTemplate
+      file: ./src/mapping.ts
+

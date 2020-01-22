@@ -1,74 +1,146 @@
+type TemplateTerms @entity {
+  id: ID!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  scalingEffect: Int!
+  penaltyType: Int!
+  feeBasis: Int!
+  creditEventTypeCovered: Int!
+  currency: Bytes!
+  settlementCurrency: Bytes!
+  marketObjectCodeRateReset: Bytes!
+  statusDateOffset: BigInt!
+  maturityDateOffset: BigInt!
+  feeAccrued: BigInt!
+  accruedInterest: BigInt!
+  rateMultiplier: BigInt!
+  feeRate: BigInt!
+  nextResetRate: BigInt!
+  penaltyRate: BigInt!
+  priceAtPurchaseDate: BigInt!
+  nextPrincipalRedemptionPayment: BigInt!
+  gracePeriod_i: BigInt!
+  gracePeriod_p: Int!
+  gracePeriod_isSet: Boolean!
+  delinquencyPeriod_i: BigInt!
+  delinquencyPeriod_p: Int!
+  delinquencyPeriod_isSet: Boolean!
+  periodCap: BigInt!
+  periodFloor: BigInt!
+}
+
+type TemplateSchedule @entity {
+  id: ID!
+  nonCyclicSchedule: [Bytes!]
+  cyclicIPSchedule: [Bytes!]
+  cyclicPRSchedule: [Bytes!]
+  cyclicSCSchedule: [Bytes!]
+  cyclicRRSchedule: [Bytes!]
+  cyclicFPSchedule: [Bytes!]
+  cyclicPYSchedule: [Bytes!]
+}
+
+type Template @entity {
+  id: ID!
+  templateId: Bytes!
+  templateTerms: TemplateTerms!
+  templateSchedule: TemplateSchedule!
+}
+
+type AssetOwnership @entity {
+  id: ID!
+  creatorObligor: Bytes!
+  creatorBeneficiary: Bytes!
+  counterpartyObligor: Bytes!
+  counterpartyBeneficiary: Bytes!  
+}
+
+type LifecycleTerms @entity {
+  id: ID!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  scalingEffect: Int!
+  penaltyType: Int!
+  feeBasis: Int!
+  creditEventTypeCovered: Int!
+  contractReference_1_object: Bytes!
+  contractReference_1_contractReferenceRole: Int!
+  contractReference_1_contractReferenceType: Int!
+  contractReference_2_object: Bytes!
+  contractReference_2_contractReferenceRole: Int!
+  contractReference_2_contractReferenceType: Int!
+  currency: Bytes!
+  settlementCurrency: Bytes!
+  marketObjectCodeRateReset: Bytes!
+  statusDate: BigInt!
+  maturityDate: BigInt!
+  notionalPrincipal: BigInt!
+  nominalInterestRate: BigInt!
+  feeAccrued: BigInt!
+  accruedInterest: BigInt!
+  rateMultiplier: BigInt!
+  rateSpread: BigInt!
+  feeRate: BigInt!
+  nextResetRate: BigInt!
+  penaltyRate: BigInt!
+  premiumDiscountAtIED: BigInt!
+  priceAtPurchaseDate: BigInt!
+  nextPrincipalRedemptionPayment: BigInt!
+  coverageOfCreditEnhancement: BigInt!
+  gracePeriod_i: BigInt!
+  gracePeriod_p: Int!
+  gracePeriod_isSet: Boolean!
+  delinquencyPeriod_i: BigInt!
+  delinquencyPeriod_p: Int!
+  delinquencyPeriod_isSet: Boolean!
+  lifeCap: BigInt!
+  lifeFloor: BigInt!
+  periodCap: BigInt!
+  periodFloor: BigInt!  
+}
+
+type State @entity {
+  id: ID!
+  contractPerformance: Int!
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  executionDate: BigInt!
+  notionalPrincipal: BigInt!
+  accruedInterest: BigInt!
+  feeAccrued: BigInt!
+  nominalInterestRate: BigInt!
+  interestScalingMultiplier: BigInt!
+  notionalScalingMultiplier: BigInt!
+  nextPrincipalRedemptionPayment: BigInt!
+  executionAmount: BigInt!
+}
+
+type  Schedule @entity {
+  id: ID!
+  anchorDate: BigInt!
+  nonCyclicScheduleIndex: BigInt!
+  cyclicIPScheduleIndex: BigInt!
+  cyclicPRScheduleIndex: BigInt!
+  cyclicSCScheduleIndex: BigInt!
+  cyclicRRScheduleIndex: BigInt!
+  cyclicFPScheduleIndex: BigInt!
+  cyclicPYScheduleIndex: BigInt!
+  nextEvent: Bytes!
+}
+
 type Asset @entity {
   id: ID!
   assetId: Bytes!
-
-  # AssetOwnership
-  ownership_creatorObligor: Bytes!
-  ownership_creatorBeneficiary: Bytes!
-  ownership_counterpartyObligor: Bytes!
-  ownership_counterpartyBeneficiary: Bytes!
-
-  # LifecycleTerms
-  terms_calendar: Int!
-  terms_contractRole: Int!
-  terms_dayCountConvention: Int!
-  terms_businessDayConvention: Int!
-  terms_endOfMonthConvention: Int!
-  terms_scalingEffect: Int!
-  terms_penaltyType: Int!
-  terms_feeBasis: Int!
-  terms_creditEventTypeCovered: Int!
-  # ContractReference
-  terms_contractReference_1_object: Bytes!
-  terms_contractReference_1_contractReferenceRole: Int!
-  terms_contractReference_1_contractReferenceType: Int!
-  # ContractReference
-  terms_contractReference_2_object: Bytes!
-  terms_contractReference_2_contractReferenceRole: Int!
-  terms_contractReference_2_contractReferenceType: Int!
-  terms_currency: Bytes!
-  terms_settlementCurrency: Bytes!
-  terms_marketObjectCodeRateReset: Bytes!
-  terms_statusDate: BigInt!
-  terms_maturityDate: BigInt!
-  terms_notionalPrincipal: BigInt!
-  terms_nominalInterestRate: BigInt!
-  terms_feeAccrued: BigInt!
-  terms_accruedInterest: BigInt!
-  terms_rateMultiplier: BigInt!
-  terms_rateSpread: BigInt!
-  terms_feeRate: BigInt!
-  terms_nextResetRate: BigInt!
-  terms_penaltyRate: BigInt!
-  terms_premiumDiscountAtIED: BigInt!
-  terms_priceAtPurchaseDate: BigInt!
-  terms_nextPrincipalRedemptionPayment: BigInt!
-  terms_coverageOfCreditEnhancement: BigInt!
-  # Period
-  terms_gracePeriod_i: BigInt!
-  terms_gracePeriod_p: Int!
-  terms_gracePeriod_isSet: Boolean!
-  # Period
-  terms_delinquencyPeriod_i: BigInt!
-  terms_delinquencyPeriod_p: Int!
-  terms_delinquencyPeriod_isSet: Boolean!
-  terms_lifeCap: BigInt!
-  terms_lifeFloor: BigInt!
-  terms_periodCap: BigInt!
-  terms_periodFloor: BigInt!
-
-  # State
-  state_contractPerformance: Int!
-  state_statusDate: BigInt!
-  state_nonPerformingDate: BigInt!
-  state_maturityDate: BigInt!
-  state_executionDate: BigInt!
-  state_notionalPrincipal: BigInt!
-  state_accruedInterest: BigInt!
-  state_feeAccrued: BigInt!
-  state_nominalInterestRate: BigInt!
-  state_interestScalingMultiplier: BigInt!
-  state_notionalScalingMultiplier: BigInt!
-  state_nextPrincipalRedemptionPayment: BigInt!
-  state_executionAmount: BigInt!
+  templateId: Bytes!
+  ownership: AssetOwnership!
+  lifecycleTerms: LifecycleTerms!
+  state: State!
+  schedule: Schedule!
 }
