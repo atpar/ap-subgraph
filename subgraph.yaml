@@ -16,6 +16,10 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Asset
+        - LifecycleTerms
+        - State
+        - AssetOwnership
+        - Schedule
       abis:
         - name: AssetRegistry
           file: ./build/contracts/AssetRegistry.json
@@ -37,6 +41,8 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Asset
+        - State
+        - Schedule
       abis:
         - name: AssetActor
           file: ./build/contracts/AssetActor.json

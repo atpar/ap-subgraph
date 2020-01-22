@@ -1,3 +1,17 @@
+type Period @entity {
+  id: ID!
+  i: BigInt!
+  p: Int!
+  isSet: Boolean!
+}
+
+type ContractReference @entity {
+  id: ID!
+  object: Bytes!
+  contractReferenceRole: Int!
+  contractReferenceType: Int!
+}
+
 type TemplateTerms @entity {
   id: ID!
   calendar: Int!
@@ -22,12 +36,8 @@ type TemplateTerms @entity {
   penaltyRate: BigInt!
   priceAtPurchaseDate: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
-  gracePeriod_i: BigInt!
-  gracePeriod_p: Int!
-  gracePeriod_isSet: Boolean!
-  delinquencyPeriod_i: BigInt!
-  delinquencyPeriod_p: Int!
-  delinquencyPeriod_isSet: Boolean!
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
   periodCap: BigInt!
   periodFloor: BigInt!
 }
@@ -69,12 +79,8 @@ type LifecycleTerms @entity {
   penaltyType: Int!
   feeBasis: Int!
   creditEventTypeCovered: Int!
-  contractReference_1_object: Bytes!
-  contractReference_1_contractReferenceRole: Int!
-  contractReference_1_contractReferenceType: Int!
-  contractReference_2_object: Bytes!
-  contractReference_2_contractReferenceRole: Int!
-  contractReference_2_contractReferenceType: Int!
+  contractReference_1: ContractReference!
+  contractReference_2: ContractReference!
   currency: Bytes!
   settlementCurrency: Bytes!
   marketObjectCodeRateReset: Bytes!
@@ -93,12 +99,8 @@ type LifecycleTerms @entity {
   priceAtPurchaseDate: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
   coverageOfCreditEnhancement: BigInt!
-  gracePeriod_i: BigInt!
-  gracePeriod_p: Int!
-  gracePeriod_isSet: Boolean!
-  delinquencyPeriod_i: BigInt!
-  delinquencyPeriod_p: Int!
-  delinquencyPeriod_isSet: Boolean!
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
   lifeCap: BigInt!
   lifeFloor: BigInt!
   periodCap: BigInt!

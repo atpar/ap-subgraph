@@ -12,6 +12,122 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
+export class Period extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Period entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Period entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Period", id.toString(), this);
+  }
+
+  static load(id: string): Period | null {
+    return store.get("Period", id) as Period | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get i(): BigInt {
+    let value = this.get("i");
+    return value.toBigInt();
+  }
+
+  set i(value: BigInt) {
+    this.set("i", Value.fromBigInt(value));
+  }
+
+  get p(): i32 {
+    let value = this.get("p");
+    return value.toI32();
+  }
+
+  set p(value: i32) {
+    this.set("p", Value.fromI32(value));
+  }
+
+  get isSet(): boolean {
+    let value = this.get("isSet");
+    return value.toBoolean();
+  }
+
+  set isSet(value: boolean) {
+    this.set("isSet", Value.fromBoolean(value));
+  }
+}
+
+export class ContractReference extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save ContractReference entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save ContractReference entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("ContractReference", id.toString(), this);
+  }
+
+  static load(id: string): ContractReference | null {
+    return store.get("ContractReference", id) as ContractReference | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get object(): Bytes {
+    let value = this.get("object");
+    return value.toBytes();
+  }
+
+  set object(value: Bytes) {
+    this.set("object", Value.fromBytes(value));
+  }
+
+  get contractReferenceRole(): i32 {
+    let value = this.get("contractReferenceRole");
+    return value.toI32();
+  }
+
+  set contractReferenceRole(value: i32) {
+    this.set("contractReferenceRole", Value.fromI32(value));
+  }
+
+  get contractReferenceType(): i32 {
+    let value = this.get("contractReferenceType");
+    return value.toI32();
+  }
+
+  set contractReferenceType(value: i32) {
+    this.set("contractReferenceType", Value.fromI32(value));
+  }
+}
+
 export class TemplateTerms extends Entity {
   constructor(id: string) {
     super();
@@ -240,58 +356,22 @@ export class TemplateTerms extends Entity {
     this.set("nextPrincipalRedemptionPayment", Value.fromBigInt(value));
   }
 
-  get gracePeriod_i(): BigInt {
-    let value = this.get("gracePeriod_i");
-    return value.toBigInt();
+  get gracePeriod(): string {
+    let value = this.get("gracePeriod");
+    return value.toString();
   }
 
-  set gracePeriod_i(value: BigInt) {
-    this.set("gracePeriod_i", Value.fromBigInt(value));
+  set gracePeriod(value: string) {
+    this.set("gracePeriod", Value.fromString(value));
   }
 
-  get gracePeriod_p(): i32 {
-    let value = this.get("gracePeriod_p");
-    return value.toI32();
+  get delinquencyPeriod(): string {
+    let value = this.get("delinquencyPeriod");
+    return value.toString();
   }
 
-  set gracePeriod_p(value: i32) {
-    this.set("gracePeriod_p", Value.fromI32(value));
-  }
-
-  get gracePeriod_isSet(): boolean {
-    let value = this.get("gracePeriod_isSet");
-    return value.toBoolean();
-  }
-
-  set gracePeriod_isSet(value: boolean) {
-    this.set("gracePeriod_isSet", Value.fromBoolean(value));
-  }
-
-  get delinquencyPeriod_i(): BigInt {
-    let value = this.get("delinquencyPeriod_i");
-    return value.toBigInt();
-  }
-
-  set delinquencyPeriod_i(value: BigInt) {
-    this.set("delinquencyPeriod_i", Value.fromBigInt(value));
-  }
-
-  get delinquencyPeriod_p(): i32 {
-    let value = this.get("delinquencyPeriod_p");
-    return value.toI32();
-  }
-
-  set delinquencyPeriod_p(value: i32) {
-    this.set("delinquencyPeriod_p", Value.fromI32(value));
-  }
-
-  get delinquencyPeriod_isSet(): boolean {
-    let value = this.get("delinquencyPeriod_isSet");
-    return value.toBoolean();
-  }
-
-  set delinquencyPeriod_isSet(value: boolean) {
-    this.set("delinquencyPeriod_isSet", Value.fromBoolean(value));
+  set delinquencyPeriod(value: string) {
+    this.set("delinquencyPeriod", Value.fromString(value));
   }
 
   get periodCap(): BigInt {
@@ -702,58 +782,22 @@ export class LifecycleTerms extends Entity {
     this.set("creditEventTypeCovered", Value.fromI32(value));
   }
 
-  get contractReference_1_object(): Bytes {
-    let value = this.get("contractReference_1_object");
-    return value.toBytes();
+  get contractReference_1(): string {
+    let value = this.get("contractReference_1");
+    return value.toString();
   }
 
-  set contractReference_1_object(value: Bytes) {
-    this.set("contractReference_1_object", Value.fromBytes(value));
+  set contractReference_1(value: string) {
+    this.set("contractReference_1", Value.fromString(value));
   }
 
-  get contractReference_1_contractReferenceRole(): i32 {
-    let value = this.get("contractReference_1_contractReferenceRole");
-    return value.toI32();
+  get contractReference_2(): string {
+    let value = this.get("contractReference_2");
+    return value.toString();
   }
 
-  set contractReference_1_contractReferenceRole(value: i32) {
-    this.set("contractReference_1_contractReferenceRole", Value.fromI32(value));
-  }
-
-  get contractReference_1_contractReferenceType(): i32 {
-    let value = this.get("contractReference_1_contractReferenceType");
-    return value.toI32();
-  }
-
-  set contractReference_1_contractReferenceType(value: i32) {
-    this.set("contractReference_1_contractReferenceType", Value.fromI32(value));
-  }
-
-  get contractReference_2_object(): Bytes {
-    let value = this.get("contractReference_2_object");
-    return value.toBytes();
-  }
-
-  set contractReference_2_object(value: Bytes) {
-    this.set("contractReference_2_object", Value.fromBytes(value));
-  }
-
-  get contractReference_2_contractReferenceRole(): i32 {
-    let value = this.get("contractReference_2_contractReferenceRole");
-    return value.toI32();
-  }
-
-  set contractReference_2_contractReferenceRole(value: i32) {
-    this.set("contractReference_2_contractReferenceRole", Value.fromI32(value));
-  }
-
-  get contractReference_2_contractReferenceType(): i32 {
-    let value = this.get("contractReference_2_contractReferenceType");
-    return value.toI32();
-  }
-
-  set contractReference_2_contractReferenceType(value: i32) {
-    this.set("contractReference_2_contractReferenceType", Value.fromI32(value));
+  set contractReference_2(value: string) {
+    this.set("contractReference_2", Value.fromString(value));
   }
 
   get currency(): Bytes {
@@ -918,58 +962,22 @@ export class LifecycleTerms extends Entity {
     this.set("coverageOfCreditEnhancement", Value.fromBigInt(value));
   }
 
-  get gracePeriod_i(): BigInt {
-    let value = this.get("gracePeriod_i");
-    return value.toBigInt();
+  get gracePeriod(): string {
+    let value = this.get("gracePeriod");
+    return value.toString();
   }
 
-  set gracePeriod_i(value: BigInt) {
-    this.set("gracePeriod_i", Value.fromBigInt(value));
+  set gracePeriod(value: string) {
+    this.set("gracePeriod", Value.fromString(value));
   }
 
-  get gracePeriod_p(): i32 {
-    let value = this.get("gracePeriod_p");
-    return value.toI32();
+  get delinquencyPeriod(): string {
+    let value = this.get("delinquencyPeriod");
+    return value.toString();
   }
 
-  set gracePeriod_p(value: i32) {
-    this.set("gracePeriod_p", Value.fromI32(value));
-  }
-
-  get gracePeriod_isSet(): boolean {
-    let value = this.get("gracePeriod_isSet");
-    return value.toBoolean();
-  }
-
-  set gracePeriod_isSet(value: boolean) {
-    this.set("gracePeriod_isSet", Value.fromBoolean(value));
-  }
-
-  get delinquencyPeriod_i(): BigInt {
-    let value = this.get("delinquencyPeriod_i");
-    return value.toBigInt();
-  }
-
-  set delinquencyPeriod_i(value: BigInt) {
-    this.set("delinquencyPeriod_i", Value.fromBigInt(value));
-  }
-
-  get delinquencyPeriod_p(): i32 {
-    let value = this.get("delinquencyPeriod_p");
-    return value.toI32();
-  }
-
-  set delinquencyPeriod_p(value: i32) {
-    this.set("delinquencyPeriod_p", Value.fromI32(value));
-  }
-
-  get delinquencyPeriod_isSet(): boolean {
-    let value = this.get("delinquencyPeriod_isSet");
-    return value.toBoolean();
-  }
-
-  set delinquencyPeriod_isSet(value: boolean) {
-    this.set("delinquencyPeriod_isSet", Value.fromBoolean(value));
+  set delinquencyPeriod(value: string) {
+    this.set("delinquencyPeriod", Value.fromString(value));
   }
 
   get lifeCap(): BigInt {

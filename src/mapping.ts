@@ -8,11 +8,13 @@ import {
   Asset,
   AssetOwnership,
   LifecycleTerms,
+  Period,
+  ContractReference,
   State,
   Schedule,
   Template,
   TemplateTerms,
-  TemplateSchedule
+  TemplateSchedule,
 } from '../generated/schema';
 
 
@@ -27,6 +29,18 @@ const PY_SCHEDULE_ID = 11;
 
 export function handleRegisteredTemplate(event: RegisteredTemplate): void {
   let templateRegistry = TemplateRegistry.bind(event.address);
+
+  let gracePeriod = new Period(event.params.templateId.toHex() + '-templateTerms-gracePeriod');
+  gracePeriod.i = templateRegistry.getTemplateTerms(event.params.templateId).gracePeriod.i;
+  gracePeriod.p = templateRegistry.getTemplateTerms(event.params.templateId).gracePeriod.p;
+  gracePeriod.isSet = templateRegistry.getTemplateTerms(event.params.templateId).gracePeriod.isSet;
+  gracePeriod.save();
+
+  let delinquencyPeriod = new Period(event.params.templateId.toHex() + '-templateTerms-delinquencyPeriod');
+  delinquencyPeriod.i = templateRegistry.getTemplateTerms(event.params.templateId).delinquencyPeriod.i;
+  delinquencyPeriod.p = templateRegistry.getTemplateTerms(event.params.templateId).delinquencyPeriod.p;
+  delinquencyPeriod.isSet = templateRegistry.getTemplateTerms(event.params.templateId).delinquencyPeriod.isSet;
+  delinquencyPeriod.save();
 
   let templateTerms = new TemplateTerms(event.params.templateId.toHex() + '-templateTerms');
   templateTerms.calendar = templateRegistry.getTemplateTerms(event.params.templateId).calendar;
@@ -51,12 +65,8 @@ export function handleRegisteredTemplate(event: RegisteredTemplate): void {
   templateTerms.penaltyRate = templateRegistry.getTemplateTerms(event.params.templateId).penaltyRate;
   templateTerms.priceAtPurchaseDate = templateRegistry.getTemplateTerms(event.params.templateId).priceAtPurchaseDate;
   templateTerms.nextPrincipalRedemptionPayment = templateRegistry.getTemplateTerms(event.params.templateId).nextPrincipalRedemptionPayment;
-  templateTerms.gracePeriod_i = templateRegistry.getTemplateTerms(event.params.templateId).gracePeriod.i
-  templateTerms.gracePeriod_p = templateRegistry.getTemplateTerms(event.params.templateId).gracePeriod.p
-  templateTerms.gracePeriod_isSet = templateRegistry.getTemplateTerms(event.params.templateId).gracePeriod.isSet
-  templateTerms.delinquencyPeriod_i = templateRegistry.getTemplateTerms(event.params.templateId).delinquencyPeriod.i
-  templateTerms.delinquencyPeriod_p = templateRegistry.getTemplateTerms(event.params.templateId).delinquencyPeriod.p
-  templateTerms.delinquencyPeriod_isSet = templateRegistry.getTemplateTerms(event.params.templateId).delinquencyPeriod.isSet
+  templateTerms.gracePeriod = gracePeriod.id;
+  templateTerms.delinquencyPeriod = delinquencyPeriod.id;
   templateTerms.periodCap = templateRegistry.getTemplateTerms(event.params.templateId).periodCap;
   templateTerms.periodFloor = templateRegistry.getTemplateTerms(event.params.templateId).periodFloor;
   templateTerms.save();
@@ -88,6 +98,30 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   ownership.counterpartyObligor = assetRegistry.getOwnership(event.params.assetId).counterpartyObligor;
   ownership.counterpartyBeneficiary = assetRegistry.getOwnership(event.params.assetId).counterpartyBeneficiary;
   ownership.save();
+
+  let contractReference_1 = new ContractReference(event.params.assetId.toHex() + '-lifecycleTerms-contractReference_1');
+  contractReference_1.object = assetRegistry.getTerms(event.params.assetId).contractReference_1.object;
+  contractReference_1.contractReferenceRole = assetRegistry.getTerms(event.params.assetId).contractReference_1.contractReferenceRole;
+  contractReference_1.contractReferenceType = assetRegistry.getTerms(event.params.assetId).contractReference_1.contractReferenceType;
+  contractReference_1.save();
+
+  let contractReference_2 = new ContractReference(event.params.assetId.toHex() + '-lifecycleTerms-contractReference_2');
+  contractReference_2.object = assetRegistry.getTerms(event.params.assetId).contractReference_2.object;
+  contractReference_2.contractReferenceRole = assetRegistry.getTerms(event.params.assetId).contractReference_2.contractReferenceRole;
+  contractReference_2.contractReferenceType = assetRegistry.getTerms(event.params.assetId).contractReference_2.contractReferenceType;
+  contractReference_2.save();
+
+  let gracePeriod = new Period(event.params.assetId.toHex() + '-lifecycleTerms-gracePeriod');
+  gracePeriod.i = assetRegistry.getTerms(event.params.assetId).gracePeriod.i;
+  gracePeriod.p = assetRegistry.getTerms(event.params.assetId).gracePeriod.p;
+  gracePeriod.isSet = assetRegistry.getTerms(event.params.assetId).gracePeriod.isSet;
+  gracePeriod.save();
+
+  let delinquencyPeriod = new Period(event.params.assetId.toHex() + '-lifecycleTerms-delinquencyPeriod');
+  delinquencyPeriod.i = assetRegistry.getTerms(event.params.assetId).delinquencyPeriod.i;
+  delinquencyPeriod.p = assetRegistry.getTerms(event.params.assetId).delinquencyPeriod.p;
+  delinquencyPeriod.isSet = assetRegistry.getTerms(event.params.assetId).delinquencyPeriod.isSet;
+  delinquencyPeriod.save();
   
   let lifecycleTerms = new LifecycleTerms(event.params.assetId.toHex() + '-lifecycleTerms');
   lifecycleTerms.calendar = assetRegistry.getTerms(event.params.assetId).calendar;
@@ -99,12 +133,8 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   lifecycleTerms.penaltyType = assetRegistry.getTerms(event.params.assetId).penaltyType;
   lifecycleTerms.feeBasis = assetRegistry.getTerms(event.params.assetId).feeBasis;
   lifecycleTerms.creditEventTypeCovered = assetRegistry.getTerms(event.params.assetId).creditEventTypeCovered;
-  lifecycleTerms.contractReference_1_object = assetRegistry.getTerms(event.params.assetId).contractReference_1.object
-  lifecycleTerms.contractReference_1_contractReferenceRole = assetRegistry.getTerms(event.params.assetId).contractReference_1.contractReferenceRole
-  lifecycleTerms.contractReference_1_contractReferenceType = assetRegistry.getTerms(event.params.assetId).contractReference_1.contractReferenceType
-  lifecycleTerms.contractReference_2_object = assetRegistry.getTerms(event.params.assetId).contractReference_2.object
-  lifecycleTerms.contractReference_2_contractReferenceRole = assetRegistry.getTerms(event.params.assetId).contractReference_2.contractReferenceRole
-  lifecycleTerms.contractReference_2_contractReferenceType = assetRegistry.getTerms(event.params.assetId).contractReference_2.contractReferenceType
+  lifecycleTerms.contractReference_1 = contractReference_1.id;
+  lifecycleTerms.contractReference_2 = contractReference_2.id;
   lifecycleTerms.currency = assetRegistry.getTerms(event.params.assetId).currency;
   lifecycleTerms.settlementCurrency = assetRegistry.getTerms(event.params.assetId).settlementCurrency;
   lifecycleTerms.marketObjectCodeRateReset = assetRegistry.getTerms(event.params.assetId).marketObjectCodeRateReset;
@@ -123,12 +153,8 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   lifecycleTerms.priceAtPurchaseDate = assetRegistry.getTerms(event.params.assetId).priceAtPurchaseDate;
   lifecycleTerms.nextPrincipalRedemptionPayment = assetRegistry.getTerms(event.params.assetId).nextPrincipalRedemptionPayment;
   lifecycleTerms.coverageOfCreditEnhancement = assetRegistry.getTerms(event.params.assetId).coverageOfCreditEnhancement;
-  lifecycleTerms.gracePeriod_i = assetRegistry.getTerms(event.params.assetId).gracePeriod.i
-  lifecycleTerms.gracePeriod_p = assetRegistry.getTerms(event.params.assetId).gracePeriod.p
-  lifecycleTerms.gracePeriod_isSet = assetRegistry.getTerms(event.params.assetId).gracePeriod.isSet
-  lifecycleTerms.delinquencyPeriod_i = assetRegistry.getTerms(event.params.assetId).delinquencyPeriod.i
-  lifecycleTerms.delinquencyPeriod_p = assetRegistry.getTerms(event.params.assetId).delinquencyPeriod.p
-  lifecycleTerms.delinquencyPeriod_isSet = assetRegistry.getTerms(event.params.assetId).delinquencyPeriod.isSet
+  lifecycleTerms.gracePeriod = gracePeriod.id;
+  lifecycleTerms.delinquencyPeriod = delinquencyPeriod.id;
   lifecycleTerms.lifeCap = assetRegistry.getTerms(event.params.assetId).lifeCap;
   lifecycleTerms.lifeFloor = assetRegistry.getTerms(event.params.assetId).lifeFloor;
   lifecycleTerms.periodCap = assetRegistry.getTerms(event.params.assetId).periodCap;

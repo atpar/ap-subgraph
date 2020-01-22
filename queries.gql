@@ -59,12 +59,16 @@
       penaltyRate
       priceAtPurchaseDate
       nextPrincipalRedemptionPayment
-      gracePeriod_i
-      gracePeriod_p
-      gracePeriod_isSet
-      delinquencyPeriod_i
-      delinquencyPeriod_p
-      delinquencyPeriod_isSet
+      gracePeriod {
+        i
+        p
+        isSet
+      }
+      delinquencyPeriod {
+        i
+        p
+        isSet
+      }
       periodCap
       periodFloor
     }
