@@ -79,7 +79,6 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
 }
 
 export function handleProgressedAsset(event: ProgressedAsset): void {
-  // const assetActor = AssetActor.bind(event.address);
   let assetRegistry = AssetRegistry.bind(Address.fromString('0x34a0dC05DF6dA73E9042E2E63c849F95D84ACb91'));
 
   let asset = Asset.load(event.params.assetId.toHex());

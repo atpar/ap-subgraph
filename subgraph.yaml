@@ -38,6 +38,8 @@ dataSources:
       abis:
         - name: AssetActor
           file: ./build/contracts/AssetActor.json
+        - name: AssetRegistry
+          file: ./build/contracts/AssetRegistry.json
       eventHandlers:
         - event: ProgressedAsset(indexed bytes32,uint8,uint256)
           handler: handleProgressedAsset
