@@ -1,7 +1,7 @@
 import { Address } from "@graphprotocol/graph-ts";
 
 import { ProgressedAsset } from '../generated/AssetActor/AssetActor';
-import { AssetRegistry, RegisteredAsset } from '../generated/AssetRegistry/AssetRegistry';
+import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary } from '../generated/AssetRegistry/AssetRegistry';
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
 
 import {
@@ -178,7 +178,7 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   state.save();
 
   let schedule = new Schedule(event.params.assetId.toHex() + '-schedule');
-  schedule.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
+  schedule.templateSchedule = assetRegistry.getTemplateId(event.params.assetId).toHex() + '-templateSchedule';
   schedule.nonCyclicScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, NON_CYLIC_SCHEDULE_ID);
   schedule.cyclicIPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, IP_SCHEDULE_ID);
   schedule.cyclicPRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PR_SCHEDULE_ID);
@@ -186,16 +186,19 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   schedule.cyclicRRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, RR_SCHEDULE_ID);
   schedule.cyclicFPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, FP_SCHEDULE_ID);
   schedule.cyclicPYScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PY_SCHEDULE_ID);
-  schedule.nextEvent = assetRegistry.getNextEvent(event.params.assetId);
   schedule.save();
 
   let asset = new Asset(event.params.assetId.toHex());
   asset.assetId = event.params.assetId;
   asset.templateId = assetRegistry.getTemplateId(event.params.assetId);
+  asset.engine = assetRegistry.getEngineAddress(event.params.assetId);
+  asset.actor = assetRegistry.getActorAddress(event.params.assetId);
   asset.ownership = ownership.id;
+  asset.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
   asset.lifecycleTerms = lifecycleTerms.id;
   asset.state = state.id;
   asset.schedule = schedule.id;
+  asset.nextEvent = assetRegistry.getNextEvent(event.params.assetId);
   asset.save();
 }
 
@@ -226,6 +229,18 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   schedule.cyclicRRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, RR_SCHEDULE_ID);
   schedule.cyclicFPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, FP_SCHEDULE_ID);
   schedule.cyclicPYScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PY_SCHEDULE_ID);
-  schedule.nextEvent = assetRegistry.getNextEvent(event.params.assetId);
   schedule.save();
+
+  let asset = Asset.load(event.params.assetId.toHex());
+  asset.nextEvent = assetRegistry.getNextEvent(event.params.assetId);
+  asset.save();
+}
+
+export function handleUpdatedBeneficiary (event: UpdatedBeneficiary): void {
+  let assetRegistry = AssetRegistry.bind(event.address);
+  
+  let ownership = AssetOwnership.load(event.params.assetId.toHex() + '-ownership');
+  ownership.creatorBeneficiary = assetRegistry.getOwnership(event.params.assetId).creatorBeneficiary;
+  ownership.counterpartyBeneficiary = assetRegistry.getOwnership(event.params.assetId).counterpartyBeneficiary;
+  ownership.save();
 }

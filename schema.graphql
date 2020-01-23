@@ -126,7 +126,7 @@ type State @entity {
 
 type  Schedule @entity {
   id: ID!
-  anchorDate: BigInt!
+  templateSchedule: TemplateSchedule!
   nonCyclicScheduleIndex: BigInt!
   cyclicIPScheduleIndex: BigInt!
   cyclicPRScheduleIndex: BigInt!
@@ -134,15 +134,18 @@ type  Schedule @entity {
   cyclicRRScheduleIndex: BigInt!
   cyclicFPScheduleIndex: BigInt!
   cyclicPYScheduleIndex: BigInt!
-  nextEvent: Bytes!
 }
 
 type Asset @entity {
   id: ID!
   assetId: Bytes!
   templateId: Bytes!
+  engine: Bytes!
+  actor: Bytes!
   ownership: AssetOwnership!
+  anchorDate: BigInt!
   lifecycleTerms: LifecycleTerms!
   state: State!
   schedule: Schedule!
+  nextEvent: Bytes!
 }

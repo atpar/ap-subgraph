@@ -28,6 +28,8 @@ dataSources:
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAsset
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiary
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: AssetActor

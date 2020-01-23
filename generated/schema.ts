@@ -1195,13 +1195,13 @@ export class Schedule extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get anchorDate(): BigInt {
-    let value = this.get("anchorDate");
-    return value.toBigInt();
+  get templateSchedule(): string {
+    let value = this.get("templateSchedule");
+    return value.toString();
   }
 
-  set anchorDate(value: BigInt) {
-    this.set("anchorDate", Value.fromBigInt(value));
+  set templateSchedule(value: string) {
+    this.set("templateSchedule", Value.fromString(value));
   }
 
   get nonCyclicScheduleIndex(): BigInt {
@@ -1266,15 +1266,6 @@ export class Schedule extends Entity {
   set cyclicPYScheduleIndex(value: BigInt) {
     this.set("cyclicPYScheduleIndex", Value.fromBigInt(value));
   }
-
-  get nextEvent(): Bytes {
-    let value = this.get("nextEvent");
-    return value.toBytes();
-  }
-
-  set nextEvent(value: Bytes) {
-    this.set("nextEvent", Value.fromBytes(value));
-  }
 }
 
 export class Asset extends Entity {
@@ -1325,6 +1316,24 @@ export class Asset extends Entity {
     this.set("templateId", Value.fromBytes(value));
   }
 
+  get engine(): Bytes {
+    let value = this.get("engine");
+    return value.toBytes();
+  }
+
+  set engine(value: Bytes) {
+    this.set("engine", Value.fromBytes(value));
+  }
+
+  get actor(): Bytes {
+    let value = this.get("actor");
+    return value.toBytes();
+  }
+
+  set actor(value: Bytes) {
+    this.set("actor", Value.fromBytes(value));
+  }
+
   get ownership(): string {
     let value = this.get("ownership");
     return value.toString();
@@ -1332,6 +1341,15 @@ export class Asset extends Entity {
 
   set ownership(value: string) {
     this.set("ownership", Value.fromString(value));
+  }
+
+  get anchorDate(): BigInt {
+    let value = this.get("anchorDate");
+    return value.toBigInt();
+  }
+
+  set anchorDate(value: BigInt) {
+    this.set("anchorDate", Value.fromBigInt(value));
   }
 
   get lifecycleTerms(): string {
@@ -1359,5 +1377,14 @@ export class Asset extends Entity {
 
   set schedule(value: string) {
     this.set("schedule", Value.fromString(value));
+  }
+
+  get nextEvent(): Bytes {
+    let value = this.get("nextEvent");
+    return value.toBytes();
+  }
+
+  set nextEvent(value: Bytes) {
+    this.set("nextEvent", Value.fromBytes(value));
   }
 }
