@@ -16,15 +16,13 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Asset
-        - LifecycleTerms
-        - State
-        - AssetOwnership
-        - Schedule
       abis:
         - name: AssetRegistry
           file: ./build/contracts/AssetRegistry.json
         - name: TemplateRegistry
           file: ./build/contracts/TemplateRegistry.json
+        - name: IEngine
+          file: ./build/contracts/IEngine.json
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAsset
@@ -43,8 +41,6 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Asset
-        - State
-        - Schedule
       abis:
         - name: AssetActor
           file: ./build/contracts/AssetActor.json
@@ -66,8 +62,6 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Template
-        - TemplateTerms
-        - TemplateSchedule
       abis:
         - name: TemplateRegistry
           file: ./build/contracts/TemplateRegistry.json

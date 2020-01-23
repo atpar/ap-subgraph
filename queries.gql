@@ -8,6 +8,8 @@
   assets(first: 1) {
     assetId
     templateId
+    engine
+    actor
     ownership {
       creatorObligor
       creatorBeneficiary
@@ -15,14 +17,95 @@
       counterpartyBeneficiary
     }
     lifecycleTerms {
+      calendar
+      contractRole
+      dayCountConvention
+      businessDayConvention
+      endOfMonthConvention
+      scalingEffect
+      penaltyType
+      feeBasis
+      creditEventTypeCovered
+      contractReference_1 {
+        object
+        contractReferenceRole
+        contractReferenceType
+      }
+      contractReference_2 {
+        object
+        contractReferenceRole
+        contractReferenceType
+      }
+      currency
+      settlementCurrency
+      marketObjectCodeRateReset
+      statusDate
+      maturityDate
       notionalPrincipal
       nominalInterestRate
+      feeAccrued
+      accruedInterest
+      rateMultiplier
+      rateSpread
+      feeRate
+      nextResetRate
+      penaltyRate
+      premiumDiscountAtIED
+      priceAtPurchaseDate
+      nextPrincipalRedemptionPayment
+      coverageOfCreditEnhancement
+      gracePeriod {
+        i
+        p
+        isSet
+      }
+      delinquencyPeriod {
+        i
+        p
+        isSet
+      }
+      lifeCap
+      lifeFloor
+      periodCap
+      periodFloor
     }
     state {
+      contractPerformance
       statusDate
+      nonPerformingDate
+      maturityDate
+      executionDate
+      notionalPrincipal
+      accruedInterest
+      feeAccrued
+      nominalInterestRate
+      interestScalingMultiplier
+      notionalScalingMultiplier
+      nextPrincipalRedemptionPayment
+      executionAmount
+    
+    }
+    anchorDate
+    nextEvent {
+      event
     }
     schedule {
-      nextEvent
+      templateSchedule {
+        nonCyclicSchedule
+        cyclicIPSchedule
+        cyclicPRSchedule
+        cyclicSCSchedule
+        cyclicRRSchedule
+        cyclicFPSchedule
+        cyclicPYSchedule  
+      }
+      nonCyclicScheduleIndex
+      cyclicIPScheduleIndex
+      cyclicPRScheduleIndex
+      cyclicSCScheduleIndex
+      cyclicRRScheduleIndex
+      cyclicFPScheduleIndex
+      cyclicPYScheduleIndex
     }
   }
 }

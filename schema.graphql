@@ -124,7 +124,7 @@ type State @entity {
   executionAmount: BigInt!
 }
 
-type  Schedule @entity {
+type Schedule @entity {
   id: ID!
   templateSchedule: TemplateSchedule!
   nonCyclicScheduleIndex: BigInt!
@@ -134,6 +134,13 @@ type  Schedule @entity {
   cyclicRRScheduleIndex: BigInt!
   cyclicFPScheduleIndex: BigInt!
   cyclicPYScheduleIndex: BigInt!
+}
+
+type Event @entity {
+  id: ID!
+  event: Bytes!
+  # payoff: BigInt!
+  # state: State!
 }
 
 type Asset @entity {
@@ -147,5 +154,5 @@ type Asset @entity {
   lifecycleTerms: LifecycleTerms!
   state: State!
   schedule: Schedule!
-  nextEvent: Bytes!
+  nextEvent: Event!
 }

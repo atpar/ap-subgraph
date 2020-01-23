@@ -1,11 +1,13 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Bytes, Address } from "@graphprotocol/graph-ts";
 
 import { ProgressedAsset } from '../generated/AssetActor/AssetActor';
 import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary } from '../generated/AssetRegistry/AssetRegistry';
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
+import { IEngine } from '../generated/AssetRegistry/IEngine';
 
 import {
   Asset,
+  Event,
   AssetOwnership,
   LifecycleTerms,
   Period,
@@ -18,6 +20,7 @@ import {
 } from '../generated/schema';
 
 
+// const ZERO_BYTES32 = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const NON_CYLIC_SCHEDULE_ID = 255;
 const IP_SCHEDULE_ID = 8;
 const PR_SCHEDULE_ID = 15;
@@ -90,8 +93,9 @@ export function handleRegisteredTemplate(event: RegisteredTemplate): void {
 
 export function handleRegisteredAsset(event: RegisteredAsset): void {
   let assetRegistry = AssetRegistry.bind(event.address);
-  let templateRegistry = TemplateRegistry.bind(Address.fromString('0x5E569ba9d959adDf679A7177e241AE262C305789'));
-  
+  // let templateRegistry = TemplateRegistry.bind(Address.fromString('0x5E569ba9d959adDf679A7177e241AE262C305789'));
+  // let engine = IEngine.bind(assetRegistry.getEngineAddress(event.params.assetId));
+
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
   ownership.creatorObligor = assetRegistry.getOwnership(event.params.assetId).creatorObligor;
   ownership.creatorBeneficiary = assetRegistry.getOwnership(event.params.assetId).creatorBeneficiary;
@@ -188,6 +192,38 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   schedule.cyclicPYScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PY_SCHEDULE_ID);
   schedule.save();
 
+  // let _nextState = engine.computeStateForEvent(
+  //   assetRegistry.getTerms(event.params.assetId),
+  //   assetRegistry.getState(event.params.assetId),
+  //   assetRegistry.getNextEvent(event.params.assetId),
+  //   Bytes.fromHexString(ZERO_BYTES32)
+  // );
+  // let nextState = new State(event.params.assetId.toHex() + '-nextEvent-state');
+  // nextState.contractPerformance = _nextState.contractPerformance;
+  // nextState.statusDate = _nextState.statusDate;
+  // nextState.nonPerformingDate = _nextState.nonPerformingDate;
+  // nextState.maturityDate = _nextState.maturityDate;
+  // nextState.executionDate = _nextState.executionDate;
+  // nextState.notionalPrincipal = _nextState.notionalPrincipal;
+  // nextState.accruedInterest = _nextState.accruedInterest;
+  // nextState.feeAccrued = _nextState.feeAccrued;
+  // nextState.nominalInterestRate = _nextState.nominalInterestRate;
+  // nextState.interestScalingMultiplier = _nextState.interestScalingMultiplier;
+  // nextState.notionalScalingMultiplier = _nextState.notionalScalingMultiplier;
+  // nextState.nextPrincipalRedemptionPayment = _nextState.nextPrincipalRedemptionPayment;
+  // nextState.executionAmount = _nextState.executionAmount;
+
+  let nextEvent = new Event(event.params.assetId.toHex() + '-nextEvent');
+  nextEvent.event = assetRegistry.getNextEvent(event.params.assetId);
+  // nextEvent.payoff = engine.computePayoffForEvent(
+  //   assetRegistry.getTerms(event.params.assetId),
+  //   assetRegistry.getState(event.params.assetId),
+  //   assetRegistry.getNextEvent(event.params.assetId),
+  //   Bytes.fromHexString(ZERO_BYTES32)
+  // );
+  // nextEvent.state = nextState.id;
+  nextEvent.save();
+
   let asset = new Asset(event.params.assetId.toHex());
   asset.assetId = event.params.assetId;
   asset.templateId = assetRegistry.getTemplateId(event.params.assetId);
@@ -198,12 +234,13 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   asset.lifecycleTerms = lifecycleTerms.id;
   asset.state = state.id;
   asset.schedule = schedule.id;
-  asset.nextEvent = assetRegistry.getNextEvent(event.params.assetId);
+  asset.nextEvent = nextEvent.id;
   asset.save();
 }
 
 export function handleProgressedAsset(event: ProgressedAsset): void {
   let assetRegistry = AssetRegistry.bind(Address.fromString('0x34a0dC05DF6dA73E9042E2E63c849F95D84ACb91'));
+  // let engine = IEngine.bind(assetRegistry.getEngineAddress(event.params.assetId));
 
   let state = State.load(event.params.assetId.toHex() + '-state');
   state.contractPerformance = assetRegistry.getState(event.params.assetId).contractPerformance;
@@ -231,8 +268,40 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   schedule.cyclicPYScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PY_SCHEDULE_ID);
   schedule.save();
 
+  // let _nextState = engine.computeStateForEvent(
+  //   assetRegistry.getTerms(event.params.assetId),
+  //   assetRegistry.getState(event.params.assetId),
+  //   assetRegistry.getNextEvent(event.params.assetId),
+  //   Bytes.fromHexString(ZERO_BYTES32)
+  // );
+  // let nextState = new State(event.params.assetId.toHex() + '-nextEvent-state');
+  // nextState.contractPerformance = _nextState.contractPerformance;
+  // nextState.statusDate = _nextState.statusDate;
+  // nextState.nonPerformingDate = _nextState.nonPerformingDate;
+  // nextState.maturityDate = _nextState.maturityDate;
+  // nextState.executionDate = _nextState.executionDate;
+  // nextState.notionalPrincipal = _nextState.notionalPrincipal;
+  // nextState.accruedInterest = _nextState.accruedInterest;
+  // nextState.feeAccrued = _nextState.feeAccrued;
+  // nextState.nominalInterestRate = _nextState.nominalInterestRate;
+  // nextState.interestScalingMultiplier = _nextState.interestScalingMultiplier;
+  // nextState.notionalScalingMultiplier = _nextState.notionalScalingMultiplier;
+  // nextState.nextPrincipalRedemptionPayment = _nextState.nextPrincipalRedemptionPayment;
+  // nextState.executionAmount = _nextState.executionAmount;
+
+  let nextEvent = new Event(event.params.assetId.toHex() + '-nextEvent');
+  nextEvent.event = assetRegistry.getNextEvent(event.params.assetId);
+  // nextEvent.payoff = engine.computePayoffForEvent(
+  //   assetRegistry.getTerms(event.params.assetId),
+  //   assetRegistry.getState(event.params.assetId),
+  //   assetRegistry.getNextEvent(event.params.assetId),
+  //   Bytes.fromHexString(ZERO_BYTES32)
+  // );
+  // nextEvent.state = nextState.id;
+  nextEvent.save();
+
   let asset = Asset.load(event.params.assetId.toHex());
-  asset.nextEvent = assetRegistry.getNextEvent(event.params.assetId);
+  asset.nextEvent = nextEvent.id;
   asset.save();
 }
 

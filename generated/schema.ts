@@ -1268,6 +1268,46 @@ export class Schedule extends Entity {
   }
 }
 
+export class Event extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Event entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Event entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Event", id.toString(), this);
+  }
+
+  static load(id: string): Event | null {
+    return store.get("Event", id) as Event | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): Bytes {
+    let value = this.get("event");
+    return value.toBytes();
+  }
+
+  set event(value: Bytes) {
+    this.set("event", Value.fromBytes(value));
+  }
+}
+
 export class Asset extends Entity {
   constructor(id: string) {
     super();
@@ -1379,12 +1419,12 @@ export class Asset extends Entity {
     this.set("schedule", Value.fromString(value));
   }
 
-  get nextEvent(): Bytes {
+  get nextEvent(): string {
     let value = this.get("nextEvent");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set nextEvent(value: Bytes) {
-    this.set("nextEvent", Value.fromBytes(value));
+  set nextEvent(value: string) {
+    this.set("nextEvent", Value.fromString(value));
   }
 }
