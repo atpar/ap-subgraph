@@ -15,7 +15,6 @@ mustache config/$NETWORK.json subgraph.template.yaml > subgraph.yaml
 
 # Run codegen and build
 npm run codegen
-npm run build
 
 # Use custom subgraph name based on target network
 SUBGRAPH_EXT="-${NETWORK}"
