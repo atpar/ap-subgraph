@@ -3,20 +3,22 @@
   "version": "0.0.0",
   "scripts": {
     "build-contract": "truffle compile",
+    "build": "graph build",
     "create-local": "graph create atpar/actus-protocol --node http://127.0.0.1:8020",
     "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy atpar/actus-protocol --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-local": "graph deploy atpar/actus-protocol --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
+    "deploy:local": "NETWORK=local ./deploy.sh",
+    "deploy:goerli": "NETWORK=goerli ./deploy.sh",
+    "deploy:ropsten": "NETWORK=ropsten ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/ap-contracts": "^0.2.1-beta.6",
+    "@atpar/ap-contracts": "^0.2.1-beta.11",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "actus-solidity": "0.2.1",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "funds-distribution-token": "0.1.2",
+    "mustache": "^4.0.0",
     "openzeppelin-solidity": "2.1.2",
     "truffle": "^5.0.4",
     "truffle-contract": "^4.0.5",

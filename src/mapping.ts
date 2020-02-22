@@ -1,6 +1,6 @@
 import { Bytes, Address } from "@graphprotocol/graph-ts";
 
-import { ProgressedAsset } from '../generated/AssetActor/AssetActor';
+import { AssetActor, ProgressedAsset } from '../generated/AssetActor/AssetActor';
 import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary } from '../generated/AssetRegistry/AssetRegistry';
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
 import { IEngine } from '../generated/AssetRegistry/IEngine';
@@ -93,7 +93,7 @@ export function handleRegisteredTemplate(event: RegisteredTemplate): void {
 
 export function handleRegisteredAsset(event: RegisteredAsset): void {
   let assetRegistry = AssetRegistry.bind(event.address);
-  // let templateRegistry = TemplateRegistry.bind(Address.fromString('0x5E569ba9d959adDf679A7177e241AE262C305789'));
+  // let templateRegistry = TemplateRegistry.bind(assetRegistry.templateRegistry());
   // let engine = IEngine.bind(assetRegistry.getEngineAddress(event.params.assetId));
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
@@ -239,7 +239,8 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
 }
 
 export function handleProgressedAsset(event: ProgressedAsset): void {
-  let assetRegistry = AssetRegistry.bind(Address.fromString('0x34a0dC05DF6dA73E9042E2E63c849F95D84ACb91'));
+  let assetActor = AssetActor.bind(event.address);
+  let assetRegistry = AssetRegistry.bind(assetActor.assetRegistry());
   // let engine = IEngine.bind(assetRegistry.getEngineAddress(event.params.assetId));
 
   let state = State.load(event.params.assetId.toHex() + '-state');

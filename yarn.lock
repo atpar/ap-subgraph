@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@atpar/actus-solidity@0.2.1-beta.6":
-  version "0.2.1-beta.6"
-  resolved "https://registry.yarnpkg.com/@atpar/actus-solidity/-/actus-solidity-0.2.1-beta.6.tgz#74a2e6b369b9749979c66128e980ad75fd7a157e"
-  integrity sha512-6n1CcZtXqC2mWMAbYF6mZlJ0VDPsyV+CzDpyeZrRg1TJe73HJtxPLlMkwQ7z65YAUtsf183ixaUeYV71LZi2xw==
+"@atpar/actus-solidity@0.2.1-beta.7":
+  version "0.2.1-beta.7"
+  resolved "https://registry.yarnpkg.com/@atpar/actus-solidity/-/actus-solidity-0.2.1-beta.7.tgz#3a0a6f46918fd4014a9aebbb5dbddeaf3e28201a"
+  integrity sha512-58UIhdsrhdjodBaPVv3/OGQ+sCAnBvF3luQq6WWexesU9UWSfiCAHHEL9uRmPo79C/A+sRGVo3q2tbTSjhvITA==
 
-"@atpar/ap-contracts@^0.2.1-beta.6":
-  version "0.2.1-beta.6"
-  resolved "https://registry.yarnpkg.com/@atpar/ap-contracts/-/ap-contracts-0.2.1-beta.6.tgz#0c00ed98c687e17dd053bb2b06dfac5b6ab2cb1a"
-  integrity sha512-kRTvdc2ff3uoTANVx32Jenqwyu3J87StV9GgqySstjl0S5nqtW0RbEHBQNCuRRymZ7unp2CwQbZ6KlNu3P+COQ==
+"@atpar/ap-contracts@^0.2.1-beta.11":
+  version "0.2.1-beta.11"
+  resolved "https://registry.yarnpkg.com/@atpar/ap-contracts/-/ap-contracts-0.2.1-beta.11.tgz#8dc3cb67bc96a236396a742bb6d35cce4c1374aa"
+  integrity sha512-T9fkxECBU4+WJCzTxEfXzPjj6I2odntjBMG41LrDJGNVJGFdWuNNIvbtHkVShNUJKkYTYtX3JY5CDZb0cMDbfw==
   dependencies:
-    "@atpar/actus-solidity" "0.2.1-beta.6"
+    "@atpar/actus-solidity" "0.2.1-beta.7"
     funds-distribution-token "0.1.2"
     openzeppelin-solidity "^2.1.2"
     truffle-hdwallet-provider "^1.0.9"
@@ -357,9 +357,9 @@ asn1@~0.2.3:
   dependencies:
     safer-buffer "~2.1.0"
 
-"assemblyscript@git+https://github.com/AssemblyScript/assemblyscript.git#36040d5b5312f19a025782b5e36663823494c2f3":
+"assemblyscript@https://github.com/AssemblyScript/assemblyscript#36040d5b5312f19a025782b5e36663823494c2f3":
   version "0.6.0"
-  resolved "git+https://github.com/AssemblyScript/assemblyscript.git#36040d5b5312f19a025782b5e36663823494c2f3"
+  resolved "https://github.com/AssemblyScript/assemblyscript#36040d5b5312f19a025782b5e36663823494c2f3"
   dependencies:
     "@protobufjs/utf8" "^1.1.0"
     binaryen "77.0.0-nightly.20190407"
@@ -3212,6 +3212,11 @@ murmurhash3js@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/murmurhash3js/-/murmurhash3js-3.0.1.tgz#3e983e5b47c2a06f43a713174e7e435ca044b998"
   integrity sha1-Ppg+W0fCoG9DpxMXTn5DXKBEuZg=
+
+mustache@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/mustache/-/mustache-4.0.0.tgz#7f02465dbb5b435859d154831c032acdfbbefb31"
+  integrity sha512-FJgjyX/IVkbXBXYUwH+OYwQKqWpFPLaLVESd70yHjSDunwzV2hZOoTBvPf4KLoxesUzzyfTH6F784Uqd7Wm5yA==
 
 mute-stream@0.0.8:
   version "0.0.8"

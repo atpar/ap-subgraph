@@ -172,6 +172,25 @@ export class TemplateRegistry extends SmartContract {
     return new TemplateRegistry("TemplateRegistry", address);
   }
 
+  templates(param0: Bytes): boolean {
+    let result = super.call("templates", [
+      EthereumValue.fromFixedBytes(param0)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_templates(param0: Bytes): CallResult<boolean> {
+    let result = super.tryCall("templates", [
+      EthereumValue.fromFixedBytes(param0)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
   ONE_POINT_ZERO(): BigInt {
     let result = super.call("ONE_POINT_ZERO", []);
 

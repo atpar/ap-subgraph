@@ -413,6 +413,21 @@ export class AssetActor extends SmartContract {
     return new AssetActor("AssetActor", address);
   }
 
+  marketObjectRegistry(): Address {
+    let result = super.call("marketObjectRegistry", []);
+
+    return result[0].toAddress();
+  }
+
+  try_marketObjectRegistry(): CallResult<Address> {
+    let result = super.tryCall("marketObjectRegistry", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
   issuers(param0: Address): boolean {
     let result = super.call("issuers", [EthereumValue.fromAddress(param0)]);
 
@@ -599,6 +614,36 @@ export class AssetActor extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toBoolean());
+  }
+
+  assetRegistry(): Address {
+    let result = super.call("assetRegistry", []);
+
+    return result[0].toAddress();
+  }
+
+  try_assetRegistry(): CallResult<Address> {
+    let result = super.tryCall("assetRegistry", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
+  templateRegistry(): Address {
+    let result = super.call("templateRegistry", []);
+
+    return result[0].toAddress();
+  }
+
+  try_templateRegistry(): CallResult<Address> {
+    let result = super.tryCall("templateRegistry", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
   }
 
   PRECISION(): BigInt {
