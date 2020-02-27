@@ -13,21 +13,9 @@ import {
   Period,
   ContractReference,
   State,
-  Schedule,
   Template,
-  TemplateTerms,
-  TemplateSchedule,
+  TemplateTerms
 } from '../generated/schema';
-
-
-// const ZERO_BYTES32 = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const NON_CYLIC_SCHEDULE_ID = 255;
-const IP_SCHEDULE_ID = 8;
-const PR_SCHEDULE_ID = 15;
-const SC_SCHEDULE_ID = 19;
-const RR_SCHEDULE_ID = 18;
-const FP_SCHEDULE_ID = 4;
-const PY_SCHEDULE_ID = 11;
 
 
 export function handleRegisteredTemplate(event: RegisteredTemplate): void {
@@ -60,34 +48,31 @@ export function handleRegisteredTemplate(event: RegisteredTemplate): void {
   templateTerms.marketObjectCodeRateReset = templateRegistry.getTemplateTerms(event.params.templateId).marketObjectCodeRateReset;
   templateTerms.statusDateOffset = templateRegistry.getTemplateTerms(event.params.templateId).statusDateOffset;
   templateTerms.maturityDateOffset = templateRegistry.getTemplateTerms(event.params.templateId).maturityDateOffset;
+  templateTerms.notionalPrincipal = templateRegistry.getTemplateTerms(event.params.templateId).notionalPrincipal;
+  templateTerms.nominalInterestRate = templateRegistry.getTemplateTerms(event.params.templateId).nominalInterestRate;
   templateTerms.feeAccrued = templateRegistry.getTemplateTerms(event.params.templateId).feeAccrued;
   templateTerms.accruedInterest = templateRegistry.getTemplateTerms(event.params.templateId).accruedInterest;
   templateTerms.rateMultiplier = templateRegistry.getTemplateTerms(event.params.templateId).rateMultiplier;
+  templateTerms.rateSpread = templateRegistry.getTemplateTerms(event.params.templateId).rateSpread;
   templateTerms.feeRate = templateRegistry.getTemplateTerms(event.params.templateId).feeRate;
   templateTerms.nextResetRate = templateRegistry.getTemplateTerms(event.params.templateId).nextResetRate;
   templateTerms.penaltyRate = templateRegistry.getTemplateTerms(event.params.templateId).penaltyRate;
+  templateTerms.premiumDiscountAtIED = templateRegistry.getTemplateTerms(event.params.templateId).premiumDiscountAtIED;
   templateTerms.priceAtPurchaseDate = templateRegistry.getTemplateTerms(event.params.templateId).priceAtPurchaseDate;
   templateTerms.nextPrincipalRedemptionPayment = templateRegistry.getTemplateTerms(event.params.templateId).nextPrincipalRedemptionPayment;
-  templateTerms.gracePeriod = gracePeriod.id;
-  templateTerms.delinquencyPeriod = delinquencyPeriod.id;
+  templateTerms.coverageOfCreditEnhancement = templateRegistry.getTemplateTerms(event.params.templateId).coverageOfCreditEnhancement;
+  templateTerms.lifeCap = templateRegistry.getTemplateTerms(event.params.templateId).lifeCap;
+  templateTerms.lifeFloor = templateRegistry.getTemplateTerms(event.params.templateId).lifeFloor;
   templateTerms.periodCap = templateRegistry.getTemplateTerms(event.params.templateId).periodCap;
   templateTerms.periodFloor = templateRegistry.getTemplateTerms(event.params.templateId).periodFloor;
+  templateTerms.gracePeriod = gracePeriod.id;
+  templateTerms.delinquencyPeriod = delinquencyPeriod.id;
   templateTerms.save();
-
-  let templateSchedule = new TemplateSchedule(event.params.templateId.toHex() + '-templateSchedule');
-  templateSchedule.nonCyclicSchedule = templateRegistry.getSchedule(event.params.templateId, NON_CYLIC_SCHEDULE_ID);
-  templateSchedule.cyclicIPSchedule = templateRegistry.getSchedule(event.params.templateId, IP_SCHEDULE_ID);
-  templateSchedule.cyclicPRSchedule = templateRegistry.getSchedule(event.params.templateId, PR_SCHEDULE_ID);
-  templateSchedule.cyclicSCSchedule = templateRegistry.getSchedule(event.params.templateId, SC_SCHEDULE_ID);
-  templateSchedule.cyclicRRSchedule = templateRegistry.getSchedule(event.params.templateId, RR_SCHEDULE_ID);
-  templateSchedule.cyclicFPSchedule = templateRegistry.getSchedule(event.params.templateId, FP_SCHEDULE_ID);
-  templateSchedule.cyclicPYSchedule = templateRegistry.getSchedule(event.params.templateId, PY_SCHEDULE_ID);
-  templateSchedule.save();
 
   let template = new Template(event.params.templateId.toHex());
   template.templateId = event.params.templateId;
   template.templateTerms = templateTerms.id;
-  template.templateSchedule = templateSchedule.id;
+  template.templateSchedule = templateRegistry.getSchedule(event.params.templateId);
   template.save();
 }
 
@@ -137,8 +122,6 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   lifecycleTerms.penaltyType = assetRegistry.getTerms(event.params.assetId).penaltyType;
   lifecycleTerms.feeBasis = assetRegistry.getTerms(event.params.assetId).feeBasis;
   lifecycleTerms.creditEventTypeCovered = assetRegistry.getTerms(event.params.assetId).creditEventTypeCovered;
-  lifecycleTerms.contractReference_1 = contractReference_1.id;
-  lifecycleTerms.contractReference_2 = contractReference_2.id;
   lifecycleTerms.currency = assetRegistry.getTerms(event.params.assetId).currency;
   lifecycleTerms.settlementCurrency = assetRegistry.getTerms(event.params.assetId).settlementCurrency;
   lifecycleTerms.marketObjectCodeRateReset = assetRegistry.getTerms(event.params.assetId).marketObjectCodeRateReset;
@@ -157,12 +140,14 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   lifecycleTerms.priceAtPurchaseDate = assetRegistry.getTerms(event.params.assetId).priceAtPurchaseDate;
   lifecycleTerms.nextPrincipalRedemptionPayment = assetRegistry.getTerms(event.params.assetId).nextPrincipalRedemptionPayment;
   lifecycleTerms.coverageOfCreditEnhancement = assetRegistry.getTerms(event.params.assetId).coverageOfCreditEnhancement;
-  lifecycleTerms.gracePeriod = gracePeriod.id;
-  lifecycleTerms.delinquencyPeriod = delinquencyPeriod.id;
   lifecycleTerms.lifeCap = assetRegistry.getTerms(event.params.assetId).lifeCap;
   lifecycleTerms.lifeFloor = assetRegistry.getTerms(event.params.assetId).lifeFloor;
   lifecycleTerms.periodCap = assetRegistry.getTerms(event.params.assetId).periodCap;
   lifecycleTerms.periodFloor = assetRegistry.getTerms(event.params.assetId).periodFloor;
+  lifecycleTerms.gracePeriod = gracePeriod.id;
+  lifecycleTerms.delinquencyPeriod = delinquencyPeriod.id;
+  lifecycleTerms.contractReference_1 = contractReference_1.id;
+  lifecycleTerms.contractReference_2 = contractReference_2.id;
   lifecycleTerms.save();
 
   let state = new State(event.params.assetId.toHex() + '-state');
@@ -180,17 +165,6 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   state.nextPrincipalRedemptionPayment = assetRegistry.getState(event.params.assetId).nextPrincipalRedemptionPayment;
   state.executionAmount = assetRegistry.getState(event.params.assetId).executionAmount;
   state.save();
-
-  let schedule = new Schedule(event.params.assetId.toHex() + '-schedule');
-  schedule.templateSchedule = assetRegistry.getTemplateId(event.params.assetId).toHex() + '-templateSchedule';
-  schedule.nonCyclicScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, NON_CYLIC_SCHEDULE_ID);
-  schedule.cyclicIPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, IP_SCHEDULE_ID);
-  schedule.cyclicPRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PR_SCHEDULE_ID);
-  schedule.cyclicSCScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, SC_SCHEDULE_ID);
-  schedule.cyclicRRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, RR_SCHEDULE_ID);
-  schedule.cyclicFPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, FP_SCHEDULE_ID);
-  schedule.cyclicPYScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PY_SCHEDULE_ID);
-  schedule.save();
 
   // let _nextState = engine.computeStateForEvent(
   //   assetRegistry.getTerms(event.params.assetId),
@@ -233,7 +207,7 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   asset.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
   asset.lifecycleTerms = lifecycleTerms.id;
   asset.state = state.id;
-  asset.schedule = schedule.id;
+  asset.nextScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId);
   asset.nextEvent = nextEvent.id;
   asset.save();
 }
@@ -258,16 +232,6 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   state.nextPrincipalRedemptionPayment = assetRegistry.getState(event.params.assetId).nextPrincipalRedemptionPayment;
   state.executionAmount = assetRegistry.getState(event.params.assetId).executionAmount;
   state.save();
-
-  let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');
-  schedule.nonCyclicScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, NON_CYLIC_SCHEDULE_ID);
-  schedule.cyclicIPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, IP_SCHEDULE_ID);
-  schedule.cyclicPRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PR_SCHEDULE_ID);
-  schedule.cyclicSCScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, SC_SCHEDULE_ID);
-  schedule.cyclicRRScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, RR_SCHEDULE_ID);
-  schedule.cyclicFPScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, FP_SCHEDULE_ID);
-  schedule.cyclicPYScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId, PY_SCHEDULE_ID);
-  schedule.save();
 
   // let _nextState = engine.computeStateForEvent(
   //   assetRegistry.getTerms(event.params.assetId),
@@ -302,6 +266,7 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   nextEvent.save();
 
   let asset = Asset.load(event.params.assetId.toHex());
+  asset.nextScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId);
   asset.nextEvent = nextEvent.id;
   asset.save();
 }

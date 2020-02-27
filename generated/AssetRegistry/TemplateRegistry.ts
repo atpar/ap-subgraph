@@ -90,52 +90,80 @@ export class TemplateRegistry__getTemplateTermsResultValue0Struct extends Ethere
     return this[13].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[14].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[15].toBigInt();
   }
 
-  get rateMultiplier(): BigInt {
+  get feeAccrued(): BigInt {
     return this[16].toBigInt();
   }
 
-  get feeRate(): BigInt {
+  get accruedInterest(): BigInt {
     return this[17].toBigInt();
   }
 
-  get nextResetRate(): BigInt {
+  get rateMultiplier(): BigInt {
     return this[18].toBigInt();
   }
 
-  get penaltyRate(): BigInt {
+  get rateSpread(): BigInt {
     return this[19].toBigInt();
   }
 
-  get priceAtPurchaseDate(): BigInt {
+  get feeRate(): BigInt {
     return this[20].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get nextResetRate(): BigInt {
     return this[21].toBigInt();
   }
 
-  get gracePeriod(): TemplateRegistry__getTemplateTermsResultValue0GracePeriodStruct {
-    return this[22].toTuple() as TemplateRegistry__getTemplateTermsResultValue0GracePeriodStruct;
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
   }
 
-  get delinquencyPeriod(): TemplateRegistry__getTemplateTermsResultValue0DelinquencyPeriodStruct {
-    return this[23].toTuple() as TemplateRegistry__getTemplateTermsResultValue0DelinquencyPeriodStruct;
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
   }
 
-  get periodCap(): BigInt {
+  get priceAtPurchaseDate(): BigInt {
     return this[24].toBigInt();
   }
 
-  get periodFloor(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[25].toBigInt();
+  }
+
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): TemplateRegistry__getTemplateTermsResultValue0GracePeriodStruct {
+    return this[31].toTuple() as TemplateRegistry__getTemplateTermsResultValue0GracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): TemplateRegistry__getTemplateTermsResultValue0DelinquencyPeriodStruct {
+    return this[32].toTuple() as TemplateRegistry__getTemplateTermsResultValue0DelinquencyPeriodStruct;
   }
 }
 
@@ -170,25 +198,6 @@ export class TemplateRegistry__getTemplateTermsResultValue0DelinquencyPeriodStru
 export class TemplateRegistry extends SmartContract {
   static bind(address: Address): TemplateRegistry {
     return new TemplateRegistry("TemplateRegistry", address);
-  }
-
-  templates(param0: Bytes): boolean {
-    let result = super.call("templates", [
-      EthereumValue.fromFixedBytes(param0)
-    ]);
-
-    return result[0].toBoolean();
-  }
-
-  try_templates(param0: Bytes): CallResult<boolean> {
-    let result = super.tryCall("templates", [
-      EthereumValue.fromFixedBytes(param0)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBoolean());
   }
 
   ONE_POINT_ZERO(): BigInt {
@@ -246,24 +255,18 @@ export class TemplateRegistry extends SmartContract {
     );
   }
 
-  getEventAtIndex(templateId: Bytes, scheduleId: i32, index: BigInt): Bytes {
+  getEventAtIndex(templateId: Bytes, index: BigInt): Bytes {
     let result = super.call("getEventAtIndex", [
       EthereumValue.fromFixedBytes(templateId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId)),
       EthereumValue.fromUnsignedBigInt(index)
     ]);
 
     return result[0].toBytes();
   }
 
-  try_getEventAtIndex(
-    templateId: Bytes,
-    scheduleId: i32,
-    index: BigInt
-  ): CallResult<Bytes> {
+  try_getEventAtIndex(templateId: Bytes, index: BigInt): CallResult<Bytes> {
     let result = super.tryCall("getEventAtIndex", [
       EthereumValue.fromFixedBytes(templateId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId)),
       EthereumValue.fromUnsignedBigInt(index)
     ]);
     if (result.reverted) {
@@ -273,22 +276,17 @@ export class TemplateRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBytes());
   }
 
-  getScheduleLength(templateId: Bytes, scheduleId: i32): BigInt {
+  getScheduleLength(templateId: Bytes): BigInt {
     let result = super.call("getScheduleLength", [
-      EthereumValue.fromFixedBytes(templateId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId))
+      EthereumValue.fromFixedBytes(templateId)
     ]);
 
     return result[0].toBigInt();
   }
 
-  try_getScheduleLength(
-    templateId: Bytes,
-    scheduleId: i32
-  ): CallResult<BigInt> {
+  try_getScheduleLength(templateId: Bytes): CallResult<BigInt> {
     let result = super.tryCall("getScheduleLength", [
-      EthereumValue.fromFixedBytes(templateId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId))
+      EthereumValue.fromFixedBytes(templateId)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -297,22 +295,17 @@ export class TemplateRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  getSchedule(templateId: Bytes, scheduleId: i32): Array<Bytes> {
+  getSchedule(templateId: Bytes): Array<Bytes> {
     let result = super.call("getSchedule", [
-      EthereumValue.fromFixedBytes(templateId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId))
+      EthereumValue.fromFixedBytes(templateId)
     ]);
 
     return result[0].toBytesArray();
   }
 
-  try_getSchedule(
-    templateId: Bytes,
-    scheduleId: i32
-  ): CallResult<Array<Bytes>> {
+  try_getSchedule(templateId: Bytes): CallResult<Array<Bytes>> {
     let result = super.tryCall("getSchedule", [
-      EthereumValue.fromFixedBytes(templateId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId))
+      EthereumValue.fromFixedBytes(templateId)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -343,8 +336,8 @@ export class RegisterTemplateCall__Inputs {
     return this._call.inputValues[0].value.toTuple() as RegisterTemplateCallTermsStruct;
   }
 
-  get templateSchedules(): RegisterTemplateCallTemplateSchedulesStruct {
-    return this._call.inputValues[1].value.toTuple() as RegisterTemplateCallTemplateSchedulesStruct;
+  get templateSchedule(): Array<Bytes> {
+    return this._call.inputValues[1].value.toBytesArray();
   }
 }
 
@@ -413,52 +406,80 @@ export class RegisterTemplateCallTermsStruct extends EthereumTuple {
     return this[13].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[14].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[15].toBigInt();
   }
 
-  get rateMultiplier(): BigInt {
+  get feeAccrued(): BigInt {
     return this[16].toBigInt();
   }
 
-  get feeRate(): BigInt {
+  get accruedInterest(): BigInt {
     return this[17].toBigInt();
   }
 
-  get nextResetRate(): BigInt {
+  get rateMultiplier(): BigInt {
     return this[18].toBigInt();
   }
 
-  get penaltyRate(): BigInt {
+  get rateSpread(): BigInt {
     return this[19].toBigInt();
   }
 
-  get priceAtPurchaseDate(): BigInt {
+  get feeRate(): BigInt {
     return this[20].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get nextResetRate(): BigInt {
     return this[21].toBigInt();
   }
 
-  get gracePeriod(): RegisterTemplateCallTermsGracePeriodStruct {
-    return this[22].toTuple() as RegisterTemplateCallTermsGracePeriodStruct;
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
   }
 
-  get delinquencyPeriod(): RegisterTemplateCallTermsDelinquencyPeriodStruct {
-    return this[23].toTuple() as RegisterTemplateCallTermsDelinquencyPeriodStruct;
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
   }
 
-  get periodCap(): BigInt {
+  get priceAtPurchaseDate(): BigInt {
     return this[24].toBigInt();
   }
 
-  get periodFloor(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[25].toBigInt();
+  }
+
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): RegisterTemplateCallTermsGracePeriodStruct {
+    return this[31].toTuple() as RegisterTemplateCallTermsGracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): RegisterTemplateCallTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as RegisterTemplateCallTermsDelinquencyPeriodStruct;
   }
 }
 
@@ -487,35 +508,5 @@ export class RegisterTemplateCallTermsDelinquencyPeriodStruct extends EthereumTu
 
   get isSet(): boolean {
     return this[2].toBoolean();
-  }
-}
-
-export class RegisterTemplateCallTemplateSchedulesStruct extends EthereumTuple {
-  get nonCyclicSchedule(): Array<Bytes> {
-    return this[0].toBytesArray();
-  }
-
-  get cyclicIPSchedule(): Array<Bytes> {
-    return this[1].toBytesArray();
-  }
-
-  get cyclicPRSchedule(): Array<Bytes> {
-    return this[2].toBytesArray();
-  }
-
-  get cyclicRRSchedule(): Array<Bytes> {
-    return this[3].toBytesArray();
-  }
-
-  get cyclicPYSchedule(): Array<Bytes> {
-    return this[4].toBytesArray();
-  }
-
-  get cyclicSCSchedule(): Array<Bytes> {
-    return this[5].toBytesArray();
-  }
-
-  get cyclicFPSchedule(): Array<Bytes> {
-    return this[6].toBytesArray();
   }
 }

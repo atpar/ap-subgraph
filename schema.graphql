@@ -28,36 +28,32 @@ type TemplateTerms @entity {
   marketObjectCodeRateReset: Bytes!
   statusDateOffset: BigInt!
   maturityDateOffset: BigInt!
+  notionalPrincipal: BigInt!
+  nominalInterestRate: BigInt!
   feeAccrued: BigInt!
   accruedInterest: BigInt!
   rateMultiplier: BigInt!
+  rateSpread: BigInt!
   feeRate: BigInt!
   nextResetRate: BigInt!
   penaltyRate: BigInt!
+  premiumDiscountAtIED: BigInt!
   priceAtPurchaseDate: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
-  gracePeriod: Period!
-  delinquencyPeriod: Period!
+  coverageOfCreditEnhancement: BigInt!
+  lifeCap: BigInt!
+  lifeFloor: BigInt!
   periodCap: BigInt!
   periodFloor: BigInt!
-}
-
-type TemplateSchedule @entity {
-  id: ID!
-  nonCyclicSchedule: [Bytes!]
-  cyclicIPSchedule: [Bytes!]
-  cyclicPRSchedule: [Bytes!]
-  cyclicSCSchedule: [Bytes!]
-  cyclicRRSchedule: [Bytes!]
-  cyclicFPSchedule: [Bytes!]
-  cyclicPYSchedule: [Bytes!]
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
 }
 
 type Template @entity {
   id: ID!
   templateId: Bytes!
   templateTerms: TemplateTerms!
-  templateSchedule: TemplateSchedule!
+  templateSchedule: [Bytes!]
 }
 
 type AssetOwnership @entity {
@@ -79,8 +75,6 @@ type LifecycleTerms @entity {
   penaltyType: Int!
   feeBasis: Int!
   creditEventTypeCovered: Int!
-  contractReference_1: ContractReference!
-  contractReference_2: ContractReference!
   currency: Bytes!
   settlementCurrency: Bytes!
   marketObjectCodeRateReset: Bytes!
@@ -99,12 +93,14 @@ type LifecycleTerms @entity {
   priceAtPurchaseDate: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
   coverageOfCreditEnhancement: BigInt!
-  gracePeriod: Period!
-  delinquencyPeriod: Period!
   lifeCap: BigInt!
   lifeFloor: BigInt!
   periodCap: BigInt!
-  periodFloor: BigInt!  
+  periodFloor: BigInt!
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
+  contractReference_1: ContractReference!
+  contractReference_2: ContractReference!
 }
 
 type State @entity {
@@ -124,18 +120,6 @@ type State @entity {
   executionAmount: BigInt!
 }
 
-type Schedule @entity {
-  id: ID!
-  templateSchedule: TemplateSchedule!
-  nonCyclicScheduleIndex: BigInt!
-  cyclicIPScheduleIndex: BigInt!
-  cyclicPRScheduleIndex: BigInt!
-  cyclicSCScheduleIndex: BigInt!
-  cyclicRRScheduleIndex: BigInt!
-  cyclicFPScheduleIndex: BigInt!
-  cyclicPYScheduleIndex: BigInt!
-}
-
 type Event @entity {
   id: ID!
   event: Bytes!
@@ -153,6 +137,6 @@ type Asset @entity {
   anchorDate: BigInt!
   lifecycleTerms: LifecycleTerms!
   state: State!
-  schedule: Schedule!
+  nextScheduleIndex: BigInt!
   nextEvent: Event!
 }

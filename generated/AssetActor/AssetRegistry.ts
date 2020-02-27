@@ -106,12 +106,8 @@ export class IncrementedScheduleIndex__Params {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get scheduleId(): i32 {
-    return this._event.parameters[1].value.toI32();
-  }
-
   get scheduleIndex(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -210,6 +206,578 @@ export class AssetRegistry__getStateResultValue0Struct extends EthereumTuple {
 
   get executionAmount(): BigInt {
     return this[12].toBigInt();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct extends EthereumTuple {
+  get calendar(): i32 {
+    return this[0].toI32();
+  }
+
+  get contractRole(): i32 {
+    return this[1].toI32();
+  }
+
+  get dayCountConvention(): i32 {
+    return this[2].toI32();
+  }
+
+  get businessDayConvention(): i32 {
+    return this[3].toI32();
+  }
+
+  get endOfMonthConvention(): i32 {
+    return this[4].toI32();
+  }
+
+  get scalingEffect(): i32 {
+    return this[5].toI32();
+  }
+
+  get penaltyType(): i32 {
+    return this[6].toI32();
+  }
+
+  get feeBasis(): i32 {
+    return this[7].toI32();
+  }
+
+  get creditEventTypeCovered(): i32 {
+    return this[8].toI32();
+  }
+
+  get currency(): Address {
+    return this[9].toAddress();
+  }
+
+  get settlementCurrency(): Address {
+    return this[10].toAddress();
+  }
+
+  get marketObjectCodeRateReset(): Bytes {
+    return this[11].toBytes();
+  }
+
+  get statusDate(): BigInt {
+    return this[12].toBigInt();
+  }
+
+  get maturityDate(): BigInt {
+    return this[13].toBigInt();
+  }
+
+  get notionalPrincipal(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get nominalInterestRate(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get feeAccrued(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get accruedInterest(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get rateMultiplier(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get rateSpread(): BigInt {
+    return this[19].toBigInt();
+  }
+
+  get feeRate(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get nextResetRate(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
+  }
+
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
+  }
+
+  get priceAtPurchaseDate(): BigInt {
+    return this[24].toBigInt();
+  }
+
+  get nextPrincipalRedemptionPayment(): BigInt {
+    return this[25].toBigInt();
+  }
+
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0GracePeriodStruct {
+    return this[31].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0GracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0DelinquencyPeriodStruct {
+    return this[32].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0DelinquencyPeriodStruct;
+  }
+
+  get contractReference_1(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0ContractReference_1Struct {
+    return this[33].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0ContractReference_1Struct;
+  }
+
+  get contractReference_2(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0ContractReference_2Struct {
+    return this[34].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0ContractReference_2Struct;
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0GracePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0DelinquencyPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0ContractReference_1Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0ContractReference_2Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct extends EthereumTuple {
+  get calendar(): i32 {
+    return this[0].toI32();
+  }
+
+  get contractRole(): i32 {
+    return this[1].toI32();
+  }
+
+  get dayCountConvention(): i32 {
+    return this[2].toI32();
+  }
+
+  get businessDayConvention(): i32 {
+    return this[3].toI32();
+  }
+
+  get endOfMonthConvention(): i32 {
+    return this[4].toI32();
+  }
+
+  get scalingEffect(): i32 {
+    return this[5].toI32();
+  }
+
+  get penaltyType(): i32 {
+    return this[6].toI32();
+  }
+
+  get feeBasis(): i32 {
+    return this[7].toI32();
+  }
+
+  get creditEventTypeCovered(): i32 {
+    return this[8].toI32();
+  }
+
+  get currency(): Address {
+    return this[9].toAddress();
+  }
+
+  get settlementCurrency(): Address {
+    return this[10].toAddress();
+  }
+
+  get marketObjectCodeRateReset(): Bytes {
+    return this[11].toBytes();
+  }
+
+  get statusDateOffset(): BigInt {
+    return this[12].toBigInt();
+  }
+
+  get maturityDateOffset(): BigInt {
+    return this[13].toBigInt();
+  }
+
+  get notionalPrincipal(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get nominalInterestRate(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get feeAccrued(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get accruedInterest(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get rateMultiplier(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get rateSpread(): BigInt {
+    return this[19].toBigInt();
+  }
+
+  get feeRate(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get nextResetRate(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
+  }
+
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
+  }
+
+  get priceAtPurchaseDate(): BigInt {
+    return this[24].toBigInt();
+  }
+
+  get nextPrincipalRedemptionPayment(): BigInt {
+    return this[25].toBigInt();
+  }
+
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsGracePeriodStruct {
+    return this[31].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsGracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsDelinquencyPeriodStruct;
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsGracePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsDelinquencyPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct extends EthereumTuple {
+  get anchorDate(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get overwrittenAttributesMap(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get overwrittenTerms(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsStruct {
+    return this[2].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsStruct;
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsStruct extends EthereumTuple {
+  get calendar(): i32 {
+    return this[0].toI32();
+  }
+
+  get contractRole(): i32 {
+    return this[1].toI32();
+  }
+
+  get dayCountConvention(): i32 {
+    return this[2].toI32();
+  }
+
+  get businessDayConvention(): i32 {
+    return this[3].toI32();
+  }
+
+  get endOfMonthConvention(): i32 {
+    return this[4].toI32();
+  }
+
+  get scalingEffect(): i32 {
+    return this[5].toI32();
+  }
+
+  get penaltyType(): i32 {
+    return this[6].toI32();
+  }
+
+  get feeBasis(): i32 {
+    return this[7].toI32();
+  }
+
+  get creditEventTypeCovered(): i32 {
+    return this[8].toI32();
+  }
+
+  get currency(): Address {
+    return this[9].toAddress();
+  }
+
+  get settlementCurrency(): Address {
+    return this[10].toAddress();
+  }
+
+  get marketObjectCodeRateReset(): Bytes {
+    return this[11].toBytes();
+  }
+
+  get statusDate(): BigInt {
+    return this[12].toBigInt();
+  }
+
+  get maturityDate(): BigInt {
+    return this[13].toBigInt();
+  }
+
+  get notionalPrincipal(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get nominalInterestRate(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get feeAccrued(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get accruedInterest(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get rateMultiplier(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get rateSpread(): BigInt {
+    return this[19].toBigInt();
+  }
+
+  get feeRate(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get nextResetRate(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
+  }
+
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
+  }
+
+  get priceAtPurchaseDate(): BigInt {
+    return this[24].toBigInt();
+  }
+
+  get nextPrincipalRedemptionPayment(): BigInt {
+    return this[25].toBigInt();
+  }
+
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsGracePeriodStruct {
+    return this[31].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsGracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsDelinquencyPeriodStruct;
+  }
+
+  get contractReference_1(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsContractReference_1Struct {
+    return this[33].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsContractReference_1Struct;
+  }
+
+  get contractReference_2(): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsContractReference_2Struct {
+    return this[34].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsContractReference_2Struct;
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsGracePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsDelinquencyPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsContractReference_1Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsOverwrittenTermsContractReference_2Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
   }
 }
 
@@ -321,136 +889,108 @@ export class AssetRegistry__getTermsResultValue0Struct extends EthereumTuple {
     return this[8].toI32();
   }
 
-  get contractReference_1(): AssetRegistry__getTermsResultValue0ContractReference_1Struct {
-    return this[9].toTuple() as AssetRegistry__getTermsResultValue0ContractReference_1Struct;
-  }
-
-  get contractReference_2(): AssetRegistry__getTermsResultValue0ContractReference_2Struct {
-    return this[10].toTuple() as AssetRegistry__getTermsResultValue0ContractReference_2Struct;
-  }
-
   get currency(): Address {
-    return this[11].toAddress();
+    return this[9].toAddress();
   }
 
   get settlementCurrency(): Address {
-    return this[12].toAddress();
+    return this[10].toAddress();
   }
 
   get marketObjectCodeRateReset(): Bytes {
-    return this[13].toBytes();
+    return this[11].toBytes();
   }
 
   get statusDate(): BigInt {
-    return this[14].toBigInt();
+    return this[12].toBigInt();
   }
 
   get maturityDate(): BigInt {
-    return this[15].toBigInt();
+    return this[13].toBigInt();
   }
 
   get notionalPrincipal(): BigInt {
-    return this[16].toBigInt();
+    return this[14].toBigInt();
   }
 
   get nominalInterestRate(): BigInt {
-    return this[17].toBigInt();
+    return this[15].toBigInt();
   }
 
   get feeAccrued(): BigInt {
-    return this[18].toBigInt();
+    return this[16].toBigInt();
   }
 
   get accruedInterest(): BigInt {
-    return this[19].toBigInt();
+    return this[17].toBigInt();
   }
 
   get rateMultiplier(): BigInt {
-    return this[20].toBigInt();
+    return this[18].toBigInt();
   }
 
   get rateSpread(): BigInt {
-    return this[21].toBigInt();
+    return this[19].toBigInt();
   }
 
   get feeRate(): BigInt {
-    return this[22].toBigInt();
+    return this[20].toBigInt();
   }
 
   get nextResetRate(): BigInt {
-    return this[23].toBigInt();
+    return this[21].toBigInt();
   }
 
   get penaltyRate(): BigInt {
-    return this[24].toBigInt();
+    return this[22].toBigInt();
   }
 
   get premiumDiscountAtIED(): BigInt {
-    return this[25].toBigInt();
+    return this[23].toBigInt();
   }
 
   get priceAtPurchaseDate(): BigInt {
-    return this[26].toBigInt();
+    return this[24].toBigInt();
   }
 
   get nextPrincipalRedemptionPayment(): BigInt {
-    return this[27].toBigInt();
+    return this[25].toBigInt();
   }
 
   get coverageOfCreditEnhancement(): BigInt {
-    return this[28].toBigInt();
-  }
-
-  get gracePeriod(): AssetRegistry__getTermsResultValue0GracePeriodStruct {
-    return this[29].toTuple() as AssetRegistry__getTermsResultValue0GracePeriodStruct;
-  }
-
-  get delinquencyPeriod(): AssetRegistry__getTermsResultValue0DelinquencyPeriodStruct {
-    return this[30].toTuple() as AssetRegistry__getTermsResultValue0DelinquencyPeriodStruct;
+    return this[26].toBigInt();
   }
 
   get lifeCap(): BigInt {
-    return this[31].toBigInt();
+    return this[27].toBigInt();
   }
 
   get lifeFloor(): BigInt {
-    return this[32].toBigInt();
+    return this[28].toBigInt();
   }
 
   get periodCap(): BigInt {
-    return this[33].toBigInt();
+    return this[29].toBigInt();
   }
 
   get periodFloor(): BigInt {
-    return this[34].toBigInt();
-  }
-}
-
-export class AssetRegistry__getTermsResultValue0ContractReference_1Struct extends EthereumTuple {
-  get object(): Bytes {
-    return this[0].toBytes();
+    return this[30].toBigInt();
   }
 
-  get contractReferenceType(): i32 {
-    return this[1].toI32();
+  get gracePeriod(): AssetRegistry__getTermsResultValue0GracePeriodStruct {
+    return this[31].toTuple() as AssetRegistry__getTermsResultValue0GracePeriodStruct;
   }
 
-  get contractReferenceRole(): i32 {
-    return this[2].toI32();
-  }
-}
-
-export class AssetRegistry__getTermsResultValue0ContractReference_2Struct extends EthereumTuple {
-  get object(): Bytes {
-    return this[0].toBytes();
+  get delinquencyPeriod(): AssetRegistry__getTermsResultValue0DelinquencyPeriodStruct {
+    return this[32].toTuple() as AssetRegistry__getTermsResultValue0DelinquencyPeriodStruct;
   }
 
-  get contractReferenceType(): i32 {
-    return this[1].toI32();
+  get contractReference_1(): AssetRegistry__getTermsResultValue0ContractReference_1Struct {
+    return this[33].toTuple() as AssetRegistry__getTermsResultValue0ContractReference_1Struct;
   }
 
-  get contractReferenceRole(): i32 {
-    return this[2].toI32();
+  get contractReference_2(): AssetRegistry__getTermsResultValue0ContractReference_2Struct {
+    return this[34].toTuple() as AssetRegistry__getTermsResultValue0ContractReference_2Struct;
   }
 }
 
@@ -479,6 +1019,34 @@ export class AssetRegistry__getTermsResultValue0DelinquencyPeriodStruct extends 
 
   get isSet(): boolean {
     return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__getTermsResultValue0ContractReference_1Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__getTermsResultValue0ContractReference_2Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
   }
 }
 
@@ -539,136 +1107,108 @@ export class AssetRegistry__computeEventTimeForEventInputTermsStruct extends Eth
     return this[8].toI32();
   }
 
-  get contractReference_1(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct {
-    return this[9].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct;
-  }
-
-  get contractReference_2(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct {
-    return this[10].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct;
-  }
-
   get currency(): Address {
-    return this[11].toAddress();
+    return this[9].toAddress();
   }
 
   get settlementCurrency(): Address {
-    return this[12].toAddress();
+    return this[10].toAddress();
   }
 
   get marketObjectCodeRateReset(): Bytes {
-    return this[13].toBytes();
+    return this[11].toBytes();
   }
 
   get statusDate(): BigInt {
-    return this[14].toBigInt();
+    return this[12].toBigInt();
   }
 
   get maturityDate(): BigInt {
-    return this[15].toBigInt();
+    return this[13].toBigInt();
   }
 
   get notionalPrincipal(): BigInt {
-    return this[16].toBigInt();
+    return this[14].toBigInt();
   }
 
   get nominalInterestRate(): BigInt {
-    return this[17].toBigInt();
+    return this[15].toBigInt();
   }
 
   get feeAccrued(): BigInt {
-    return this[18].toBigInt();
+    return this[16].toBigInt();
   }
 
   get accruedInterest(): BigInt {
-    return this[19].toBigInt();
+    return this[17].toBigInt();
   }
 
   get rateMultiplier(): BigInt {
-    return this[20].toBigInt();
+    return this[18].toBigInt();
   }
 
   get rateSpread(): BigInt {
-    return this[21].toBigInt();
+    return this[19].toBigInt();
   }
 
   get feeRate(): BigInt {
-    return this[22].toBigInt();
+    return this[20].toBigInt();
   }
 
   get nextResetRate(): BigInt {
-    return this[23].toBigInt();
+    return this[21].toBigInt();
   }
 
   get penaltyRate(): BigInt {
-    return this[24].toBigInt();
+    return this[22].toBigInt();
   }
 
   get premiumDiscountAtIED(): BigInt {
-    return this[25].toBigInt();
+    return this[23].toBigInt();
   }
 
   get priceAtPurchaseDate(): BigInt {
-    return this[26].toBigInt();
+    return this[24].toBigInt();
   }
 
   get nextPrincipalRedemptionPayment(): BigInt {
-    return this[27].toBigInt();
+    return this[25].toBigInt();
   }
 
   get coverageOfCreditEnhancement(): BigInt {
-    return this[28].toBigInt();
-  }
-
-  get gracePeriod(): AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct {
-    return this[29].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct;
-  }
-
-  get delinquencyPeriod(): AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct {
-    return this[30].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct;
+    return this[26].toBigInt();
   }
 
   get lifeCap(): BigInt {
-    return this[31].toBigInt();
+    return this[27].toBigInt();
   }
 
   get lifeFloor(): BigInt {
-    return this[32].toBigInt();
+    return this[28].toBigInt();
   }
 
   get periodCap(): BigInt {
-    return this[33].toBigInt();
+    return this[29].toBigInt();
   }
 
   get periodFloor(): BigInt {
-    return this[34].toBigInt();
-  }
-}
-
-export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct extends EthereumTuple {
-  get object(): Bytes {
-    return this[0].toBytes();
+    return this[30].toBigInt();
   }
 
-  get contractReferenceType(): i32 {
-    return this[1].toI32();
+  get gracePeriod(): AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct {
+    return this[31].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct;
   }
 
-  get contractReferenceRole(): i32 {
-    return this[2].toI32();
-  }
-}
-
-export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct extends EthereumTuple {
-  get object(): Bytes {
-    return this[0].toBytes();
+  get delinquencyPeriod(): AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct;
   }
 
-  get contractReferenceType(): i32 {
-    return this[1].toI32();
+  get contractReference_1(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct {
+    return this[33].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct;
   }
 
-  get contractReferenceRole(): i32 {
-    return this[2].toI32();
+  get contractReference_2(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct {
+    return this[34].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct;
   }
 }
 
@@ -697,6 +1237,34 @@ export class AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodS
 
   get isSet(): boolean {
     return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get contractReferenceType(): i32 {
+    return this[1].toI32();
+  }
+
+  get contractReferenceRole(): i32 {
+    return this[2].toI32();
   }
 }
 
@@ -763,6 +1331,37 @@ export class AssetRegistry extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toBytes());
+  }
+
+  deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
+    templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
+    terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
+  ): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct {
+    let result = super.call(
+      "deriveLifecycleTermsFromCustomTermsAndTemplateTerms",
+      [EthereumValue.fromTuple(templateTerms), EthereumValue.fromTuple(terms)]
+    );
+
+    return result[0].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct;
+  }
+
+  try_deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
+    templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
+    terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
+  ): CallResult<
+    AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct
+  > {
+    let result = super.tryCall(
+      "deriveLifecycleTermsFromCustomTermsAndTemplateTerms",
+      [EthereumValue.fromTuple(templateTerms), EthereumValue.fromTuple(terms)]
+    );
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      value[0].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct
+    );
   }
 
   getFinalizedState(
@@ -1046,19 +1645,17 @@ export class AssetRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  getScheduleIndex(assetId: Bytes, scheduleId: i32): BigInt {
+  getScheduleIndex(assetId: Bytes): BigInt {
     let result = super.call("getScheduleIndex", [
-      EthereumValue.fromFixedBytes(assetId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId))
+      EthereumValue.fromFixedBytes(assetId)
     ]);
 
     return result[0].toBigInt();
   }
 
-  try_getScheduleIndex(assetId: Bytes, scheduleId: i32): CallResult<BigInt> {
+  try_getScheduleIndex(assetId: Bytes): CallResult<BigInt> {
     let result = super.tryCall("getScheduleIndex", [
-      EthereumValue.fromFixedBytes(assetId),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(scheduleId))
+      EthereumValue.fromFixedBytes(assetId)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -1331,40 +1928,6 @@ export class SetFinalizedStateCallStateStruct extends EthereumTuple {
   }
 }
 
-export class IncrementScheduleIndexCall extends EthereumCall {
-  get inputs(): IncrementScheduleIndexCall__Inputs {
-    return new IncrementScheduleIndexCall__Inputs(this);
-  }
-
-  get outputs(): IncrementScheduleIndexCall__Outputs {
-    return new IncrementScheduleIndexCall__Outputs(this);
-  }
-}
-
-export class IncrementScheduleIndexCall__Inputs {
-  _call: IncrementScheduleIndexCall;
-
-  constructor(call: IncrementScheduleIndexCall) {
-    this._call = call;
-  }
-
-  get assetId(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get scheduleId(): i32 {
-    return this._call.inputValues[1].value.toI32();
-  }
-}
-
-export class IncrementScheduleIndexCall__Outputs {
-  _call: IncrementScheduleIndexCall;
-
-  constructor(call: IncrementScheduleIndexCall) {
-    this._call = call;
-  }
-}
-
 export class SetCounterpartyBeneficiaryCall extends EthereumCall {
   get inputs(): SetCounterpartyBeneficiaryCall__Inputs {
     return new SetCounterpartyBeneficiaryCall__Inputs(this);
@@ -1395,6 +1958,36 @@ export class SetCounterpartyBeneficiaryCall__Outputs {
   _call: SetCounterpartyBeneficiaryCall;
 
   constructor(call: SetCounterpartyBeneficiaryCall) {
+    this._call = call;
+  }
+}
+
+export class IncrementScheduleIndexCall extends EthereumCall {
+  get inputs(): IncrementScheduleIndexCall__Inputs {
+    return new IncrementScheduleIndexCall__Inputs(this);
+  }
+
+  get outputs(): IncrementScheduleIndexCall__Outputs {
+    return new IncrementScheduleIndexCall__Outputs(this);
+  }
+}
+
+export class IncrementScheduleIndexCall__Inputs {
+  _call: IncrementScheduleIndexCall;
+
+  constructor(call: IncrementScheduleIndexCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+}
+
+export class IncrementScheduleIndexCall__Outputs {
+  _call: IncrementScheduleIndexCall;
+
+  constructor(call: IncrementScheduleIndexCall) {
     this._call = call;
   }
 }
@@ -1578,44 +2171,186 @@ export class RegisterAssetCallCustomTermsStruct extends EthereumTuple {
     return this[0].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get overwrittenAttributesMap(): BigInt {
     return this[1].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get premiumDiscountAtIED(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get rateSpread(): BigInt {
-    return this[4].toBigInt();
-  }
-
-  get lifeCap(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get lifeFloor(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get coverageOfCreditEnhancement(): BigInt {
-    return this[7].toBigInt();
-  }
-
-  get contractReference_1(): RegisterAssetCallCustomTermsContractReference_1Struct {
-    return this[8].toTuple() as RegisterAssetCallCustomTermsContractReference_1Struct;
-  }
-
-  get contractReference_2(): RegisterAssetCallCustomTermsContractReference_2Struct {
-    return this[9].toTuple() as RegisterAssetCallCustomTermsContractReference_2Struct;
+  get overwrittenTerms(): RegisterAssetCallCustomTermsOverwrittenTermsStruct {
+    return this[2].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsStruct;
   }
 }
 
-export class RegisterAssetCallCustomTermsContractReference_1Struct extends EthereumTuple {
+export class RegisterAssetCallCustomTermsOverwrittenTermsStruct extends EthereumTuple {
+  get calendar(): i32 {
+    return this[0].toI32();
+  }
+
+  get contractRole(): i32 {
+    return this[1].toI32();
+  }
+
+  get dayCountConvention(): i32 {
+    return this[2].toI32();
+  }
+
+  get businessDayConvention(): i32 {
+    return this[3].toI32();
+  }
+
+  get endOfMonthConvention(): i32 {
+    return this[4].toI32();
+  }
+
+  get scalingEffect(): i32 {
+    return this[5].toI32();
+  }
+
+  get penaltyType(): i32 {
+    return this[6].toI32();
+  }
+
+  get feeBasis(): i32 {
+    return this[7].toI32();
+  }
+
+  get creditEventTypeCovered(): i32 {
+    return this[8].toI32();
+  }
+
+  get currency(): Address {
+    return this[9].toAddress();
+  }
+
+  get settlementCurrency(): Address {
+    return this[10].toAddress();
+  }
+
+  get marketObjectCodeRateReset(): Bytes {
+    return this[11].toBytes();
+  }
+
+  get statusDate(): BigInt {
+    return this[12].toBigInt();
+  }
+
+  get maturityDate(): BigInt {
+    return this[13].toBigInt();
+  }
+
+  get notionalPrincipal(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get nominalInterestRate(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get feeAccrued(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get accruedInterest(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get rateMultiplier(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get rateSpread(): BigInt {
+    return this[19].toBigInt();
+  }
+
+  get feeRate(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get nextResetRate(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
+  }
+
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
+  }
+
+  get priceAtPurchaseDate(): BigInt {
+    return this[24].toBigInt();
+  }
+
+  get nextPrincipalRedemptionPayment(): BigInt {
+    return this[25].toBigInt();
+  }
+
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct {
+    return this[31].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct;
+  }
+
+  get contractReference_1(): RegisterAssetCallCustomTermsOverwrittenTermsContractReference_1Struct {
+    return this[33].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsContractReference_1Struct;
+  }
+
+  get contractReference_2(): RegisterAssetCallCustomTermsOverwrittenTermsContractReference_2Struct {
+    return this[34].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsContractReference_2Struct;
+  }
+}
+
+export class RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class RegisterAssetCallCustomTermsOverwrittenTermsContractReference_1Struct extends EthereumTuple {
   get object(): Bytes {
     return this[0].toBytes();
   }
@@ -1629,7 +2364,7 @@ export class RegisterAssetCallCustomTermsContractReference_1Struct extends Ether
   }
 }
 
-export class RegisterAssetCallCustomTermsContractReference_2Struct extends EthereumTuple {
+export class RegisterAssetCallCustomTermsOverwrittenTermsContractReference_2Struct extends EthereumTuple {
   get object(): Bytes {
     return this[0].toBytes();
   }

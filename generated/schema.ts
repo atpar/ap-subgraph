@@ -284,6 +284,24 @@ export class TemplateTerms extends Entity {
     this.set("maturityDateOffset", Value.fromBigInt(value));
   }
 
+  get notionalPrincipal(): BigInt {
+    let value = this.get("notionalPrincipal");
+    return value.toBigInt();
+  }
+
+  set notionalPrincipal(value: BigInt) {
+    this.set("notionalPrincipal", Value.fromBigInt(value));
+  }
+
+  get nominalInterestRate(): BigInt {
+    let value = this.get("nominalInterestRate");
+    return value.toBigInt();
+  }
+
+  set nominalInterestRate(value: BigInt) {
+    this.set("nominalInterestRate", Value.fromBigInt(value));
+  }
+
   get feeAccrued(): BigInt {
     let value = this.get("feeAccrued");
     return value.toBigInt();
@@ -309,6 +327,15 @@ export class TemplateTerms extends Entity {
 
   set rateMultiplier(value: BigInt) {
     this.set("rateMultiplier", Value.fromBigInt(value));
+  }
+
+  get rateSpread(): BigInt {
+    let value = this.get("rateSpread");
+    return value.toBigInt();
+  }
+
+  set rateSpread(value: BigInt) {
+    this.set("rateSpread", Value.fromBigInt(value));
   }
 
   get feeRate(): BigInt {
@@ -338,6 +365,15 @@ export class TemplateTerms extends Entity {
     this.set("penaltyRate", Value.fromBigInt(value));
   }
 
+  get premiumDiscountAtIED(): BigInt {
+    let value = this.get("premiumDiscountAtIED");
+    return value.toBigInt();
+  }
+
+  set premiumDiscountAtIED(value: BigInt) {
+    this.set("premiumDiscountAtIED", Value.fromBigInt(value));
+  }
+
   get priceAtPurchaseDate(): BigInt {
     let value = this.get("priceAtPurchaseDate");
     return value.toBigInt();
@@ -356,22 +392,31 @@ export class TemplateTerms extends Entity {
     this.set("nextPrincipalRedemptionPayment", Value.fromBigInt(value));
   }
 
-  get gracePeriod(): string {
-    let value = this.get("gracePeriod");
-    return value.toString();
+  get coverageOfCreditEnhancement(): BigInt {
+    let value = this.get("coverageOfCreditEnhancement");
+    return value.toBigInt();
   }
 
-  set gracePeriod(value: string) {
-    this.set("gracePeriod", Value.fromString(value));
+  set coverageOfCreditEnhancement(value: BigInt) {
+    this.set("coverageOfCreditEnhancement", Value.fromBigInt(value));
   }
 
-  get delinquencyPeriod(): string {
-    let value = this.get("delinquencyPeriod");
-    return value.toString();
+  get lifeCap(): BigInt {
+    let value = this.get("lifeCap");
+    return value.toBigInt();
   }
 
-  set delinquencyPeriod(value: string) {
-    this.set("delinquencyPeriod", Value.fromString(value));
+  set lifeCap(value: BigInt) {
+    this.set("lifeCap", Value.fromBigInt(value));
+  }
+
+  get lifeFloor(): BigInt {
+    let value = this.get("lifeFloor");
+    return value.toBigInt();
+  }
+
+  set lifeFloor(value: BigInt) {
+    this.set("lifeFloor", Value.fromBigInt(value));
   }
 
   get periodCap(): BigInt {
@@ -391,158 +436,23 @@ export class TemplateTerms extends Entity {
   set periodFloor(value: BigInt) {
     this.set("periodFloor", Value.fromBigInt(value));
   }
-}
 
-export class TemplateSchedule extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save TemplateSchedule entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save TemplateSchedule entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("TemplateSchedule", id.toString(), this);
-  }
-
-  static load(id: string): TemplateSchedule | null {
-    return store.get("TemplateSchedule", id) as TemplateSchedule | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
+  get gracePeriod(): string {
+    let value = this.get("gracePeriod");
     return value.toString();
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set gracePeriod(value: string) {
+    this.set("gracePeriod", Value.fromString(value));
   }
 
-  get nonCyclicSchedule(): Array<Bytes> | null {
-    let value = this.get("nonCyclicSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
+  get delinquencyPeriod(): string {
+    let value = this.get("delinquencyPeriod");
+    return value.toString();
   }
 
-  set nonCyclicSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("nonCyclicSchedule");
-    } else {
-      this.set(
-        "nonCyclicSchedule",
-        Value.fromBytesArray(value as Array<Bytes>)
-      );
-    }
-  }
-
-  get cyclicIPSchedule(): Array<Bytes> | null {
-    let value = this.get("cyclicIPSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set cyclicIPSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("cyclicIPSchedule");
-    } else {
-      this.set("cyclicIPSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
-  }
-
-  get cyclicPRSchedule(): Array<Bytes> | null {
-    let value = this.get("cyclicPRSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set cyclicPRSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("cyclicPRSchedule");
-    } else {
-      this.set("cyclicPRSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
-  }
-
-  get cyclicSCSchedule(): Array<Bytes> | null {
-    let value = this.get("cyclicSCSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set cyclicSCSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("cyclicSCSchedule");
-    } else {
-      this.set("cyclicSCSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
-  }
-
-  get cyclicRRSchedule(): Array<Bytes> | null {
-    let value = this.get("cyclicRRSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set cyclicRRSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("cyclicRRSchedule");
-    } else {
-      this.set("cyclicRRSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
-  }
-
-  get cyclicFPSchedule(): Array<Bytes> | null {
-    let value = this.get("cyclicFPSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set cyclicFPSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("cyclicFPSchedule");
-    } else {
-      this.set("cyclicFPSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
-  }
-
-  get cyclicPYSchedule(): Array<Bytes> | null {
-    let value = this.get("cyclicPYSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set cyclicPYSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("cyclicPYSchedule");
-    } else {
-      this.set("cyclicPYSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
+  set delinquencyPeriod(value: string) {
+    this.set("delinquencyPeriod", Value.fromString(value));
   }
 }
 
@@ -594,13 +504,21 @@ export class Template extends Entity {
     this.set("templateTerms", Value.fromString(value));
   }
 
-  get templateSchedule(): string {
+  get templateSchedule(): Array<Bytes> | null {
     let value = this.get("templateSchedule");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
   }
 
-  set templateSchedule(value: string) {
-    this.set("templateSchedule", Value.fromString(value));
+  set templateSchedule(value: Array<Bytes> | null) {
+    if (value === null) {
+      this.unset("templateSchedule");
+    } else {
+      this.set("templateSchedule", Value.fromBytesArray(value as Array<Bytes>));
+    }
   }
 }
 
@@ -782,24 +700,6 @@ export class LifecycleTerms extends Entity {
     this.set("creditEventTypeCovered", Value.fromI32(value));
   }
 
-  get contractReference_1(): string {
-    let value = this.get("contractReference_1");
-    return value.toString();
-  }
-
-  set contractReference_1(value: string) {
-    this.set("contractReference_1", Value.fromString(value));
-  }
-
-  get contractReference_2(): string {
-    let value = this.get("contractReference_2");
-    return value.toString();
-  }
-
-  set contractReference_2(value: string) {
-    this.set("contractReference_2", Value.fromString(value));
-  }
-
   get currency(): Bytes {
     let value = this.get("currency");
     return value.toBytes();
@@ -962,24 +862,6 @@ export class LifecycleTerms extends Entity {
     this.set("coverageOfCreditEnhancement", Value.fromBigInt(value));
   }
 
-  get gracePeriod(): string {
-    let value = this.get("gracePeriod");
-    return value.toString();
-  }
-
-  set gracePeriod(value: string) {
-    this.set("gracePeriod", Value.fromString(value));
-  }
-
-  get delinquencyPeriod(): string {
-    let value = this.get("delinquencyPeriod");
-    return value.toString();
-  }
-
-  set delinquencyPeriod(value: string) {
-    this.set("delinquencyPeriod", Value.fromString(value));
-  }
-
   get lifeCap(): BigInt {
     let value = this.get("lifeCap");
     return value.toBigInt();
@@ -1014,6 +896,42 @@ export class LifecycleTerms extends Entity {
 
   set periodFloor(value: BigInt) {
     this.set("periodFloor", Value.fromBigInt(value));
+  }
+
+  get gracePeriod(): string {
+    let value = this.get("gracePeriod");
+    return value.toString();
+  }
+
+  set gracePeriod(value: string) {
+    this.set("gracePeriod", Value.fromString(value));
+  }
+
+  get delinquencyPeriod(): string {
+    let value = this.get("delinquencyPeriod");
+    return value.toString();
+  }
+
+  set delinquencyPeriod(value: string) {
+    this.set("delinquencyPeriod", Value.fromString(value));
+  }
+
+  get contractReference_1(): string {
+    let value = this.get("contractReference_1");
+    return value.toString();
+  }
+
+  set contractReference_1(value: string) {
+    this.set("contractReference_1", Value.fromString(value));
+  }
+
+  get contractReference_2(): string {
+    let value = this.get("contractReference_2");
+    return value.toString();
+  }
+
+  set contractReference_2(value: string) {
+    this.set("contractReference_2", Value.fromString(value));
   }
 }
 
@@ -1165,109 +1083,6 @@ export class State extends Entity {
   }
 }
 
-export class Schedule extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Schedule entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Schedule entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Schedule", id.toString(), this);
-  }
-
-  static load(id: string): Schedule | null {
-    return store.get("Schedule", id) as Schedule | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get templateSchedule(): string {
-    let value = this.get("templateSchedule");
-    return value.toString();
-  }
-
-  set templateSchedule(value: string) {
-    this.set("templateSchedule", Value.fromString(value));
-  }
-
-  get nonCyclicScheduleIndex(): BigInt {
-    let value = this.get("nonCyclicScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set nonCyclicScheduleIndex(value: BigInt) {
-    this.set("nonCyclicScheduleIndex", Value.fromBigInt(value));
-  }
-
-  get cyclicIPScheduleIndex(): BigInt {
-    let value = this.get("cyclicIPScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set cyclicIPScheduleIndex(value: BigInt) {
-    this.set("cyclicIPScheduleIndex", Value.fromBigInt(value));
-  }
-
-  get cyclicPRScheduleIndex(): BigInt {
-    let value = this.get("cyclicPRScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set cyclicPRScheduleIndex(value: BigInt) {
-    this.set("cyclicPRScheduleIndex", Value.fromBigInt(value));
-  }
-
-  get cyclicSCScheduleIndex(): BigInt {
-    let value = this.get("cyclicSCScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set cyclicSCScheduleIndex(value: BigInt) {
-    this.set("cyclicSCScheduleIndex", Value.fromBigInt(value));
-  }
-
-  get cyclicRRScheduleIndex(): BigInt {
-    let value = this.get("cyclicRRScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set cyclicRRScheduleIndex(value: BigInt) {
-    this.set("cyclicRRScheduleIndex", Value.fromBigInt(value));
-  }
-
-  get cyclicFPScheduleIndex(): BigInt {
-    let value = this.get("cyclicFPScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set cyclicFPScheduleIndex(value: BigInt) {
-    this.set("cyclicFPScheduleIndex", Value.fromBigInt(value));
-  }
-
-  get cyclicPYScheduleIndex(): BigInt {
-    let value = this.get("cyclicPYScheduleIndex");
-    return value.toBigInt();
-  }
-
-  set cyclicPYScheduleIndex(value: BigInt) {
-    this.set("cyclicPYScheduleIndex", Value.fromBigInt(value));
-  }
-}
-
 export class Event extends Entity {
   constructor(id: string) {
     super();
@@ -1410,13 +1225,13 @@ export class Asset extends Entity {
     this.set("state", Value.fromString(value));
   }
 
-  get schedule(): string {
-    let value = this.get("schedule");
-    return value.toString();
+  get nextScheduleIndex(): BigInt {
+    let value = this.get("nextScheduleIndex");
+    return value.toBigInt();
   }
 
-  set schedule(value: string) {
-    this.set("schedule", Value.fromString(value));
+  set nextScheduleIndex(value: BigInt) {
+    this.set("nextScheduleIndex", Value.fromBigInt(value));
   }
 
   get nextEvent(): string {
