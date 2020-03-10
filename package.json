@@ -11,7 +11,7 @@
     "deploy:ropsten": "NETWORK=ropsten ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/ap-contracts": "^0.2.1-beta.12",
+    "@atpar/ap-contracts": "0.2.1-beta.14",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "actus-solidity": "0.2.1",

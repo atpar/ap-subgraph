@@ -207,7 +207,7 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   asset.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
   asset.lifecycleTerms = lifecycleTerms.id;
   asset.state = state.id;
-  asset.nextScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId);
+  asset.nextScheduleIndex = assetRegistry.getNextScheduleIndex(event.params.assetId);
   asset.nextEvent = nextEvent.id;
   asset.save();
 }
@@ -266,7 +266,7 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   nextEvent.save();
 
   let asset = Asset.load(event.params.assetId.toHex());
-  asset.nextScheduleIndex = assetRegistry.getScheduleIndex(event.params.assetId);
+  asset.nextScheduleIndex = assetRegistry.getNextScheduleIndex(event.params.assetId);
   asset.nextEvent = nextEvent.id;
   asset.save();
 }

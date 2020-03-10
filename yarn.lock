@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@atpar/actus-solidity@0.2.1-beta.12":
-  version "0.2.1-beta.12"
-  resolved "https://registry.yarnpkg.com/@atpar/actus-solidity/-/actus-solidity-0.2.1-beta.12.tgz#315e9c881190ef5def5e788f2c4b8771ed39b260"
-  integrity sha512-5no/tgwjrUUJjH/bS00qsbXKJR7jY5G4JL+DMqu16gWKBuRW+LXrX5wGQ24dUaM+Els0od5iUIG3wIG7KEoGmw==
+"@atpar/actus-solidity@0.2.1-beta.14":
+  version "0.2.1-beta.14"
+  resolved "https://registry.yarnpkg.com/@atpar/actus-solidity/-/actus-solidity-0.2.1-beta.14.tgz#6b8480d159d127cc94ffefe7f30d35d1eef534fa"
+  integrity sha512-6uA5lu3GVkJSDZDITermWPqvqivXn1GLhqSLko9CCF6dm/Qna0Hx4iI/Xhp7eSbxHYuUZvN5/0/hfgxVsm8S6g==
 
-"@atpar/ap-contracts@^0.2.1-beta.12":
-  version "0.2.1-beta.12"
-  resolved "https://registry.yarnpkg.com/@atpar/ap-contracts/-/ap-contracts-0.2.1-beta.12.tgz#a18cd65f808357ceac68525c5a64396c6c6fe7c6"
-  integrity sha512-oBVbDUKDB3gg5jxD+v6BNalLWbnR5z21pQiUUCZZhsRYI2Qgf4ZUb7Rn3OiiDq6RhuSXT2QHZOLe5UghSi3tYw==
+"@atpar/ap-contracts@0.2.1-beta.14":
+  version "0.2.1-beta.14"
+  resolved "https://registry.yarnpkg.com/@atpar/ap-contracts/-/ap-contracts-0.2.1-beta.14.tgz#b4602a548beaaf568713fc8e03122db78bec0460"
+  integrity sha512-304fRsiug90jPesjhVYiHQzd1TS+ToKO8eZiqKKRJxVme9yWHz8DPSXhpOvM+c4/Yv3mfaoB35KNkBnWjI0eQg==
   dependencies:
-    "@atpar/actus-solidity" "0.2.1-beta.12"
+    "@atpar/actus-solidity" "0.2.1-beta.14"
     funds-distribution-token "0.1.2"
     openzeppelin-solidity "^2.1.2"
     truffle-hdwallet-provider "^1.0.9"
@@ -357,9 +357,9 @@ asn1@~0.2.3:
   dependencies:
     safer-buffer "~2.1.0"
 
-"assemblyscript@git+https://github.com/AssemblyScript/assemblyscript.git#36040d5b5312f19a025782b5e36663823494c2f3":
+"assemblyscript@https://github.com/AssemblyScript/assemblyscript#36040d5b5312f19a025782b5e36663823494c2f3":
   version "0.6.0"
-  resolved "git+https://github.com/AssemblyScript/assemblyscript.git#36040d5b5312f19a025782b5e36663823494c2f3"
+  resolved "https://github.com/AssemblyScript/assemblyscript#36040d5b5312f19a025782b5e36663823494c2f3"
   dependencies:
     "@protobufjs/utf8" "^1.1.0"
     binaryen "77.0.0-nightly.20190407"

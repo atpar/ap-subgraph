@@ -106,7 +106,7 @@ export class IncrementedScheduleIndex__Params {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get scheduleIndex(): BigInt {
+  get nextScheduleIndex(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 }
@@ -1333,6 +1333,25 @@ export class AssetRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBytes());
   }
 
+  getNextScheduleIndex(assetId: Bytes): BigInt {
+    let result = super.call("getNextScheduleIndex", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getNextScheduleIndex(assetId: Bytes): CallResult<BigInt> {
+    let result = super.tryCall("getNextScheduleIndex", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
   deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
     templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
     terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
@@ -1638,25 +1657,6 @@ export class AssetRegistry extends SmartContract {
 
   try_PRECISION(): CallResult<BigInt> {
     let result = super.tryCall("PRECISION", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  getScheduleIndex(assetId: Bytes): BigInt {
-    let result = super.call("getScheduleIndex", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_getScheduleIndex(assetId: Bytes): CallResult<BigInt> {
-    let result = super.tryCall("getScheduleIndex", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
     if (result.reverted) {
       return new CallResult();
     }
