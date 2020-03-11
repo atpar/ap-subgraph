@@ -15,11 +15,4 @@ if [ $(uname -s) == "Linux" ]; then
   ./setup.sh
 fi
 
-docker-compose up &
-
-sleep 60
-
-yarn create-local
-yarn deploy:local
-
-while true; do sleep 1; done
+docker-compose up
