@@ -1,5 +1,9 @@
 #!/bin/sh
 
+trap "exit" INT TERM
+trap "printf '\nshutdown ...\n' && kill 0" EXIT
+
+
 if [ ! -d ./graph-node ]; then
   git clone https://github.com/graphprotocol/graph-node/
 fi
@@ -11,4 +15,11 @@ if [ $(uname -s) == "Linux" ]; then
   ./setup.sh
 fi
 
-docker-compose up
+docker-compose up &
+
+sleep 60
+
+yarn create-local
+yarn deploy:local
+
+while true; do sleep 1; done
