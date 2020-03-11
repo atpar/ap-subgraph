@@ -28,6 +28,13 @@ else
   GRAPH_NODE="https://api.thegraph.com/deploy/"
 fi
 
+# # Create subgraph if missing
+# {
+#   graph create atpar/actus-protocol${SUBGRAPH_EXT} --node ${GRAPH_NODE}
+# } || {
+#   echo 'Subgraph was already created'
+# }
+
 # Deploy subgraph
 graph deploy atpar/actus-protocol${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
 

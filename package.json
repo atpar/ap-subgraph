@@ -4,7 +4,7 @@
   "scripts": {
     "build-contract": "truffle compile",
     "build": "graph build",
-    "create-local": "graph create atpar/actus-protocol --node http://127.0.0.1:8020",
+    "create-local": "graph create atpar/actus-protocol-local --node http://127.0.0.1:8020",
     "codegen": "graph codegen",
     "deploy:local": "NETWORK=local ./deploy.sh",
     "deploy:goerli": "NETWORK=goerli ./deploy.sh",
