@@ -12,3 +12,5 @@ yarn-error.log
 # truffle
 build/
 
+# graph-node
+graph-node/
