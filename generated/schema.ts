@@ -1162,13 +1162,13 @@ export class Asset extends Entity {
     this.set("assetId", Value.fromBytes(value));
   }
 
-  get templateId(): Bytes {
-    let value = this.get("templateId");
-    return value.toBytes();
+  get template(): string {
+    let value = this.get("template");
+    return value.toString();
   }
 
-  set templateId(value: Bytes) {
-    this.set("templateId", Value.fromBytes(value));
+  set template(value: string) {
+    this.set("template", Value.fromString(value));
   }
 
   get engine(): Bytes {

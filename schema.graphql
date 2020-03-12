@@ -130,7 +130,7 @@ type Event @entity {
 type Asset @entity {
   id: ID!
   assetId: Bytes!
-  templateId: Bytes!
+  template: Template!
   engine: Bytes!
   actor: Bytes!
   ownership: AssetOwnership!

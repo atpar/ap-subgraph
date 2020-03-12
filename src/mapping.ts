@@ -78,7 +78,7 @@ export function handleRegisteredTemplate(event: RegisteredTemplate): void {
 
 export function handleRegisteredAsset(event: RegisteredAsset): void {
   let assetRegistry = AssetRegistry.bind(event.address);
-  // let templateRegistry = TemplateRegistry.bind(assetRegistry.templateRegistry());
+  let templateRegistry = TemplateRegistry.bind(assetRegistry.templateRegistry());
   // let engine = IEngine.bind(assetRegistry.getEngineAddress(event.params.assetId));
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
@@ -200,7 +200,7 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
 
   let asset = new Asset(event.params.assetId.toHex());
   asset.assetId = event.params.assetId;
-  asset.templateId = assetRegistry.getTemplateId(event.params.assetId);
+  asset.template = Template.load(assetRegistry.getTemplateId(event.params.assetId).toHex()).id;
   asset.engine = assetRegistry.getEngineAddress(event.params.assetId);
   asset.actor = assetRegistry.getActorAddress(event.params.assetId);
   asset.ownership = ownership.id;
