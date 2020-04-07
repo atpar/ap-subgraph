@@ -16,6 +16,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Asset
+        - Template
       abis:
         - name: AssetRegistry
           file: ./build/contracts/AssetRegistry.json

@@ -504,21 +504,13 @@ export class Template extends Entity {
     this.set("templateTerms", Value.fromString(value));
   }
 
-  get templateSchedule(): Array<Bytes> | null {
+  get templateSchedule(): Array<Bytes> {
     let value = this.get("templateSchedule");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
+    return value.toBytesArray();
   }
 
-  set templateSchedule(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("templateSchedule");
-    } else {
-      this.set("templateSchedule", Value.fromBytesArray(value as Array<Bytes>));
-    }
+  set templateSchedule(value: Array<Bytes>) {
+    this.set("templateSchedule", Value.fromBytesArray(value));
   }
 }
 
