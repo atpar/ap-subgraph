@@ -120,13 +120,6 @@ type State @entity {
   executionAmount: BigInt!
 }
 
-type Event @entity {
-  id: ID!
-  event: Bytes!
-  # payoff: BigInt!
-  # state: State!
-}
-
 type Asset @entity {
   id: ID!
   assetId: Bytes!
@@ -138,5 +131,5 @@ type Asset @entity {
   lifecycleTerms: LifecycleTerms!
   state: State!
   nextScheduleIndex: BigInt!
-  nextEvent: Event!
+  # nextEvent: Bytes!
 }
