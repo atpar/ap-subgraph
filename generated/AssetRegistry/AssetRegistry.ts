@@ -15,6 +15,54 @@ import {
   CallResult
 } from "@graphprotocol/graph-ts";
 
+export class GrantedAccess extends EthereumEvent {
+  get params(): GrantedAccess__Params {
+    return new GrantedAccess__Params(this);
+  }
+}
+
+export class GrantedAccess__Params {
+  _event: GrantedAccess;
+
+  constructor(event: GrantedAccess) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get methodSignature(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
+}
+
+export class IncrementedScheduleIndex extends EthereumEvent {
+  get params(): IncrementedScheduleIndex__Params {
+    return new IncrementedScheduleIndex__Params(this);
+  }
+}
+
+export class IncrementedScheduleIndex__Params {
+  _event: IncrementedScheduleIndex;
+
+  constructor(event: IncrementedScheduleIndex) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get nextScheduleIndex(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class RegisteredAsset extends EthereumEvent {
   get params(): RegisteredAsset__Params {
     return new RegisteredAsset__Params(this);
@@ -30,6 +78,106 @@ export class RegisteredAsset__Params {
 
   get assetId(): Bytes {
     return this._event.parameters[0].value.toBytes();
+  }
+}
+
+export class RevokedAccess extends EthereumEvent {
+  get params(): RevokedAccess__Params {
+    return new RevokedAccess__Params(this);
+  }
+}
+
+export class RevokedAccess__Params {
+  _event: RevokedAccess;
+
+  constructor(event: RevokedAccess) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get methodSignature(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
+}
+
+export class SetRootAccess extends EthereumEvent {
+  get params(): SetRootAccess__Params {
+    return new SetRootAccess__Params(this);
+  }
+}
+
+export class SetRootAccess__Params {
+  _event: SetRootAccess;
+
+  constructor(event: SetRootAccess) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class UpdatedActor extends EthereumEvent {
+  get params(): UpdatedActor__Params {
+    return new UpdatedActor__Params(this);
+  }
+}
+
+export class UpdatedActor__Params {
+  _event: UpdatedActor;
+
+  constructor(event: UpdatedActor) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get prevActor(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get newActor(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
+export class UpdatedAnchorDate extends EthereumEvent {
+  get params(): UpdatedAnchorDate__Params {
+    return new UpdatedAnchorDate__Params(this);
+  }
+}
+
+export class UpdatedAnchorDate__Params {
+  _event: UpdatedAnchorDate;
+
+  constructor(event: UpdatedAnchorDate) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get prevAnchorDate(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get anchorDate(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -50,7 +198,7 @@ export class UpdatedBeneficiary__Params {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get oldBeneficiary(): Address {
+  get prevBeneficiary(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
@@ -80,7 +228,7 @@ export class UpdatedCashflowBeneficiary__Params {
     return this._event.parameters[1].value.toI32();
   }
 
-  get oldBeneficiary(): Address {
+  get prevBeneficiary(): Address {
     return this._event.parameters[2].value.toAddress();
   }
 
@@ -89,16 +237,34 @@ export class UpdatedCashflowBeneficiary__Params {
   }
 }
 
-export class IncrementedScheduleIndex extends EthereumEvent {
-  get params(): IncrementedScheduleIndex__Params {
-    return new IncrementedScheduleIndex__Params(this);
+export class UpdatedCustomTerms extends EthereumEvent {
+  get params(): UpdatedCustomTerms__Params {
+    return new UpdatedCustomTerms__Params(this);
   }
 }
 
-export class IncrementedScheduleIndex__Params {
-  _event: IncrementedScheduleIndex;
+export class UpdatedCustomTerms__Params {
+  _event: UpdatedCustomTerms;
 
-  constructor(event: IncrementedScheduleIndex) {
+  constructor(event: UpdatedCustomTerms) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+}
+
+export class UpdatedEngine extends EthereumEvent {
+  get params(): UpdatedEngine__Params {
+    return new UpdatedEngine__Params(this);
+  }
+}
+
+export class UpdatedEngine__Params {
+  _event: UpdatedEngine;
+
+  constructor(event: UpdatedEngine) {
     this._event = event;
   }
 
@@ -106,30 +272,12 @@ export class IncrementedScheduleIndex__Params {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get nextScheduleIndex(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
-export class UpdatedState extends EthereumEvent {
-  get params(): UpdatedState__Params {
-    return new UpdatedState__Params(this);
-  }
-}
-
-export class UpdatedState__Params {
-  _event: UpdatedState;
-
-  constructor(event: UpdatedState) {
-    this._event = event;
+  get prevEngine(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 
-  get assetId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get statusDate(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+  get newEngine(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -155,57 +303,286 @@ export class UpdatedFinalizedState__Params {
   }
 }
 
-export class AssetRegistry__getStateResultValue0Struct extends EthereumTuple {
-  get contractPerformance(): i32 {
-    return this[0].toI32();
+export class UpdatedObligor extends EthereumEvent {
+  get params(): UpdatedObligor__Params {
+    return new UpdatedObligor__Params(this);
+  }
+}
+
+export class UpdatedObligor__Params {
+  _event: UpdatedObligor;
+
+  constructor(event: UpdatedObligor) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get prevObligor(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get newObligor(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
+export class UpdatedState extends EthereumEvent {
+  get params(): UpdatedState__Params {
+    return new UpdatedState__Params(this);
+  }
+}
+
+export class UpdatedState__Params {
+  _event: UpdatedState;
+
+  constructor(event: UpdatedState) {
+    this._event = event;
+  }
+
+  get assetId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
   }
 
   get statusDate(): BigInt {
-    return this[1].toBigInt();
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsStruct extends EthereumTuple {
+  get calendar(): i32 {
+    return this[0].toI32();
   }
 
-  get nonPerformingDate(): BigInt {
-    return this[2].toBigInt();
+  get contractRole(): i32 {
+    return this[1].toI32();
+  }
+
+  get dayCountConvention(): i32 {
+    return this[2].toI32();
+  }
+
+  get businessDayConvention(): i32 {
+    return this[3].toI32();
+  }
+
+  get endOfMonthConvention(): i32 {
+    return this[4].toI32();
+  }
+
+  get scalingEffect(): i32 {
+    return this[5].toI32();
+  }
+
+  get penaltyType(): i32 {
+    return this[6].toI32();
+  }
+
+  get feeBasis(): i32 {
+    return this[7].toI32();
+  }
+
+  get creditEventTypeCovered(): i32 {
+    return this[8].toI32();
+  }
+
+  get currency(): Address {
+    return this[9].toAddress();
+  }
+
+  get settlementCurrency(): Address {
+    return this[10].toAddress();
+  }
+
+  get marketObjectCodeRateReset(): Bytes {
+    return this[11].toBytes();
+  }
+
+  get statusDate(): BigInt {
+    return this[12].toBigInt();
   }
 
   get maturityDate(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get executionDate(): BigInt {
-    return this[4].toBigInt();
+    return this[13].toBigInt();
   }
 
   get notionalPrincipal(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get accruedInterest(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get feeAccrued(): BigInt {
-    return this[7].toBigInt();
+    return this[14].toBigInt();
   }
 
   get nominalInterestRate(): BigInt {
-    return this[8].toBigInt();
+    return this[15].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
-    return this[9].toBigInt();
+  get feeAccrued(): BigInt {
+    return this[16].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
-    return this[10].toBigInt();
+  get accruedInterest(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get rateMultiplier(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get rateSpread(): BigInt {
+    return this[19].toBigInt();
+  }
+
+  get feeRate(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get nextResetRate(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get penaltyRate(): BigInt {
+    return this[22].toBigInt();
+  }
+
+  get premiumDiscountAtIED(): BigInt {
+    return this[23].toBigInt();
+  }
+
+  get priceAtPurchaseDate(): BigInt {
+    return this[24].toBigInt();
   }
 
   get nextPrincipalRedemptionPayment(): BigInt {
-    return this[11].toBigInt();
+    return this[25].toBigInt();
   }
 
-  get executionAmount(): BigInt {
-    return this[12].toBigInt();
+  get coverageOfCreditEnhancement(): BigInt {
+    return this[26].toBigInt();
+  }
+
+  get lifeCap(): BigInt {
+    return this[27].toBigInt();
+  }
+
+  get lifeFloor(): BigInt {
+    return this[28].toBigInt();
+  }
+
+  get periodCap(): BigInt {
+    return this[29].toBigInt();
+  }
+
+  get periodFloor(): BigInt {
+    return this[30].toBigInt();
+  }
+
+  get gracePeriod(): AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct {
+    return this[31].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct;
+  }
+
+  get contractReference_1(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct {
+    return this[33].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct;
+  }
+
+  get contractReference_2(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct {
+    return this[34].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct;
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get _type(): i32 {
+    return this[1].toI32();
+  }
+
+  get role(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct extends EthereumTuple {
+  get object(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get _type(): i32 {
+    return this[1].toI32();
+  }
+
+  get role(): i32 {
+    return this[2].toI32();
+  }
+}
+
+export class AssetRegistry__decodeCollateralObjectResult {
+  value0: Address;
+  value1: BigInt;
+
+  constructor(value0: Address, value1: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, EthereumValue> {
+    let map = new TypedMap<string, EthereumValue>();
+    map.set("value0", EthereumValue.fromAddress(this.value0));
+    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
+    return map;
+  }
+}
+
+export class AssetRegistry__decodeEventResult {
+  value0: i32;
+  value1: BigInt;
+
+  constructor(value0: i32, value1: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, EthereumValue> {
+    let map = new TypedMap<string, EthereumValue>();
+    map.set(
+      "value0",
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(this.value0))
+    );
+    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
+    return map;
   }
 }
 
@@ -384,11 +761,11 @@ export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsR
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -398,11 +775,11 @@ export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsR
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -758,11 +1135,11 @@ export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsI
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -772,11 +1149,11 @@ export class AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsI
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -798,57 +1175,120 @@ export class AssetRegistry__getFinalizedStateResultValue0Struct extends Ethereum
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
-export class AssetRegistry__decodeCollateralObjectResult {
-  value0: Address;
-  value1: BigInt;
-
-  constructor(value0: Address, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
+export class AssetRegistry__getOwnershipResultValue0Struct extends EthereumTuple {
+  get creatorObligor(): Address {
+    return this[0].toAddress();
   }
 
-  toMap(): TypedMap<string, EthereumValue> {
-    let map = new TypedMap<string, EthereumValue>();
-    map.set("value0", EthereumValue.fromAddress(this.value0));
-    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
-    return map;
+  get creatorBeneficiary(): Address {
+    return this[1].toAddress();
+  }
+
+  get counterpartyObligor(): Address {
+    return this[2].toAddress();
+  }
+
+  get counterpartyBeneficiary(): Address {
+    return this[3].toAddress();
+  }
+}
+
+export class AssetRegistry__getStateResultValue0Struct extends EthereumTuple {
+  get contractPerformance(): i32 {
+    return this[0].toI32();
+  }
+
+  get statusDate(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get nonPerformingDate(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get maturityDate(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get exerciseDate(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get terminationDate(): BigInt {
+    return this[5].toBigInt();
+  }
+
+  get notionalPrincipal(): BigInt {
+    return this[6].toBigInt();
+  }
+
+  get accruedInterest(): BigInt {
+    return this[7].toBigInt();
+  }
+
+  get feeAccrued(): BigInt {
+    return this[8].toBigInt();
+  }
+
+  get nominalInterestRate(): BigInt {
+    return this[9].toBigInt();
+  }
+
+  get interestScalingMultiplier(): BigInt {
+    return this[10].toBigInt();
+  }
+
+  get notionalScalingMultiplier(): BigInt {
+    return this[11].toBigInt();
+  }
+
+  get nextPrincipalRedemptionPayment(): BigInt {
+    return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -1027,11 +1467,11 @@ export class AssetRegistry__getTermsResultValue0ContractReference_1Struct extend
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -1041,36 +1481,1203 @@ export class AssetRegistry__getTermsResultValue0ContractReference_2Struct extend
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
 
-export class AssetRegistry__decodeEventResult {
-  value0: i32;
-  value1: BigInt;
-
-  constructor(value0: i32, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
+export class AssetRegistry extends SmartContract {
+  static bind(address: Address): AssetRegistry {
+    return new AssetRegistry("AssetRegistry", address);
   }
 
-  toMap(): TypedMap<string, EthereumValue> {
-    let map = new TypedMap<string, EthereumValue>();
-    map.set(
-      "value0",
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(this.value0))
+  ONE_POINT_ZERO(): BigInt {
+    let result = super.call("ONE_POINT_ZERO", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_ONE_POINT_ZERO(): CallResult<BigInt> {
+    let result = super.tryCall("ONE_POINT_ZERO", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  PRECISION(): BigInt {
+    let result = super.call("PRECISION", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_PRECISION(): CallResult<BigInt> {
+    let result = super.tryCall("PRECISION", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  computeEventTimeForEvent(
+    _event: Bytes,
+    terms: AssetRegistry__computeEventTimeForEventInputTermsStruct
+  ): BigInt {
+    let result = super.call("computeEventTimeForEvent", [
+      EthereumValue.fromFixedBytes(_event),
+      EthereumValue.fromTuple(terms)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_computeEventTimeForEvent(
+    _event: Bytes,
+    terms: AssetRegistry__computeEventTimeForEventInputTermsStruct
+  ): CallResult<BigInt> {
+    let result = super.tryCall("computeEventTimeForEvent", [
+      EthereumValue.fromFixedBytes(_event),
+      EthereumValue.fromTuple(terms)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  decodeCollateralObject(
+    object: Bytes
+  ): AssetRegistry__decodeCollateralObjectResult {
+    let result = super.call("decodeCollateralObject", [
+      EthereumValue.fromFixedBytes(object)
+    ]);
+
+    return new AssetRegistry__decodeCollateralObjectResult(
+      result[0].toAddress(),
+      result[1].toBigInt()
     );
-    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
-    return map;
+  }
+
+  try_decodeCollateralObject(
+    object: Bytes
+  ): CallResult<AssetRegistry__decodeCollateralObjectResult> {
+    let result = super.tryCall("decodeCollateralObject", [
+      EthereumValue.fromFixedBytes(object)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      new AssetRegistry__decodeCollateralObjectResult(
+        value[0].toAddress(),
+        value[1].toBigInt()
+      )
+    );
+  }
+
+  decodeEvent(_event: Bytes): AssetRegistry__decodeEventResult {
+    let result = super.call("decodeEvent", [
+      EthereumValue.fromFixedBytes(_event)
+    ]);
+
+    return new AssetRegistry__decodeEventResult(
+      result[0].toI32(),
+      result[1].toBigInt()
+    );
+  }
+
+  try_decodeEvent(_event: Bytes): CallResult<AssetRegistry__decodeEventResult> {
+    let result = super.tryCall("decodeEvent", [
+      EthereumValue.fromFixedBytes(_event)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      new AssetRegistry__decodeEventResult(
+        value[0].toI32(),
+        value[1].toBigInt()
+      )
+    );
+  }
+
+  deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
+    templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
+    terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
+  ): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct {
+    let result = super.call(
+      "deriveLifecycleTermsFromCustomTermsAndTemplateTerms",
+      [EthereumValue.fromTuple(templateTerms), EthereumValue.fromTuple(terms)]
+    );
+
+    return result[0].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct;
+  }
+
+  try_deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
+    templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
+    terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
+  ): CallResult<
+    AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct
+  > {
+    let result = super.tryCall(
+      "deriveLifecycleTermsFromCustomTermsAndTemplateTerms",
+      [EthereumValue.fromTuple(templateTerms), EthereumValue.fromTuple(terms)]
+    );
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      value[0].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct
+    );
+  }
+
+  encodeCollateralAsObject(
+    collateralToken: Address,
+    collateralAmount: BigInt
+  ): Bytes {
+    let result = super.call("encodeCollateralAsObject", [
+      EthereumValue.fromAddress(collateralToken),
+      EthereumValue.fromUnsignedBigInt(collateralAmount)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_encodeCollateralAsObject(
+    collateralToken: Address,
+    collateralAmount: BigInt
+  ): CallResult<Bytes> {
+    let result = super.tryCall("encodeCollateralAsObject", [
+      EthereumValue.fromAddress(collateralToken),
+      EthereumValue.fromUnsignedBigInt(collateralAmount)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  encodeEvent(eventType: i32, scheduleTime: BigInt): Bytes {
+    let result = super.call("encodeEvent", [
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType)),
+      EthereumValue.fromUnsignedBigInt(scheduleTime)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_encodeEvent(eventType: i32, scheduleTime: BigInt): CallResult<Bytes> {
+    let result = super.tryCall("encodeEvent", [
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType)),
+      EthereumValue.fromUnsignedBigInt(scheduleTime)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  getActor(assetId: Bytes): Address {
+    let result = super.call("getActor", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_getActor(assetId: Bytes): CallResult<Address> {
+    let result = super.tryCall("getActor", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
+  getAnchorDate(assetId: Bytes): BigInt {
+    let result = super.call("getAnchorDate", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getAnchorDate(assetId: Bytes): CallResult<BigInt> {
+    let result = super.tryCall("getAnchorDate", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getCashflowBeneficiary(assetId: Bytes, cashflowId: i32): Address {
+    let result = super.call("getCashflowBeneficiary", [
+      EthereumValue.fromFixedBytes(assetId),
+      EthereumValue.fromI32(cashflowId)
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_getCashflowBeneficiary(
+    assetId: Bytes,
+    cashflowId: i32
+  ): CallResult<Address> {
+    let result = super.tryCall("getCashflowBeneficiary", [
+      EthereumValue.fromFixedBytes(assetId),
+      EthereumValue.fromI32(cashflowId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
+  getEngine(assetId: Bytes): Address {
+    let result = super.call("getEngine", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_getEngine(assetId: Bytes): CallResult<Address> {
+    let result = super.tryCall("getEngine", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
+  getEpochOffset(eventType: i32): BigInt {
+    let result = super.call("getEpochOffset", [
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType))
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getEpochOffset(eventType: i32): CallResult<BigInt> {
+    let result = super.tryCall("getEpochOffset", [
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType))
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getFinalizedState(
+    assetId: Bytes
+  ): AssetRegistry__getFinalizedStateResultValue0Struct {
+    let result = super.call("getFinalizedState", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toTuple() as AssetRegistry__getFinalizedStateResultValue0Struct;
+  }
+
+  try_getFinalizedState(
+    assetId: Bytes
+  ): CallResult<AssetRegistry__getFinalizedStateResultValue0Struct> {
+    let result = super.tryCall("getFinalizedState", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      value[0].toTuple() as AssetRegistry__getFinalizedStateResultValue0Struct
+    );
+  }
+
+  getNextScheduleIndex(assetId: Bytes): BigInt {
+    let result = super.call("getNextScheduleIndex", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getNextScheduleIndex(assetId: Bytes): CallResult<BigInt> {
+    let result = super.tryCall("getNextScheduleIndex", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getNextScheduledEvent(assetId: Bytes): Bytes {
+    let result = super.call("getNextScheduledEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_getNextScheduledEvent(assetId: Bytes): CallResult<Bytes> {
+    let result = super.tryCall("getNextScheduledEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  getNextUnderlyingEvent(assetId: Bytes): Bytes {
+    let result = super.call("getNextUnderlyingEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_getNextUnderlyingEvent(assetId: Bytes): CallResult<Bytes> {
+    let result = super.tryCall("getNextUnderlyingEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  getOwnership(assetId: Bytes): AssetRegistry__getOwnershipResultValue0Struct {
+    let result = super.call("getOwnership", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toTuple() as AssetRegistry__getOwnershipResultValue0Struct;
+  }
+
+  try_getOwnership(
+    assetId: Bytes
+  ): CallResult<AssetRegistry__getOwnershipResultValue0Struct> {
+    let result = super.tryCall("getOwnership", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      value[0].toTuple() as AssetRegistry__getOwnershipResultValue0Struct
+    );
+  }
+
+  getPendingEvent(assetId: Bytes): Bytes {
+    let result = super.call("getPendingEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_getPendingEvent(assetId: Bytes): CallResult<Bytes> {
+    let result = super.tryCall("getPendingEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  getState(assetId: Bytes): AssetRegistry__getStateResultValue0Struct {
+    let result = super.call("getState", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toTuple() as AssetRegistry__getStateResultValue0Struct;
+  }
+
+  try_getState(
+    assetId: Bytes
+  ): CallResult<AssetRegistry__getStateResultValue0Struct> {
+    let result = super.tryCall("getState", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      value[0].toTuple() as AssetRegistry__getStateResultValue0Struct
+    );
+  }
+
+  getTemplateId(assetId: Bytes): Bytes {
+    let result = super.call("getTemplateId", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_getTemplateId(assetId: Bytes): CallResult<Bytes> {
+    let result = super.tryCall("getTemplateId", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  getTerms(assetId: Bytes): AssetRegistry__getTermsResultValue0Struct {
+    let result = super.call("getTerms", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toTuple() as AssetRegistry__getTermsResultValue0Struct;
+  }
+
+  try_getTerms(
+    assetId: Bytes
+  ): CallResult<AssetRegistry__getTermsResultValue0Struct> {
+    let result = super.tryCall("getTerms", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(
+      value[0].toTuple() as AssetRegistry__getTermsResultValue0Struct
+    );
+  }
+
+  hasAccess(assetId: Bytes, methodSignature: Bytes, account: Address): boolean {
+    let result = super.call("hasAccess", [
+      EthereumValue.fromFixedBytes(assetId),
+      EthereumValue.fromFixedBytes(methodSignature),
+      EthereumValue.fromAddress(account)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_hasAccess(
+    assetId: Bytes,
+    methodSignature: Bytes,
+    account: Address
+  ): CallResult<boolean> {
+    let result = super.tryCall("hasAccess", [
+      EthereumValue.fromFixedBytes(assetId),
+      EthereumValue.fromFixedBytes(methodSignature),
+      EthereumValue.fromAddress(account)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
+  hasRootAccess(assetId: Bytes, account: Address): boolean {
+    let result = super.call("hasRootAccess", [
+      EthereumValue.fromFixedBytes(assetId),
+      EthereumValue.fromAddress(account)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_hasRootAccess(assetId: Bytes, account: Address): CallResult<boolean> {
+    let result = super.tryCall("hasRootAccess", [
+      EthereumValue.fromFixedBytes(assetId),
+      EthereumValue.fromAddress(account)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
+  popNextScheduledEvent(assetId: Bytes): Bytes {
+    let result = super.call("popNextScheduledEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_popNextScheduledEvent(assetId: Bytes): CallResult<Bytes> {
+    let result = super.tryCall("popNextScheduledEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  popPendingEvent(assetId: Bytes): Bytes {
+    let result = super.call("popPendingEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBytes();
+  }
+
+  try_popPendingEvent(assetId: Bytes): CallResult<Bytes> {
+    let result = super.tryCall("popPendingEvent", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  templateRegistry(): Address {
+    let result = super.call("templateRegistry", []);
+
+    return result[0].toAddress();
+  }
+
+  try_templateRegistry(): CallResult<Address> {
+    let result = super.tryCall("templateRegistry", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
+  isRegistered(assetId: Bytes): boolean {
+    let result = super.call("isRegistered", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_isRegistered(assetId: Bytes): CallResult<boolean> {
+    let result = super.tryCall("isRegistered", [
+      EthereumValue.fromFixedBytes(assetId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
   }
 }
 
-export class AssetRegistry__computeEventTimeForEventInputTermsStruct extends EthereumTuple {
+export class ConstructorCall extends EthereumCall {
+  get inputs(): ConstructorCall__Inputs {
+    return new ConstructorCall__Inputs(this);
+  }
+
+  get outputs(): ConstructorCall__Outputs {
+    return new ConstructorCall__Outputs(this);
+  }
+}
+
+export class ConstructorCall__Inputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+
+  get _templateRegistry(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class ConstructorCall__Outputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+}
+
+export class GrantAccessCall extends EthereumCall {
+  get inputs(): GrantAccessCall__Inputs {
+    return new GrantAccessCall__Inputs(this);
+  }
+
+  get outputs(): GrantAccessCall__Outputs {
+    return new GrantAccessCall__Outputs(this);
+  }
+}
+
+export class GrantAccessCall__Inputs {
+  _call: GrantAccessCall;
+
+  constructor(call: GrantAccessCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get methodSignature(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class GrantAccessCall__Outputs {
+  _call: GrantAccessCall;
+
+  constructor(call: GrantAccessCall) {
+    this._call = call;
+  }
+}
+
+export class HasAccessCall extends EthereumCall {
+  get inputs(): HasAccessCall__Inputs {
+    return new HasAccessCall__Inputs(this);
+  }
+
+  get outputs(): HasAccessCall__Outputs {
+    return new HasAccessCall__Outputs(this);
+  }
+}
+
+export class HasAccessCall__Inputs {
+  _call: HasAccessCall;
+
+  constructor(call: HasAccessCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get methodSignature(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class HasAccessCall__Outputs {
+  _call: HasAccessCall;
+
+  constructor(call: HasAccessCall) {
+    this._call = call;
+  }
+
+  get value0(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
+export class HasRootAccessCall extends EthereumCall {
+  get inputs(): HasRootAccessCall__Inputs {
+    return new HasRootAccessCall__Inputs(this);
+  }
+
+  get outputs(): HasRootAccessCall__Outputs {
+    return new HasRootAccessCall__Outputs(this);
+  }
+}
+
+export class HasRootAccessCall__Inputs {
+  _call: HasRootAccessCall;
+
+  constructor(call: HasRootAccessCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class HasRootAccessCall__Outputs {
+  _call: HasRootAccessCall;
+
+  constructor(call: HasRootAccessCall) {
+    this._call = call;
+  }
+
+  get value0(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
+export class PopNextScheduledEventCall extends EthereumCall {
+  get inputs(): PopNextScheduledEventCall__Inputs {
+    return new PopNextScheduledEventCall__Inputs(this);
+  }
+
+  get outputs(): PopNextScheduledEventCall__Outputs {
+    return new PopNextScheduledEventCall__Outputs(this);
+  }
+}
+
+export class PopNextScheduledEventCall__Inputs {
+  _call: PopNextScheduledEventCall;
+
+  constructor(call: PopNextScheduledEventCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+}
+
+export class PopNextScheduledEventCall__Outputs {
+  _call: PopNextScheduledEventCall;
+
+  constructor(call: PopNextScheduledEventCall) {
+    this._call = call;
+  }
+
+  get value0(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
+  }
+}
+
+export class PopPendingEventCall extends EthereumCall {
+  get inputs(): PopPendingEventCall__Inputs {
+    return new PopPendingEventCall__Inputs(this);
+  }
+
+  get outputs(): PopPendingEventCall__Outputs {
+    return new PopPendingEventCall__Outputs(this);
+  }
+}
+
+export class PopPendingEventCall__Inputs {
+  _call: PopPendingEventCall;
+
+  constructor(call: PopPendingEventCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+}
+
+export class PopPendingEventCall__Outputs {
+  _call: PopPendingEventCall;
+
+  constructor(call: PopPendingEventCall) {
+    this._call = call;
+  }
+
+  get value0(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
+  }
+}
+
+export class PushPendingEventCall extends EthereumCall {
+  get inputs(): PushPendingEventCall__Inputs {
+    return new PushPendingEventCall__Inputs(this);
+  }
+
+  get outputs(): PushPendingEventCall__Outputs {
+    return new PushPendingEventCall__Outputs(this);
+  }
+}
+
+export class PushPendingEventCall__Inputs {
+  _call: PushPendingEventCall;
+
+  constructor(call: PushPendingEventCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get pendingEvent(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class PushPendingEventCall__Outputs {
+  _call: PushPendingEventCall;
+
+  constructor(call: PushPendingEventCall) {
+    this._call = call;
+  }
+}
+
+export class RevokeAccessCall extends EthereumCall {
+  get inputs(): RevokeAccessCall__Inputs {
+    return new RevokeAccessCall__Inputs(this);
+  }
+
+  get outputs(): RevokeAccessCall__Outputs {
+    return new RevokeAccessCall__Outputs(this);
+  }
+}
+
+export class RevokeAccessCall__Inputs {
+  _call: RevokeAccessCall;
+
+  constructor(call: RevokeAccessCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get methodSignature(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class RevokeAccessCall__Outputs {
+  _call: RevokeAccessCall;
+
+  constructor(call: RevokeAccessCall) {
+    this._call = call;
+  }
+}
+
+export class SetActorCall extends EthereumCall {
+  get inputs(): SetActorCall__Inputs {
+    return new SetActorCall__Inputs(this);
+  }
+
+  get outputs(): SetActorCall__Outputs {
+    return new SetActorCall__Outputs(this);
+  }
+}
+
+export class SetActorCall__Inputs {
+  _call: SetActorCall;
+
+  constructor(call: SetActorCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get actor(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetActorCall__Outputs {
+  _call: SetActorCall;
+
+  constructor(call: SetActorCall) {
+    this._call = call;
+  }
+}
+
+export class SetAnchorDateCall extends EthereumCall {
+  get inputs(): SetAnchorDateCall__Inputs {
+    return new SetAnchorDateCall__Inputs(this);
+  }
+
+  get outputs(): SetAnchorDateCall__Outputs {
+    return new SetAnchorDateCall__Outputs(this);
+  }
+}
+
+export class SetAnchorDateCall__Inputs {
+  _call: SetAnchorDateCall;
+
+  constructor(call: SetAnchorDateCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get anchorDate(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class SetAnchorDateCall__Outputs {
+  _call: SetAnchorDateCall;
+
+  constructor(call: SetAnchorDateCall) {
+    this._call = call;
+  }
+}
+
+export class SetBeneficiaryForCashflowIdCall extends EthereumCall {
+  get inputs(): SetBeneficiaryForCashflowIdCall__Inputs {
+    return new SetBeneficiaryForCashflowIdCall__Inputs(this);
+  }
+
+  get outputs(): SetBeneficiaryForCashflowIdCall__Outputs {
+    return new SetBeneficiaryForCashflowIdCall__Outputs(this);
+  }
+}
+
+export class SetBeneficiaryForCashflowIdCall__Inputs {
+  _call: SetBeneficiaryForCashflowIdCall;
+
+  constructor(call: SetBeneficiaryForCashflowIdCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get cashflowId(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+
+  get beneficiary(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class SetBeneficiaryForCashflowIdCall__Outputs {
+  _call: SetBeneficiaryForCashflowIdCall;
+
+  constructor(call: SetBeneficiaryForCashflowIdCall) {
+    this._call = call;
+  }
+}
+
+export class SetCounterpartyBeneficiaryCall extends EthereumCall {
+  get inputs(): SetCounterpartyBeneficiaryCall__Inputs {
+    return new SetCounterpartyBeneficiaryCall__Inputs(this);
+  }
+
+  get outputs(): SetCounterpartyBeneficiaryCall__Outputs {
+    return new SetCounterpartyBeneficiaryCall__Outputs(this);
+  }
+}
+
+export class SetCounterpartyBeneficiaryCall__Inputs {
+  _call: SetCounterpartyBeneficiaryCall;
+
+  constructor(call: SetCounterpartyBeneficiaryCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get newCounterpartyBeneficiary(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetCounterpartyBeneficiaryCall__Outputs {
+  _call: SetCounterpartyBeneficiaryCall;
+
+  constructor(call: SetCounterpartyBeneficiaryCall) {
+    this._call = call;
+  }
+}
+
+export class SetCounterpartyObligorCall extends EthereumCall {
+  get inputs(): SetCounterpartyObligorCall__Inputs {
+    return new SetCounterpartyObligorCall__Inputs(this);
+  }
+
+  get outputs(): SetCounterpartyObligorCall__Outputs {
+    return new SetCounterpartyObligorCall__Outputs(this);
+  }
+}
+
+export class SetCounterpartyObligorCall__Inputs {
+  _call: SetCounterpartyObligorCall;
+
+  constructor(call: SetCounterpartyObligorCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get newCounterpartyObligor(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetCounterpartyObligorCall__Outputs {
+  _call: SetCounterpartyObligorCall;
+
+  constructor(call: SetCounterpartyObligorCall) {
+    this._call = call;
+  }
+}
+
+export class SetCreatorBeneficiaryCall extends EthereumCall {
+  get inputs(): SetCreatorBeneficiaryCall__Inputs {
+    return new SetCreatorBeneficiaryCall__Inputs(this);
+  }
+
+  get outputs(): SetCreatorBeneficiaryCall__Outputs {
+    return new SetCreatorBeneficiaryCall__Outputs(this);
+  }
+}
+
+export class SetCreatorBeneficiaryCall__Inputs {
+  _call: SetCreatorBeneficiaryCall;
+
+  constructor(call: SetCreatorBeneficiaryCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get newCreatorBeneficiary(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetCreatorBeneficiaryCall__Outputs {
+  _call: SetCreatorBeneficiaryCall;
+
+  constructor(call: SetCreatorBeneficiaryCall) {
+    this._call = call;
+  }
+}
+
+export class SetCreatorObligorCall extends EthereumCall {
+  get inputs(): SetCreatorObligorCall__Inputs {
+    return new SetCreatorObligorCall__Inputs(this);
+  }
+
+  get outputs(): SetCreatorObligorCall__Outputs {
+    return new SetCreatorObligorCall__Outputs(this);
+  }
+}
+
+export class SetCreatorObligorCall__Inputs {
+  _call: SetCreatorObligorCall;
+
+  constructor(call: SetCreatorObligorCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get newCreatorObligor(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetCreatorObligorCall__Outputs {
+  _call: SetCreatorObligorCall;
+
+  constructor(call: SetCreatorObligorCall) {
+    this._call = call;
+  }
+}
+
+export class SetCustomTermsCall extends EthereumCall {
+  get inputs(): SetCustomTermsCall__Inputs {
+    return new SetCustomTermsCall__Inputs(this);
+  }
+
+  get outputs(): SetCustomTermsCall__Outputs {
+    return new SetCustomTermsCall__Outputs(this);
+  }
+}
+
+export class SetCustomTermsCall__Inputs {
+  _call: SetCustomTermsCall;
+
+  constructor(call: SetCustomTermsCall) {
+    this._call = call;
+  }
+
+  get assetId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get terms(): SetCustomTermsCallTermsStruct {
+    return this._call.inputValues[1].value.toTuple() as SetCustomTermsCallTermsStruct;
+  }
+}
+
+export class SetCustomTermsCall__Outputs {
+  _call: SetCustomTermsCall;
+
+  constructor(call: SetCustomTermsCall) {
+    this._call = call;
+  }
+}
+
+export class SetCustomTermsCallTermsStruct extends EthereumTuple {
+  get anchorDate(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get overwrittenAttributesMap(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get overwrittenTerms(): SetCustomTermsCallTermsOverwrittenTermsStruct {
+    return this[2].toTuple() as SetCustomTermsCallTermsOverwrittenTermsStruct;
+  }
+}
+
+export class SetCustomTermsCallTermsOverwrittenTermsStruct extends EthereumTuple {
   get calendar(): i32 {
     return this[0].toI32();
   }
@@ -1195,24 +2802,24 @@ export class AssetRegistry__computeEventTimeForEventInputTermsStruct extends Eth
     return this[30].toBigInt();
   }
 
-  get gracePeriod(): AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct {
-    return this[31].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct;
+  get gracePeriod(): SetCustomTermsCallTermsOverwrittenTermsGracePeriodStruct {
+    return this[31].toTuple() as SetCustomTermsCallTermsOverwrittenTermsGracePeriodStruct;
   }
 
-  get delinquencyPeriod(): AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct {
-    return this[32].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct;
+  get delinquencyPeriod(): SetCustomTermsCallTermsOverwrittenTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as SetCustomTermsCallTermsOverwrittenTermsDelinquencyPeriodStruct;
   }
 
-  get contractReference_1(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct {
-    return this[33].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct;
+  get contractReference_1(): SetCustomTermsCallTermsOverwrittenTermsContractReference_1Struct {
+    return this[33].toTuple() as SetCustomTermsCallTermsOverwrittenTermsContractReference_1Struct;
   }
 
-  get contractReference_2(): AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct {
-    return this[34].toTuple() as AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct;
+  get contractReference_2(): SetCustomTermsCallTermsOverwrittenTermsContractReference_2Struct {
+    return this[34].toTuple() as SetCustomTermsCallTermsOverwrittenTermsContractReference_2Struct;
   }
 }
 
-export class AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct extends EthereumTuple {
+export class SetCustomTermsCallTermsOverwrittenTermsGracePeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
@@ -1226,7 +2833,7 @@ export class AssetRegistry__computeEventTimeForEventInputTermsGracePeriodStruct 
   }
 }
 
-export class AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodStruct extends EthereumTuple {
+export class SetCustomTermsCallTermsOverwrittenTermsDelinquencyPeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
@@ -1240,532 +2847,48 @@ export class AssetRegistry__computeEventTimeForEventInputTermsDelinquencyPeriodS
   }
 }
 
-export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_1Struct extends EthereumTuple {
+export class SetCustomTermsCallTermsOverwrittenTermsContractReference_1Struct extends EthereumTuple {
   get object(): Bytes {
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
 
-export class AssetRegistry__computeEventTimeForEventInputTermsContractReference_2Struct extends EthereumTuple {
+export class SetCustomTermsCallTermsOverwrittenTermsContractReference_2Struct extends EthereumTuple {
   get object(): Bytes {
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
 
-export class AssetRegistry__getOwnershipResultValue0Struct extends EthereumTuple {
-  get creatorObligor(): Address {
-    return this[0].toAddress();
+export class SetEngineCall extends EthereumCall {
+  get inputs(): SetEngineCall__Inputs {
+    return new SetEngineCall__Inputs(this);
   }
 
-  get creatorBeneficiary(): Address {
-    return this[1].toAddress();
-  }
-
-  get counterpartyObligor(): Address {
-    return this[2].toAddress();
-  }
-
-  get counterpartyBeneficiary(): Address {
-    return this[3].toAddress();
+  get outputs(): SetEngineCall__Outputs {
+    return new SetEngineCall__Outputs(this);
   }
 }
 
-export class AssetRegistry extends SmartContract {
-  static bind(address: Address): AssetRegistry {
-    return new AssetRegistry("AssetRegistry", address);
-  }
+export class SetEngineCall__Inputs {
+  _call: SetEngineCall;
 
-  getState(assetId: Bytes): AssetRegistry__getStateResultValue0Struct {
-    let result = super.call("getState", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toTuple() as AssetRegistry__getStateResultValue0Struct;
-  }
-
-  try_getState(
-    assetId: Bytes
-  ): CallResult<AssetRegistry__getStateResultValue0Struct> {
-    let result = super.tryCall("getState", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      value[0].toTuple() as AssetRegistry__getStateResultValue0Struct
-    );
-  }
-
-  getTemplateId(assetId: Bytes): Bytes {
-    let result = super.call("getTemplateId", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toBytes();
-  }
-
-  try_getTemplateId(assetId: Bytes): CallResult<Bytes> {
-    let result = super.tryCall("getTemplateId", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBytes());
-  }
-
-  getNextScheduleIndex(assetId: Bytes): BigInt {
-    let result = super.call("getNextScheduleIndex", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_getNextScheduleIndex(assetId: Bytes): CallResult<BigInt> {
-    let result = super.tryCall("getNextScheduleIndex", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
-    templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
-    terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
-  ): AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct {
-    let result = super.call(
-      "deriveLifecycleTermsFromCustomTermsAndTemplateTerms",
-      [EthereumValue.fromTuple(templateTerms), EthereumValue.fromTuple(terms)]
-    );
-
-    return result[0].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct;
-  }
-
-  try_deriveLifecycleTermsFromCustomTermsAndTemplateTerms(
-    templateTerms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTemplateTermsStruct,
-    terms: AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsInputTermsStruct
-  ): CallResult<
-    AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct
-  > {
-    let result = super.tryCall(
-      "deriveLifecycleTermsFromCustomTermsAndTemplateTerms",
-      [EthereumValue.fromTuple(templateTerms), EthereumValue.fromTuple(terms)]
-    );
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      value[0].toTuple() as AssetRegistry__deriveLifecycleTermsFromCustomTermsAndTemplateTermsResultValue0Struct
-    );
-  }
-
-  getFinalizedState(
-    assetId: Bytes
-  ): AssetRegistry__getFinalizedStateResultValue0Struct {
-    let result = super.call("getFinalizedState", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toTuple() as AssetRegistry__getFinalizedStateResultValue0Struct;
-  }
-
-  try_getFinalizedState(
-    assetId: Bytes
-  ): CallResult<AssetRegistry__getFinalizedStateResultValue0Struct> {
-    let result = super.tryCall("getFinalizedState", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      value[0].toTuple() as AssetRegistry__getFinalizedStateResultValue0Struct
-    );
-  }
-
-  getActorAddress(assetId: Bytes): Address {
-    let result = super.call("getActorAddress", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toAddress();
-  }
-
-  try_getActorAddress(assetId: Bytes): CallResult<Address> {
-    let result = super.tryCall("getActorAddress", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toAddress());
-  }
-
-  getNextEvent(assetId: Bytes): Bytes {
-    let result = super.call("getNextEvent", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toBytes();
-  }
-
-  try_getNextEvent(assetId: Bytes): CallResult<Bytes> {
-    let result = super.tryCall("getNextEvent", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBytes());
-  }
-
-  getAnchorDate(assetId: Bytes): BigInt {
-    let result = super.call("getAnchorDate", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_getAnchorDate(assetId: Bytes): CallResult<BigInt> {
-    let result = super.tryCall("getAnchorDate", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  decodeCollateralObject(
-    object: Bytes
-  ): AssetRegistry__decodeCollateralObjectResult {
-    let result = super.call("decodeCollateralObject", [
-      EthereumValue.fromFixedBytes(object)
-    ]);
-
-    return new AssetRegistry__decodeCollateralObjectResult(
-      result[0].toAddress(),
-      result[1].toBigInt()
-    );
-  }
-
-  try_decodeCollateralObject(
-    object: Bytes
-  ): CallResult<AssetRegistry__decodeCollateralObjectResult> {
-    let result = super.tryCall("decodeCollateralObject", [
-      EthereumValue.fromFixedBytes(object)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      new AssetRegistry__decodeCollateralObjectResult(
-        value[0].toAddress(),
-        value[1].toBigInt()
-      )
-    );
-  }
-
-  encodeCollateralAsObject(
-    collateralToken: Address,
-    collateralAmount: BigInt
-  ): Bytes {
-    let result = super.call("encodeCollateralAsObject", [
-      EthereumValue.fromAddress(collateralToken),
-      EthereumValue.fromUnsignedBigInt(collateralAmount)
-    ]);
-
-    return result[0].toBytes();
-  }
-
-  try_encodeCollateralAsObject(
-    collateralToken: Address,
-    collateralAmount: BigInt
-  ): CallResult<Bytes> {
-    let result = super.tryCall("encodeCollateralAsObject", [
-      EthereumValue.fromAddress(collateralToken),
-      EthereumValue.fromUnsignedBigInt(collateralAmount)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBytes());
-  }
-
-  getTerms(assetId: Bytes): AssetRegistry__getTermsResultValue0Struct {
-    let result = super.call("getTerms", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toTuple() as AssetRegistry__getTermsResultValue0Struct;
-  }
-
-  try_getTerms(
-    assetId: Bytes
-  ): CallResult<AssetRegistry__getTermsResultValue0Struct> {
-    let result = super.tryCall("getTerms", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      value[0].toTuple() as AssetRegistry__getTermsResultValue0Struct
-    );
-  }
-
-  ONE_POINT_ZERO(): BigInt {
-    let result = super.call("ONE_POINT_ZERO", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_ONE_POINT_ZERO(): CallResult<BigInt> {
-    let result = super.tryCall("ONE_POINT_ZERO", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  decodeEvent(_event: Bytes): AssetRegistry__decodeEventResult {
-    let result = super.call("decodeEvent", [
-      EthereumValue.fromFixedBytes(_event)
-    ]);
-
-    return new AssetRegistry__decodeEventResult(
-      result[0].toI32(),
-      result[1].toBigInt()
-    );
-  }
-
-  try_decodeEvent(_event: Bytes): CallResult<AssetRegistry__decodeEventResult> {
-    let result = super.tryCall("decodeEvent", [
-      EthereumValue.fromFixedBytes(_event)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      new AssetRegistry__decodeEventResult(
-        value[0].toI32(),
-        value[1].toBigInt()
-      )
-    );
-  }
-
-  getEpochOffset(eventType: i32): BigInt {
-    let result = super.call("getEpochOffset", [
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType))
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_getEpochOffset(eventType: i32): CallResult<BigInt> {
-    let result = super.tryCall("getEpochOffset", [
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType))
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  computeEventTimeForEvent(
-    _event: Bytes,
-    terms: AssetRegistry__computeEventTimeForEventInputTermsStruct
-  ): BigInt {
-    let result = super.call("computeEventTimeForEvent", [
-      EthereumValue.fromFixedBytes(_event),
-      EthereumValue.fromTuple(terms)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_computeEventTimeForEvent(
-    _event: Bytes,
-    terms: AssetRegistry__computeEventTimeForEventInputTermsStruct
-  ): CallResult<BigInt> {
-    let result = super.tryCall("computeEventTimeForEvent", [
-      EthereumValue.fromFixedBytes(_event),
-      EthereumValue.fromTuple(terms)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  templateRegistry(): Address {
-    let result = super.call("templateRegistry", []);
-
-    return result[0].toAddress();
-  }
-
-  try_templateRegistry(): CallResult<Address> {
-    let result = super.tryCall("templateRegistry", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toAddress());
-  }
-
-  PRECISION(): BigInt {
-    let result = super.call("PRECISION", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_PRECISION(): CallResult<BigInt> {
-    let result = super.tryCall("PRECISION", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  encodeEvent(eventType: i32, scheduleTime: BigInt): Bytes {
-    let result = super.call("encodeEvent", [
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType)),
-      EthereumValue.fromUnsignedBigInt(scheduleTime)
-    ]);
-
-    return result[0].toBytes();
-  }
-
-  try_encodeEvent(eventType: i32, scheduleTime: BigInt): CallResult<Bytes> {
-    let result = super.tryCall("encodeEvent", [
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(eventType)),
-      EthereumValue.fromUnsignedBigInt(scheduleTime)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBytes());
-  }
-
-  getOwnership(assetId: Bytes): AssetRegistry__getOwnershipResultValue0Struct {
-    let result = super.call("getOwnership", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toTuple() as AssetRegistry__getOwnershipResultValue0Struct;
-  }
-
-  try_getOwnership(
-    assetId: Bytes
-  ): CallResult<AssetRegistry__getOwnershipResultValue0Struct> {
-    let result = super.tryCall("getOwnership", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      value[0].toTuple() as AssetRegistry__getOwnershipResultValue0Struct
-    );
-  }
-
-  getCashflowBeneficiary(assetId: Bytes, cashflowId: i32): Address {
-    let result = super.call("getCashflowBeneficiary", [
-      EthereumValue.fromFixedBytes(assetId),
-      EthereumValue.fromI32(cashflowId)
-    ]);
-
-    return result[0].toAddress();
-  }
-
-  try_getCashflowBeneficiary(
-    assetId: Bytes,
-    cashflowId: i32
-  ): CallResult<Address> {
-    let result = super.tryCall("getCashflowBeneficiary", [
-      EthereumValue.fromFixedBytes(assetId),
-      EthereumValue.fromI32(cashflowId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toAddress());
-  }
-
-  getEngineAddress(assetId: Bytes): Address {
-    let result = super.call("getEngineAddress", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-
-    return result[0].toAddress();
-  }
-
-  try_getEngineAddress(assetId: Bytes): CallResult<Address> {
-    let result = super.tryCall("getEngineAddress", [
-      EthereumValue.fromFixedBytes(assetId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toAddress());
-  }
-}
-
-export class SetStateCall extends EthereumCall {
-  get inputs(): SetStateCall__Inputs {
-    return new SetStateCall__Inputs(this);
-  }
-
-  get outputs(): SetStateCall__Outputs {
-    return new SetStateCall__Outputs(this);
-  }
-}
-
-export class SetStateCall__Inputs {
-  _call: SetStateCall;
-
-  constructor(call: SetStateCall) {
+  constructor(call: SetEngineCall) {
     this._call = call;
   }
 
@@ -1773,70 +2896,16 @@ export class SetStateCall__Inputs {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get state(): SetStateCallStateStruct {
-    return this._call.inputValues[1].value.toTuple() as SetStateCallStateStruct;
+  get engine(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 }
 
-export class SetStateCall__Outputs {
-  _call: SetStateCall;
+export class SetEngineCall__Outputs {
+  _call: SetEngineCall;
 
-  constructor(call: SetStateCall) {
+  constructor(call: SetEngineCall) {
     this._call = call;
-  }
-}
-
-export class SetStateCallStateStruct extends EthereumTuple {
-  get contractPerformance(): i32 {
-    return this[0].toI32();
-  }
-
-  get statusDate(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get nonPerformingDate(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get maturityDate(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get executionDate(): BigInt {
-    return this[4].toBigInt();
-  }
-
-  get notionalPrincipal(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get accruedInterest(): BigInt {
-    return this[6].toBigInt();
-  }
-
-  get feeAccrued(): BigInt {
-    return this[7].toBigInt();
-  }
-
-  get nominalInterestRate(): BigInt {
-    return this[8].toBigInt();
-  }
-
-  get interestScalingMultiplier(): BigInt {
-    return this[9].toBigInt();
-  }
-
-  get notionalScalingMultiplier(): BigInt {
-    return this[10].toBigInt();
-  }
-
-  get nextPrincipalRedemptionPayment(): BigInt {
-    return this[11].toBigInt();
-  }
-
-  get executionAmount(): BigInt {
-    return this[12].toBigInt();
   }
 }
 
@@ -1891,57 +2960,61 @@ export class SetFinalizedStateCallStateStruct extends EthereumTuple {
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
   }
-}
 
-export class SetCounterpartyBeneficiaryCall extends EthereumCall {
-  get inputs(): SetCounterpartyBeneficiaryCall__Inputs {
-    return new SetCounterpartyBeneficiaryCall__Inputs(this);
-  }
-
-  get outputs(): SetCounterpartyBeneficiaryCall__Outputs {
-    return new SetCounterpartyBeneficiaryCall__Outputs(this);
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
-export class SetCounterpartyBeneficiaryCall__Inputs {
-  _call: SetCounterpartyBeneficiaryCall;
+export class SetStateCall extends EthereumCall {
+  get inputs(): SetStateCall__Inputs {
+    return new SetStateCall__Inputs(this);
+  }
 
-  constructor(call: SetCounterpartyBeneficiaryCall) {
+  get outputs(): SetStateCall__Outputs {
+    return new SetStateCall__Outputs(this);
+  }
+}
+
+export class SetStateCall__Inputs {
+  _call: SetStateCall;
+
+  constructor(call: SetStateCall) {
     this._call = call;
   }
 
@@ -1949,148 +3022,74 @@ export class SetCounterpartyBeneficiaryCall__Inputs {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get newCounterpartyBeneficiary(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get state(): SetStateCallStateStruct {
+    return this._call.inputValues[1].value.toTuple() as SetStateCallStateStruct;
   }
 }
 
-export class SetCounterpartyBeneficiaryCall__Outputs {
-  _call: SetCounterpartyBeneficiaryCall;
+export class SetStateCall__Outputs {
+  _call: SetStateCall;
 
-  constructor(call: SetCounterpartyBeneficiaryCall) {
+  constructor(call: SetStateCall) {
     this._call = call;
   }
 }
 
-export class IncrementScheduleIndexCall extends EthereumCall {
-  get inputs(): IncrementScheduleIndexCall__Inputs {
-    return new IncrementScheduleIndexCall__Inputs(this);
+export class SetStateCallStateStruct extends EthereumTuple {
+  get contractPerformance(): i32 {
+    return this[0].toI32();
   }
 
-  get outputs(): IncrementScheduleIndexCall__Outputs {
-    return new IncrementScheduleIndexCall__Outputs(this);
-  }
-}
-
-export class IncrementScheduleIndexCall__Inputs {
-  _call: IncrementScheduleIndexCall;
-
-  constructor(call: IncrementScheduleIndexCall) {
-    this._call = call;
+  get statusDate(): BigInt {
+    return this[1].toBigInt();
   }
 
-  get assetId(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-}
-
-export class IncrementScheduleIndexCall__Outputs {
-  _call: IncrementScheduleIndexCall;
-
-  constructor(call: IncrementScheduleIndexCall) {
-    this._call = call;
-  }
-}
-
-export class SetCreatorBeneficiaryCall extends EthereumCall {
-  get inputs(): SetCreatorBeneficiaryCall__Inputs {
-    return new SetCreatorBeneficiaryCall__Inputs(this);
+  get nonPerformingDate(): BigInt {
+    return this[2].toBigInt();
   }
 
-  get outputs(): SetCreatorBeneficiaryCall__Outputs {
-    return new SetCreatorBeneficiaryCall__Outputs(this);
-  }
-}
-
-export class SetCreatorBeneficiaryCall__Inputs {
-  _call: SetCreatorBeneficiaryCall;
-
-  constructor(call: SetCreatorBeneficiaryCall) {
-    this._call = call;
+  get maturityDate(): BigInt {
+    return this[3].toBigInt();
   }
 
-  get assetId(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get exerciseDate(): BigInt {
+    return this[4].toBigInt();
   }
 
-  get newCreatorBeneficiary(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-}
-
-export class SetCreatorBeneficiaryCall__Outputs {
-  _call: SetCreatorBeneficiaryCall;
-
-  constructor(call: SetCreatorBeneficiaryCall) {
-    this._call = call;
-  }
-}
-
-export class SetBeneficiaryForCashflowIdCall extends EthereumCall {
-  get inputs(): SetBeneficiaryForCashflowIdCall__Inputs {
-    return new SetBeneficiaryForCashflowIdCall__Inputs(this);
+  get terminationDate(): BigInt {
+    return this[5].toBigInt();
   }
 
-  get outputs(): SetBeneficiaryForCashflowIdCall__Outputs {
-    return new SetBeneficiaryForCashflowIdCall__Outputs(this);
-  }
-}
-
-export class SetBeneficiaryForCashflowIdCall__Inputs {
-  _call: SetBeneficiaryForCashflowIdCall;
-
-  constructor(call: SetBeneficiaryForCashflowIdCall) {
-    this._call = call;
+  get notionalPrincipal(): BigInt {
+    return this[6].toBigInt();
   }
 
-  get assetId(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get accruedInterest(): BigInt {
+    return this[7].toBigInt();
   }
 
-  get cashflowId(): i32 {
-    return this._call.inputValues[1].value.toI32();
+  get feeAccrued(): BigInt {
+    return this[8].toBigInt();
   }
 
-  get beneficiary(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-}
-
-export class SetBeneficiaryForCashflowIdCall__Outputs {
-  _call: SetBeneficiaryForCashflowIdCall;
-
-  constructor(call: SetBeneficiaryForCashflowIdCall) {
-    this._call = call;
-  }
-}
-
-export class ConstructorCall extends EthereumCall {
-  get inputs(): ConstructorCall__Inputs {
-    return new ConstructorCall__Inputs(this);
+  get nominalInterestRate(): BigInt {
+    return this[9].toBigInt();
   }
 
-  get outputs(): ConstructorCall__Outputs {
-    return new ConstructorCall__Outputs(this);
-  }
-}
-
-export class ConstructorCall__Inputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
+  get interestScalingMultiplier(): BigInt {
+    return this[10].toBigInt();
   }
 
-  get _templateRegistry(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get notionalScalingMultiplier(): BigInt {
+    return this[11].toBigInt();
   }
-}
 
-export class ConstructorCall__Outputs {
-  _call: ConstructorCall;
+  get nextPrincipalRedemptionPayment(): BigInt {
+    return this[12].toBigInt();
+  }
 
-  constructor(call: ConstructorCall) {
-    this._call = call;
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -2123,8 +3122,8 @@ export class RegisterAssetCall__Inputs {
     return this._call.inputValues[2].value.toBytes();
   }
 
-  get customTerms(): RegisterAssetCallCustomTermsStruct {
-    return this._call.inputValues[3].value.toTuple() as RegisterAssetCallCustomTermsStruct;
+  get terms(): RegisterAssetCallTermsStruct {
+    return this._call.inputValues[3].value.toTuple() as RegisterAssetCallTermsStruct;
   }
 
   get state(): RegisterAssetCallStateStruct {
@@ -2137,6 +3136,10 @@ export class RegisterAssetCall__Inputs {
 
   get actor(): Address {
     return this._call.inputValues[6].value.toAddress();
+  }
+
+  get root(): Address {
+    return this._call.inputValues[7].value.toAddress();
   }
 }
 
@@ -2166,7 +3169,7 @@ export class RegisterAssetCallOwnershipStruct extends EthereumTuple {
   }
 }
 
-export class RegisterAssetCallCustomTermsStruct extends EthereumTuple {
+export class RegisterAssetCallTermsStruct extends EthereumTuple {
   get anchorDate(): BigInt {
     return this[0].toBigInt();
   }
@@ -2175,12 +3178,12 @@ export class RegisterAssetCallCustomTermsStruct extends EthereumTuple {
     return this[1].toBigInt();
   }
 
-  get overwrittenTerms(): RegisterAssetCallCustomTermsOverwrittenTermsStruct {
-    return this[2].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsStruct;
+  get overwrittenTerms(): RegisterAssetCallTermsOverwrittenTermsStruct {
+    return this[2].toTuple() as RegisterAssetCallTermsOverwrittenTermsStruct;
   }
 }
 
-export class RegisterAssetCallCustomTermsOverwrittenTermsStruct extends EthereumTuple {
+export class RegisterAssetCallTermsOverwrittenTermsStruct extends EthereumTuple {
   get calendar(): i32 {
     return this[0].toI32();
   }
@@ -2305,24 +3308,24 @@ export class RegisterAssetCallCustomTermsOverwrittenTermsStruct extends Ethereum
     return this[30].toBigInt();
   }
 
-  get gracePeriod(): RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct {
-    return this[31].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct;
+  get gracePeriod(): RegisterAssetCallTermsOverwrittenTermsGracePeriodStruct {
+    return this[31].toTuple() as RegisterAssetCallTermsOverwrittenTermsGracePeriodStruct;
   }
 
-  get delinquencyPeriod(): RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct {
-    return this[32].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct;
+  get delinquencyPeriod(): RegisterAssetCallTermsOverwrittenTermsDelinquencyPeriodStruct {
+    return this[32].toTuple() as RegisterAssetCallTermsOverwrittenTermsDelinquencyPeriodStruct;
   }
 
-  get contractReference_1(): RegisterAssetCallCustomTermsOverwrittenTermsContractReference_1Struct {
-    return this[33].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsContractReference_1Struct;
+  get contractReference_1(): RegisterAssetCallTermsOverwrittenTermsContractReference_1Struct {
+    return this[33].toTuple() as RegisterAssetCallTermsOverwrittenTermsContractReference_1Struct;
   }
 
-  get contractReference_2(): RegisterAssetCallCustomTermsOverwrittenTermsContractReference_2Struct {
-    return this[34].toTuple() as RegisterAssetCallCustomTermsOverwrittenTermsContractReference_2Struct;
+  get contractReference_2(): RegisterAssetCallTermsOverwrittenTermsContractReference_2Struct {
+    return this[34].toTuple() as RegisterAssetCallTermsOverwrittenTermsContractReference_2Struct;
   }
 }
 
-export class RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct extends EthereumTuple {
+export class RegisterAssetCallTermsOverwrittenTermsGracePeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
@@ -2336,7 +3339,7 @@ export class RegisterAssetCallCustomTermsOverwrittenTermsGracePeriodStruct exten
   }
 }
 
-export class RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct extends EthereumTuple {
+export class RegisterAssetCallTermsOverwrittenTermsDelinquencyPeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
@@ -2350,30 +3353,30 @@ export class RegisterAssetCallCustomTermsOverwrittenTermsDelinquencyPeriodStruct
   }
 }
 
-export class RegisterAssetCallCustomTermsOverwrittenTermsContractReference_1Struct extends EthereumTuple {
+export class RegisterAssetCallTermsOverwrittenTermsContractReference_1Struct extends EthereumTuple {
   get object(): Bytes {
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
 
-export class RegisterAssetCallCustomTermsOverwrittenTermsContractReference_2Struct extends EthereumTuple {
+export class RegisterAssetCallTermsOverwrittenTermsContractReference_2Struct extends EthereumTuple {
   get object(): Bytes {
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -2395,39 +3398,43 @@ export class RegisterAssetCallStateStruct extends EthereumTuple {
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }

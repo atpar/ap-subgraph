@@ -11,17 +11,16 @@
     "deploy:ropsten": "NETWORK=ropsten ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/ap-contracts": "0.2.1-beta.14",
+    "@atpar/ap-contracts": "0.2.1-beta.18",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "actus-solidity": "0.2.1",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
-    "funds-distribution-token": "0.1.2",
     "mustache": "^4.0.0",
-    "openzeppelin-solidity": "2.1.2",
-    "truffle": "^5.0.4",
-    "truffle-contract": "^4.0.5",
-    "truffle-hdwallet-provider": "^1.0.4"
+    "openzeppelin-solidity": "3.0.0-beta.0",
+    "truffle": "^5.1.20",
+    "@truffle/contract": "^4.1.15",
+    "truffle-hdwallet-provider": "^1.0.9"
   }
 }

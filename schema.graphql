@@ -8,8 +8,8 @@ type Period @entity {
 type ContractReference @entity {
   id: ID!
   object: Bytes!
-  contractReferenceRole: Int!
-  contractReferenceType: Int!
+  _type: Int!
+  role: Int!
 }
 
 type TemplateTerms @entity {
@@ -109,7 +109,8 @@ type State @entity {
   statusDate: BigInt!
   nonPerformingDate: BigInt!
   maturityDate: BigInt!
-  executionDate: BigInt!
+  exerciseDate: BigInt!
+  terminationDate: BigInt!
   notionalPrincipal: BigInt!
   accruedInterest: BigInt!
   feeAccrued: BigInt!
@@ -117,7 +118,7 @@ type State @entity {
   interestScalingMultiplier: BigInt!
   notionalScalingMultiplier: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
-  executionAmount: BigInt!
+  exerciseAmount: BigInt!
 }
 
 type Asset @entity {
@@ -131,4 +132,5 @@ type Asset @entity {
   lifecycleTerms: LifecycleTerms!
   state: State!
   nextScheduleIndex: BigInt!
+  nextScheduledEvent: Bytes!
 }

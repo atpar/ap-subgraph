@@ -230,6 +230,25 @@ export class TemplateRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
+  isRegistered(templateId: Bytes): boolean {
+    let result = super.call("isRegistered", [
+      EthereumValue.fromFixedBytes(templateId)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_isRegistered(templateId: Bytes): CallResult<boolean> {
+    let result = super.tryCall("isRegistered", [
+      EthereumValue.fromFixedBytes(templateId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
   getTemplateTerms(
     templateId: Bytes
   ): TemplateRegistry__getTemplateTermsResultValue0Struct {

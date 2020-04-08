@@ -94,14 +94,14 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
 
   let contractReference_1 = new ContractReference(event.params.assetId.toHex() + '-lifecycleTerms-contractReference_1');
   contractReference_1.object = _lifecycleTerms.contractReference_1.object;
-  contractReference_1.contractReferenceRole = _lifecycleTerms.contractReference_1.contractReferenceRole;
-  contractReference_1.contractReferenceType = _lifecycleTerms.contractReference_1.contractReferenceType;
+  contractReference_1._type = _lifecycleTerms.contractReference_1._type;
+  contractReference_1.role = _lifecycleTerms.contractReference_1.role;
   contractReference_1.save();
 
   let contractReference_2 = new ContractReference(event.params.assetId.toHex() + '-lifecycleTerms-contractReference_2');
   contractReference_2.object = _lifecycleTerms.contractReference_2.object;
-  contractReference_2.contractReferenceRole = _lifecycleTerms.contractReference_2.contractReferenceRole;
-  contractReference_2.contractReferenceType = _lifecycleTerms.contractReference_2.contractReferenceType;
+  contractReference_2._type = _lifecycleTerms.contractReference_2._type;
+  contractReference_2.role = _lifecycleTerms.contractReference_2.role;
   contractReference_2.save();
 
   let gracePeriod = new Period(event.params.assetId.toHex() + '-lifecycleTerms-gracePeriod');
@@ -159,7 +159,8 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   state.statusDate = _state.statusDate;
   state.nonPerformingDate = _state.nonPerformingDate;
   state.maturityDate = _state.maturityDate;
-  state.executionDate = _state.executionDate;
+  state.exerciseDate = _state.exerciseDate;
+  state.terminationDate = _state.terminationDate;
   state.notionalPrincipal = _state.notionalPrincipal;
   state.accruedInterest = _state.accruedInterest;
   state.feeAccrued = _state.feeAccrued;
@@ -167,7 +168,7 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   state.interestScalingMultiplier = _state.interestScalingMultiplier;
   state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
   state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
-  state.executionAmount = _state.executionAmount;
+  state.exerciseAmount = _state.exerciseAmount;
   state.save();
 
   // let template = Template.load(assetRegistry.getTemplateId(event.params.assetId).toHex());
@@ -176,13 +177,14 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   let asset = new Asset(event.params.assetId.toHex());
   asset.assetId = event.params.assetId;
   asset.template = assetRegistry.getTemplateId(event.params.assetId).toHex(); // template.id;
-  asset.engine = assetRegistry.getEngineAddress(event.params.assetId);
-  asset.actor = assetRegistry.getActorAddress(event.params.assetId);
+  asset.engine = assetRegistry.getEngine(event.params.assetId);
+  asset.actor = assetRegistry.getActor(event.params.assetId);
   asset.ownership = ownership.id;
   asset.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
   asset.lifecycleTerms = lifecycleTerms.id;
   asset.state = state.id;
   asset.nextScheduleIndex = assetRegistry.getNextScheduleIndex(event.params.assetId);
+  asset.nextScheduledEvent = assetRegistry.getNextScheduledEvent(event.params.assetId);
   asset.save();
 }
 
@@ -198,7 +200,8 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   state.statusDate = _state.statusDate;
   state.nonPerformingDate = _state.nonPerformingDate;
   state.maturityDate = _state.maturityDate;
-  state.executionDate = _state.executionDate;
+  state.exerciseDate = _state.exerciseDate;
+  state.terminationDate = _state.terminationDate;
   state.notionalPrincipal = _state.notionalPrincipal;
   state.accruedInterest = _state.accruedInterest;
   state.feeAccrued = _state.feeAccrued;
@@ -206,11 +209,12 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   state.interestScalingMultiplier = _state.interestScalingMultiplier;
   state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
   state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
-  state.executionAmount = _state.executionAmount;
+  state.exerciseAmount = _state.exerciseAmount;
   state.save();
 
   let asset = Asset.load(event.params.assetId.toHex());
   asset.nextScheduleIndex = assetRegistry.getNextScheduleIndex(event.params.assetId);
+  asset.nextScheduledEvent = assetRegistry.getNextScheduledEvent(event.params.assetId);
   asset.save();
 }
 

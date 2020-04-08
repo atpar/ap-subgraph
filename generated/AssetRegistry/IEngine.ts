@@ -32,40 +32,44 @@ export class IEngine__computeInitialStateResultValue0Struct extends EthereumTupl
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -244,11 +248,11 @@ export class IEngine__computeInitialStateInputTermsContractReference_1Struct ext
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -258,11 +262,11 @@ export class IEngine__computeInitialStateInputTermsContractReference_2Struct ext
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -284,40 +288,44 @@ export class IEngine__computeStateForEventResultValue0Struct extends EthereumTup
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -496,11 +504,11 @@ export class IEngine__computeStateForEventInputTermsContractReference_1Struct ex
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -510,11 +518,11 @@ export class IEngine__computeStateForEventInputTermsContractReference_2Struct ex
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -536,40 +544,44 @@ export class IEngine__computeStateForEventInputStateStruct extends EthereumTuple
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -748,11 +760,11 @@ export class IEngine__computePayoffForEventInputTermsContractReference_1Struct e
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -762,11 +774,11 @@ export class IEngine__computePayoffForEventInputTermsContractReference_2Struct e
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -788,40 +800,44 @@ export class IEngine__computePayoffForEventInputStateStruct extends EthereumTupl
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -846,64 +862,60 @@ export class IEngine__computeNonCyclicScheduleSegmentInputTermsStruct extends Et
     return this[4].toBigInt();
   }
 
-  get terminationDate(): BigInt {
+  get purchaseDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get purchaseDate(): BigInt {
+  get capitalizationEndDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get capitalizationEndDate(): BigInt {
+  get cycleAnchorDateOfInterestPayment(): BigInt {
     return this[7].toBigInt();
   }
 
-  get cycleAnchorDateOfInterestPayment(): BigInt {
+  get cycleAnchorDateOfRateReset(): BigInt {
     return this[8].toBigInt();
   }
 
-  get cycleAnchorDateOfRateReset(): BigInt {
+  get cycleAnchorDateOfScalingIndex(): BigInt {
     return this[9].toBigInt();
   }
 
-  get cycleAnchorDateOfScalingIndex(): BigInt {
+  get cycleAnchorDateOfFee(): BigInt {
     return this[10].toBigInt();
   }
 
-  get cycleAnchorDateOfFee(): BigInt {
+  get cycleAnchorDateOfPrincipalRedemption(): BigInt {
     return this[11].toBigInt();
   }
 
-  get cycleAnchorDateOfPrincipalRedemption(): BigInt {
-    return this[12].toBigInt();
-  }
-
   get cycleOfInterestPayment(): IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfInterestPaymentStruct {
-    return this[13].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfInterestPaymentStruct;
+    return this[12].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfInterestPaymentStruct;
   }
 
   get cycleOfRateReset(): IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfRateResetStruct {
-    return this[14].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfRateResetStruct;
+    return this[13].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfRateResetStruct;
   }
 
   get cycleOfScalingIndex(): IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfScalingIndexStruct {
-    return this[15].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfScalingIndexStruct;
+    return this[14].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfScalingIndexStruct;
   }
 
   get cycleOfFee(): IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfFeeStruct {
-    return this[16].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfFeeStruct;
+    return this[15].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfFeeStruct;
   }
 
   get cycleOfPrincipalRedemption(): IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfPrincipalRedemptionStruct {
-    return this[17].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfPrincipalRedemptionStruct;
+    return this[16].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsCycleOfPrincipalRedemptionStruct;
   }
 
   get gracePeriod(): IEngine__computeNonCyclicScheduleSegmentInputTermsGracePeriodStruct {
-    return this[18].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsGracePeriodStruct;
+    return this[17].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsGracePeriodStruct;
   }
 
   get delinquencyPeriod(): IEngine__computeNonCyclicScheduleSegmentInputTermsDelinquencyPeriodStruct {
-    return this[19].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsDelinquencyPeriodStruct;
+    return this[18].toTuple() as IEngine__computeNonCyclicScheduleSegmentInputTermsDelinquencyPeriodStruct;
   }
 }
 
@@ -1046,64 +1058,60 @@ export class IEngine__computeCyclicScheduleSegmentInputTermsStruct extends Ether
     return this[4].toBigInt();
   }
 
-  get terminationDate(): BigInt {
+  get purchaseDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get purchaseDate(): BigInt {
+  get capitalizationEndDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get capitalizationEndDate(): BigInt {
+  get cycleAnchorDateOfInterestPayment(): BigInt {
     return this[7].toBigInt();
   }
 
-  get cycleAnchorDateOfInterestPayment(): BigInt {
+  get cycleAnchorDateOfRateReset(): BigInt {
     return this[8].toBigInt();
   }
 
-  get cycleAnchorDateOfRateReset(): BigInt {
+  get cycleAnchorDateOfScalingIndex(): BigInt {
     return this[9].toBigInt();
   }
 
-  get cycleAnchorDateOfScalingIndex(): BigInt {
+  get cycleAnchorDateOfFee(): BigInt {
     return this[10].toBigInt();
   }
 
-  get cycleAnchorDateOfFee(): BigInt {
+  get cycleAnchorDateOfPrincipalRedemption(): BigInt {
     return this[11].toBigInt();
   }
 
-  get cycleAnchorDateOfPrincipalRedemption(): BigInt {
-    return this[12].toBigInt();
-  }
-
   get cycleOfInterestPayment(): IEngine__computeCyclicScheduleSegmentInputTermsCycleOfInterestPaymentStruct {
-    return this[13].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfInterestPaymentStruct;
+    return this[12].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfInterestPaymentStruct;
   }
 
   get cycleOfRateReset(): IEngine__computeCyclicScheduleSegmentInputTermsCycleOfRateResetStruct {
-    return this[14].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfRateResetStruct;
+    return this[13].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfRateResetStruct;
   }
 
   get cycleOfScalingIndex(): IEngine__computeCyclicScheduleSegmentInputTermsCycleOfScalingIndexStruct {
-    return this[15].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfScalingIndexStruct;
+    return this[14].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfScalingIndexStruct;
   }
 
   get cycleOfFee(): IEngine__computeCyclicScheduleSegmentInputTermsCycleOfFeeStruct {
-    return this[16].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfFeeStruct;
+    return this[15].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfFeeStruct;
   }
 
   get cycleOfPrincipalRedemption(): IEngine__computeCyclicScheduleSegmentInputTermsCycleOfPrincipalRedemptionStruct {
-    return this[17].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfPrincipalRedemptionStruct;
+    return this[16].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsCycleOfPrincipalRedemptionStruct;
   }
 
   get gracePeriod(): IEngine__computeCyclicScheduleSegmentInputTermsGracePeriodStruct {
-    return this[18].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsGracePeriodStruct;
+    return this[17].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsGracePeriodStruct;
   }
 
   get delinquencyPeriod(): IEngine__computeCyclicScheduleSegmentInputTermsDelinquencyPeriodStruct {
-    return this[19].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsDelinquencyPeriodStruct;
+    return this[18].toTuple() as IEngine__computeCyclicScheduleSegmentInputTermsDelinquencyPeriodStruct;
   }
 }
 
@@ -1400,11 +1408,11 @@ export class IEngine__isEventScheduledInputTermsContractReference_1Struct extend
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -1414,11 +1422,11 @@ export class IEngine__isEventScheduledInputTermsContractReference_2Struct extend
     return this[0].toBytes();
   }
 
-  get contractReferenceType(): i32 {
+  get _type(): i32 {
     return this[1].toI32();
   }
 
-  get contractReferenceRole(): i32 {
+  get role(): i32 {
     return this[2].toI32();
   }
 }
@@ -1440,40 +1448,44 @@ export class IEngine__isEventScheduledInputStateStruct extends EthereumTuple {
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 
@@ -1494,40 +1506,44 @@ export class IEngine__isEventScheduledInputUnderlyingStateStruct extends Ethereu
     return this[3].toBigInt();
   }
 
-  get executionDate(): BigInt {
+  get exerciseDate(): BigInt {
     return this[4].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get terminationDate(): BigInt {
     return this[5].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[6].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[7].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[8].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[10].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get executionAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[12].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[13].toBigInt();
   }
 }
 

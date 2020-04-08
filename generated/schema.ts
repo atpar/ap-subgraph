@@ -109,22 +109,22 @@ export class ContractReference extends Entity {
     this.set("object", Value.fromBytes(value));
   }
 
-  get contractReferenceRole(): i32 {
-    let value = this.get("contractReferenceRole");
+  get _type(): i32 {
+    let value = this.get("_type");
     return value.toI32();
   }
 
-  set contractReferenceRole(value: i32) {
-    this.set("contractReferenceRole", Value.fromI32(value));
+  set _type(value: i32) {
+    this.set("_type", Value.fromI32(value));
   }
 
-  get contractReferenceType(): i32 {
-    let value = this.get("contractReferenceType");
+  get role(): i32 {
+    let value = this.get("role");
     return value.toI32();
   }
 
-  set contractReferenceType(value: i32) {
-    this.set("contractReferenceType", Value.fromI32(value));
+  set role(value: i32) {
+    this.set("role", Value.fromI32(value));
   }
 }
 
@@ -993,13 +993,22 @@ export class State extends Entity {
     this.set("maturityDate", Value.fromBigInt(value));
   }
 
-  get executionDate(): BigInt {
-    let value = this.get("executionDate");
+  get exerciseDate(): BigInt {
+    let value = this.get("exerciseDate");
     return value.toBigInt();
   }
 
-  set executionDate(value: BigInt) {
-    this.set("executionDate", Value.fromBigInt(value));
+  set exerciseDate(value: BigInt) {
+    this.set("exerciseDate", Value.fromBigInt(value));
+  }
+
+  get terminationDate(): BigInt {
+    let value = this.get("terminationDate");
+    return value.toBigInt();
+  }
+
+  set terminationDate(value: BigInt) {
+    this.set("terminationDate", Value.fromBigInt(value));
   }
 
   get notionalPrincipal(): BigInt {
@@ -1065,13 +1074,13 @@ export class State extends Entity {
     this.set("nextPrincipalRedemptionPayment", Value.fromBigInt(value));
   }
 
-  get executionAmount(): BigInt {
-    let value = this.get("executionAmount");
+  get exerciseAmount(): BigInt {
+    let value = this.get("exerciseAmount");
     return value.toBigInt();
   }
 
-  set executionAmount(value: BigInt) {
-    this.set("executionAmount", Value.fromBigInt(value));
+  set exerciseAmount(value: BigInt) {
+    this.set("exerciseAmount", Value.fromBigInt(value));
   }
 }
 
@@ -1184,5 +1193,14 @@ export class Asset extends Entity {
 
   set nextScheduleIndex(value: BigInt) {
     this.set("nextScheduleIndex", Value.fromBigInt(value));
+  }
+
+  get nextScheduledEvent(): Bytes {
+    let value = this.get("nextScheduledEvent");
+    return value.toBytes();
+  }
+
+  set nextScheduledEvent(value: Bytes) {
+    this.set("nextScheduledEvent", Value.fromBytes(value));
   }
 }

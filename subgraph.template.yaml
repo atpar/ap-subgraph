@@ -48,7 +48,7 @@ dataSources:
         - name: AssetRegistry
           file: ./build/contracts/AssetRegistry.json
       eventHandlers:
-        - event: ProgressedAsset(indexed bytes32,uint8,uint256)
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
           handler: handleProgressedAsset
       file: ./src/mapping.ts
   - kind: ethereum/contract

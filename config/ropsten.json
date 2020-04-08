@@ -1,7 +1,7 @@
 {
   "network": "ropsten",
   "description": "ACTUS Protocol (ropsten)",
-  "AssetActor": "0x45E13Ea64007898492EBbccda8074034Dbb3927b",
-  "AssetRegistry": "0x97E80B5B739FcA094dfE173D225159a5367E6e51",
-  "TemplateRegistry": "0xC72Ba5AE1D3F921ed5C50f20c10Db06E6DA62287"
+  "AssetActor": "0x28f89844B5E585afc77F4453e352E80453D7225F",
+  "AssetRegistry": "0x860Cb98f0B66297165775038911Cb0D06d2d727E",
+  "TemplateRegistry": "0xB69d3630e5aA17185472E84917C20cEa440Ae981"
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.6.4;
 
 import "@atpar/ap-contracts/contracts/Core/AssetActor/AssetActor.sol";
 import "@atpar/ap-contracts/contracts/Core/AssetRegistry/AssetRegistry.sol";
