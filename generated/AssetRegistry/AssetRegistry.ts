@@ -3138,7 +3138,7 @@ export class RegisterAssetCall__Inputs {
     return this._call.inputValues[6].value.toAddress();
   }
 
-  get root(): Address {
+  get admin(): Address {
     return this._call.inputValues[7].value.toAddress();
   }
 }

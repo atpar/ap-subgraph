@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.3
 description: {{description}}
 repository: https://github.com/atpar/ap-subgraph
 schema:
@@ -12,7 +12,7 @@ dataSources:
       abi: AssetRegistry
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Asset
@@ -38,7 +38,7 @@ dataSources:
       abi: AssetActor
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Asset
@@ -59,7 +59,7 @@ dataSources:
       abi: TemplateRegistry
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Template

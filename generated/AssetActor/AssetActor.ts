@@ -1437,7 +1437,7 @@ export class AssetActor extends SmartContract {
     templateId: Bytes,
     customTerms: AssetActor__initializeInputCustomTermsStruct,
     engine: Address,
-    root: Address
+    admin: Address
   ): boolean {
     let result = super.call("initialize", [
       EthereumValue.fromFixedBytes(assetId),
@@ -1445,7 +1445,7 @@ export class AssetActor extends SmartContract {
       EthereumValue.fromFixedBytes(templateId),
       EthereumValue.fromTuple(customTerms),
       EthereumValue.fromAddress(engine),
-      EthereumValue.fromAddress(root)
+      EthereumValue.fromAddress(admin)
     ]);
 
     return result[0].toBoolean();
@@ -1457,7 +1457,7 @@ export class AssetActor extends SmartContract {
     templateId: Bytes,
     customTerms: AssetActor__initializeInputCustomTermsStruct,
     engine: Address,
-    root: Address
+    admin: Address
   ): CallResult<boolean> {
     let result = super.tryCall("initialize", [
       EthereumValue.fromFixedBytes(assetId),
@@ -1465,7 +1465,7 @@ export class AssetActor extends SmartContract {
       EthereumValue.fromFixedBytes(templateId),
       EthereumValue.fromTuple(customTerms),
       EthereumValue.fromAddress(engine),
-      EthereumValue.fromAddress(root)
+      EthereumValue.fromAddress(admin)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -1700,7 +1700,7 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[4].value.toAddress();
   }
 
-  get root(): Address {
+  get admin(): Address {
     return this._call.inputValues[5].value.toAddress();
   }
 }
