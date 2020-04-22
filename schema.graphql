@@ -127,6 +127,7 @@ type Asset @entity {
   template: Template!
   engine: Bytes!
   actor: Bytes!
+  admins: [Bytes!]!
   ownership: AssetOwnership!
   anchorDate: BigInt!
   lifecycleTerms: LifecycleTerms!

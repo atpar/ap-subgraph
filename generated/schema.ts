@@ -1150,6 +1150,15 @@ export class Asset extends Entity {
     this.set("actor", Value.fromBytes(value));
   }
 
+  get admins(): Array<Bytes> {
+    let value = this.get("admins");
+    return value.toBytesArray();
+  }
+
+  set admins(value: Array<Bytes>) {
+    this.set("admins", Value.fromBytesArray(value));
+  }
+
   get ownership(): string {
     let value = this.get("ownership");
     return value.toString();

@@ -12,7 +12,7 @@ dataSources:
       abi: AssetRegistry
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Asset
@@ -27,6 +27,10 @@ dataSources:
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAsset
+        - event: SetRootAccess(indexed bytes32,indexed address)
+          handler: handleSetRootAccess
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccess
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiary
       file: ./src/mapping.ts
@@ -59,7 +63,7 @@ dataSources:
       abi: TemplateRegistry
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Template

@@ -1,7 +1,7 @@
-import { log } from "@graphprotocol/graph-ts";
+import { log, Bytes } from "@graphprotocol/graph-ts";
 
 import { AssetActor, ProgressedAsset } from '../generated/AssetActor/AssetActor';
-import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary } from '../generated/AssetRegistry/AssetRegistry';
+import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary, SetRootAccess, RevokedAccess } from '../generated/AssetRegistry/AssetRegistry';
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
 
 import {
@@ -179,6 +179,7 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   asset.template = assetRegistry.getTemplateId(event.params.assetId).toHex(); // template.id;
   asset.engine = assetRegistry.getEngine(event.params.assetId);
   asset.actor = assetRegistry.getActor(event.params.assetId);
+  asset.admins = [];
   asset.ownership = ownership.id;
   asset.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
   asset.lifecycleTerms = lifecycleTerms.id;
@@ -215,6 +216,31 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   let asset = Asset.load(event.params.assetId.toHex());
   asset.nextScheduleIndex = assetRegistry.getNextScheduleIndex(event.params.assetId);
   asset.nextScheduledEvent = assetRegistry.getNextScheduledEvent(event.params.assetId);
+  asset.save();
+}
+
+export function handleSetRootAccess (event: SetRootAccess): void {
+  log.debug("Process event (SetRootAsset) for asset ({})", [event.params.assetId.toHex()]);
+
+  let asset = Asset.load(event.params.assetId.toHex());
+
+  let admins = asset.admins;
+  admins.push(event.params.account);
+  asset.admins = admins;
+
+  asset.save();
+}
+
+export function handleRevokedAccess (event: RevokedAccess): void {
+  log.debug("Process event (RevokedAccess) for asset ({})", [event.params.assetId.toHex()]);
+
+  if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
+
+  let asset = Asset.load(event.params.assetId.toHex());
+  
+  let admins = asset.admins.filter((admin) => (admin !== event.params.account));
+  asset.admins = admins;
+
   asset.save();
 }
 
