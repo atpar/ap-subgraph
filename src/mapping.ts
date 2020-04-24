@@ -5,6 +5,7 @@ import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary, SetRootAccess, Revo
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
 
 import {
+  Admins,
   Asset,
   AssetOwnership,
   LifecycleTerms,
@@ -70,7 +71,11 @@ export function handleRegisteredTemplate(event: RegisteredTemplate): void {
   templateTerms.delinquencyPeriod = delinquencyPeriod.id;
   templateTerms.save();
 
-  let template = new Template(event.params.templateId.toHex());
+  // RegisteredAsset event may be processed before or after RegisteredTemplate event which creates a Template instance
+  let template = Template.load(event.params.templateId.toHex());
+  if (template === null) {
+    template = new Template(event.params.templateId.toHex());
+  }
   template.templateId = event.params.templateId;
   template.templateTerms = templateTerms.id;
   template.templateSchedule = templateRegistry.getSchedule(event.params.templateId);
@@ -171,15 +176,25 @@ export function handleRegisteredAsset(event: RegisteredAsset): void {
   state.exerciseAmount = _state.exerciseAmount;
   state.save();
 
-  // let template = Template.load(assetRegistry.getTemplateId(event.params.assetId).toHex());
-  // log.debug('{}', [template.templateId.toHex()]);
+  // SetRootAccess event may be processed before or after RegisteredAsset event
+  let admins = Admins.load(event.params.assetId.toHex() + '-admins');
+  if (admins === null) {
+    admins = new Admins(event.params.assetId.toHex() + '-admins');
+  }
+
+  // RegisteredTemplate event may be processed before or after RegisteredAsset event
+  let templateId = assetRegistry.getTemplateId(event.params.assetId).toHex();
+  let template = Template.load(templateId);
+  if (template === null) {
+    template = new Template(templateId);
+  }
 
   let asset = new Asset(event.params.assetId.toHex());
   asset.assetId = event.params.assetId;
-  asset.template = assetRegistry.getTemplateId(event.params.assetId).toHex(); // template.id;
+  asset.template = template.id;
   asset.engine = assetRegistry.getEngine(event.params.assetId);
   asset.actor = assetRegistry.getActor(event.params.assetId);
-  asset.admins = [];
+  asset.admins = admins.id;
   asset.ownership = ownership.id;
   asset.anchorDate = assetRegistry.getAnchorDate(event.params.assetId);
   asset.lifecycleTerms = lifecycleTerms.id;
@@ -219,29 +234,41 @@ export function handleProgressedAsset(event: ProgressedAsset): void {
   asset.save();
 }
 
+// SetRootAccess event may be processed before or after RegisteredAsset event,
+// hence wehave to store it as a separate entity
 export function handleSetRootAccess (event: SetRootAccess): void {
   log.debug("Process event (SetRootAsset) for asset ({})", [event.params.assetId.toHex()]);
 
-  let asset = Asset.load(event.params.assetId.toHex());
+  let admins = Admins.load(event.params.assetId.toHex() + '-admins');
+  if (admins === null) {
+    admins = new Admins(event.params.assetId.toHex() + '-admins');
+    admins.accounts = [];
+  }
 
-  let admins = asset.admins;
-  admins.push(event.params.account);
-  asset.admins = admins;
+  let accounts = admins.accounts;
+  accounts.push(event.params.account);
+  admins.accounts = accounts;
 
-  asset.save();
+  admins.save();
 }
 
+// RevokedAccess event may be processed before or after RegisteredAsset event,
+// hence wehave to store it as a separate entity
 export function handleRevokedAccess (event: RevokedAccess): void {
   log.debug("Process event (RevokedAccess) for asset ({})", [event.params.assetId.toHex()]);
 
   if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
 
-  let asset = Asset.load(event.params.assetId.toHex());
+  let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   
-  let admins = asset.admins.filter((admin) => (admin !== event.params.account));
-  asset.admins = admins;
+  // no admins prev. registered 
+  if (admins === null) { return; }
+  
+  // remove admin since access was revoked for the account
+  let accounts = admins.accounts.filter((account) => (account !== event.params.account));
+  admins.accounts = accounts;
 
-  asset.save();
+  admins.save();
 }
 
 export function handleUpdatedBeneficiary (event: UpdatedBeneficiary): void {

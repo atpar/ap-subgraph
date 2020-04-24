@@ -1084,6 +1084,54 @@ export class State extends Entity {
   }
 }
 
+export class Admins extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Admins entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Admins entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Admins", id.toString(), this);
+  }
+
+  static load(id: string): Admins | null {
+    return store.get("Admins", id) as Admins | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get accounts(): Array<Bytes> | null {
+    let value = this.get("accounts");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set accounts(value: Array<Bytes> | null) {
+    if (value === null) {
+      this.unset("accounts");
+    } else {
+      this.set("accounts", Value.fromBytesArray(value as Array<Bytes>));
+    }
+  }
+}
+
 export class Asset extends Entity {
   constructor(id: string) {
     super();
@@ -1150,13 +1198,13 @@ export class Asset extends Entity {
     this.set("actor", Value.fromBytes(value));
   }
 
-  get admins(): Array<Bytes> {
+  get admins(): string {
     let value = this.get("admins");
-    return value.toBytesArray();
+    return value.toString();
   }
 
-  set admins(value: Array<Bytes>) {
-    this.set("admins", Value.fromBytesArray(value));
+  set admins(value: string) {
+    this.set("admins", Value.fromString(value));
   }
 
   get ownership(): string {

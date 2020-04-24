@@ -17,6 +17,7 @@ dataSources:
       entities:
         - Asset
         - Template
+        - Admins
       abis:
         - name: AssetRegistry
           file: ./build/contracts/AssetRegistry.json
@@ -42,7 +43,7 @@ dataSources:
       abi: AssetActor
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Asset

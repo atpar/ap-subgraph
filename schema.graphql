@@ -121,13 +121,18 @@ type State @entity {
   exerciseAmount: BigInt!
 }
 
+type Admins @entity {
+  id: ID!
+  accounts: [Bytes!]
+}
+
 type Asset @entity {
   id: ID!
   assetId: Bytes!
   template: Template!
   engine: Bytes!
   actor: Bytes!
-  admins: [Bytes!]!
+  admins: Admins!
   ownership: AssetOwnership!
   anchorDate: BigInt!
   lifecycleTerms: LifecycleTerms!
