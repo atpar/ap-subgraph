@@ -1,7 +1,7 @@
 {
   "network": "goerli",
   "description": "ACTUS Protocol (goerli)",
-  "AssetActor": "0xDd4c294292a6E540464CBE9feEfEAd4Cc545C63D",
-  "AssetRegistry": "0x20BB60FC901d177E92175B21DeFEEBda93cAEB30",
-  "TemplateRegistry": "0x88B47df7f895Df0bb806D1e5c32c182c4e94E15c"
+  "AssetActor": "0x0510098a11f86bc05D6B6DEdC7A6D72e11c7bC1B",
+  "AssetRegistry": "0x0de8fF7d80b08f18612aC2D633b010a6a0Dde93c",
+  "TemplateRegistry": "0xF1a61E51d939b70f959DF5C89b3dB74dAdfE0A5b"
 }
