@@ -455,13 +455,13 @@ export class TemplateTerms extends Entity {
     this.set("delinquencyPeriod", Value.fromString(value));
   }
 
-  get templateId(): string {
-    let value = this.get("templateId");
+  get template(): string {
+    let value = this.get("template");
     return value.toString();
   }
 
-  set templateId(value: string) {
-    this.set("templateId", Value.fromString(value));
+  set template(value: string) {
+    this.set("template", Value.fromString(value));
   }
 }
 
@@ -522,13 +522,21 @@ export class Template extends Entity {
     this.set("templateSchedule", Value.fromBytesArray(value));
   }
 
-  get assetId(): string {
-    let value = this.get("assetId");
-    return value.toString();
+  get asset(): Array<string> | null {
+    let value = this.get("asset");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set assetId(value: string) {
-    this.set("assetId", Value.fromString(value));
+  set asset(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("asset");
+    } else {
+      this.set("asset", Value.fromStringArray(value as Array<string>));
+    }
   }
 }
 
@@ -598,13 +606,13 @@ export class AssetOwnership extends Entity {
     this.set("counterpartyBeneficiary", Value.fromBytes(value));
   }
 
-  get assetId(): string {
-    let value = this.get("assetId");
+  get asset(): string {
+    let value = this.get("asset");
     return value.toString();
   }
 
-  set assetId(value: string) {
-    this.set("assetId", Value.fromString(value));
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
   }
 }
 
@@ -953,13 +961,13 @@ export class LifecycleTerms extends Entity {
     this.set("contractReference_2", Value.fromString(value));
   }
 
-  get assetId(): string {
-    let value = this.get("assetId");
+  get asset(): string {
+    let value = this.get("asset");
     return value.toString();
   }
 
-  set assetId(value: string) {
-    this.set("assetId", Value.fromString(value));
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
   }
 }
 
@@ -1119,13 +1127,13 @@ export class State extends Entity {
     this.set("exerciseAmount", Value.fromBigInt(value));
   }
 
-  get assetId(): string {
-    let value = this.get("assetId");
+  get asset(): string {
+    let value = this.get("asset");
     return value.toString();
   }
 
-  set assetId(value: string) {
-    this.set("assetId", Value.fromString(value));
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
   }
 }
 
@@ -1176,13 +1184,13 @@ export class Admins extends Entity {
     }
   }
 
-  get assetId(): string {
-    let value = this.get("assetId");
+  get asset(): string {
+    let value = this.get("asset");
     return value.toString();
   }
 
-  set assetId(value: string) {
-    this.set("assetId", Value.fromString(value));
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
   }
 }
 

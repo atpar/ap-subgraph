@@ -47,7 +47,7 @@ type TemplateTerms @entity {
   periodFloor: BigInt!
   gracePeriod: Period!
   delinquencyPeriod: Period!
-  templateId: Template! @derivedFrom(field: "templateTerms")
+  template: Template! @derivedFrom(field: "templateTerms")
 }
 
 type Template @entity {
@@ -55,7 +55,7 @@ type Template @entity {
   templateId: Bytes!
   templateTerms: TemplateTerms!
   templateSchedule: [Bytes!]!
-  assetId: Asset! @derivedFrom(field: "template")
+  asset: [Asset!] @derivedFrom(field: "template")
 }
 
 type AssetOwnership @entity {
@@ -64,7 +64,7 @@ type AssetOwnership @entity {
   creatorBeneficiary: Bytes!
   counterpartyObligor: Bytes!
   counterpartyBeneficiary: Bytes!  
-  assetId: Asset! @derivedFrom(field: "ownership")
+  asset: Asset! @derivedFrom(field: "ownership")
 }
 
 type LifecycleTerms @entity {
@@ -104,7 +104,7 @@ type LifecycleTerms @entity {
   delinquencyPeriod: Period!
   contractReference_1: ContractReference!
   contractReference_2: ContractReference!
-  assetId: Asset! @derivedFrom(field: "lifecycleTerms")
+  asset: Asset! @derivedFrom(field: "lifecycleTerms")
 }
 
 type State @entity {
@@ -123,13 +123,13 @@ type State @entity {
   notionalScalingMultiplier: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
   exerciseAmount: BigInt!
-  assetId: Asset! @derivedFrom(field: "state")
+  asset: Asset! @derivedFrom(field: "state")
 }
 
 type Admins @entity {
   id: ID!
   accounts: [Bytes!]
-  assetId: Asset! @derivedFrom(field: "admins")
+  asset: Asset! @derivedFrom(field: "admins")
 }
 
 type Asset @entity {

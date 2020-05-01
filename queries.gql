@@ -1,15 +1,22 @@
 {
-  assetOwnerships (where: { creatorBeneficiary: "0x2c390ca49cefb345330cfe86a518b7de85e577fa" }) {
-    assetId {
-      id
+  creator: assetOwnerships (where: { creatorBeneficiary: "0x79561db79bdb335a1eb9657fed42ad914c995b99" }) {
+    asset {
+      assetId
+      template {
+        templateId
+      }
+      engine
+      actor
     }
-  }
-}
-
-{
-  assetOwnerships (where: { counterpartyBeneficiary: "0x2c390ca49cefb345330cfe86a518b7de85e577fa" }) {
-    assetId {
-      id
+  },
+  counterparty: assetOwnerships (where: { counterpartyBeneficiary: "0x79561db79bdb335a1eb9657fed42ad914c995b99" }) {
+    asset {
+      assetId
+      template {
+        templateId
+      }
+      engine
+      actor
     }
   }
 }
@@ -23,7 +30,9 @@
 {
   assets(first: 1) {
     assetId
-    templateId
+    template {
+      templateId
+    }
     engine
     actor
     ownership {
@@ -44,13 +53,13 @@
       creditEventTypeCovered
       contractReference_1 {
         object
-        contractReferenceRole
-        contractReferenceType
+        _type
+        role
       }
       contractReference_2 {
         object
-        contractReferenceRole
-        contractReferenceType
+        _type
+        role
       }
       currency
       settlementCurrency
@@ -90,7 +99,7 @@
       statusDate
       nonPerformingDate
       maturityDate
-      executionDate
+      exerciseDate
       notionalPrincipal
       accruedInterest
       feeAccrued
@@ -98,31 +107,12 @@
       interestScalingMultiplier
       notionalScalingMultiplier
       nextPrincipalRedemptionPayment
-      executionAmount
+      exerciseAmount
     
     }
     anchorDate
-    nextEvent {
-      event
-    }
-    schedule {
-      templateSchedule {
-        nonCyclicSchedule
-        cyclicIPSchedule
-        cyclicPRSchedule
-        cyclicSCSchedule
-        cyclicRRSchedule
-        cyclicFPSchedule
-        cyclicPYSchedule  
-      }
-      nonCyclicScheduleIndex
-      cyclicIPScheduleIndex
-      cyclicPRScheduleIndex
-      cyclicSCScheduleIndex
-      cyclicRRScheduleIndex
-      cyclicFPScheduleIndex
-      cyclicPYScheduleIndex
-    }
+    nextScheduledEvent
+    nextScheduleIndex
   }
 }
 
@@ -171,14 +161,6 @@
       periodCap
       periodFloor
     }
-    templateSchedule {
-      nonCyclicSchedule
-      cyclicIPSchedule
-      cyclicPRSchedule
-      cyclicSCSchedule
-      cyclicRRSchedule
-      cyclicFPSchedule
-      cyclicPYSchedule
-    }
+    templateSchedule
   }
 }

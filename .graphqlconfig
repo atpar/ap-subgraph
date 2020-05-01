@@ -1,7 +1,7 @@
 {
   "extensions": {
     "endpoints": {
-      "dev": "https://api.thegraph.com/subgraphs/name/atpar/actus-protocol"
+      "dev": "https://api.thegraph.com/subgraphs/name/atpar/actus-protocol-goerli"
     }
   }
 }
