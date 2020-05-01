@@ -454,6 +454,15 @@ export class TemplateTerms extends Entity {
   set delinquencyPeriod(value: string) {
     this.set("delinquencyPeriod", Value.fromString(value));
   }
+
+  get templateId(): string {
+    let value = this.get("templateId");
+    return value.toString();
+  }
+
+  set templateId(value: string) {
+    this.set("templateId", Value.fromString(value));
+  }
 }
 
 export class Template extends Entity {
@@ -511,6 +520,15 @@ export class Template extends Entity {
 
   set templateSchedule(value: Array<Bytes>) {
     this.set("templateSchedule", Value.fromBytesArray(value));
+  }
+
+  get assetId(): string {
+    let value = this.get("assetId");
+    return value.toString();
+  }
+
+  set assetId(value: string) {
+    this.set("assetId", Value.fromString(value));
   }
 }
 
@@ -578,6 +596,15 @@ export class AssetOwnership extends Entity {
 
   set counterpartyBeneficiary(value: Bytes) {
     this.set("counterpartyBeneficiary", Value.fromBytes(value));
+  }
+
+  get assetId(): string {
+    let value = this.get("assetId");
+    return value.toString();
+  }
+
+  set assetId(value: string) {
+    this.set("assetId", Value.fromString(value));
   }
 }
 
@@ -925,6 +952,15 @@ export class LifecycleTerms extends Entity {
   set contractReference_2(value: string) {
     this.set("contractReference_2", Value.fromString(value));
   }
+
+  get assetId(): string {
+    let value = this.get("assetId");
+    return value.toString();
+  }
+
+  set assetId(value: string) {
+    this.set("assetId", Value.fromString(value));
+  }
 }
 
 export class State extends Entity {
@@ -1082,6 +1118,15 @@ export class State extends Entity {
   set exerciseAmount(value: BigInt) {
     this.set("exerciseAmount", Value.fromBigInt(value));
   }
+
+  get assetId(): string {
+    let value = this.get("assetId");
+    return value.toString();
+  }
+
+  set assetId(value: string) {
+    this.set("assetId", Value.fromString(value));
+  }
 }
 
 export class Admins extends Entity {
@@ -1129,6 +1174,15 @@ export class Admins extends Entity {
     } else {
       this.set("accounts", Value.fromBytesArray(value as Array<Bytes>));
     }
+  }
+
+  get assetId(): string {
+    let value = this.get("assetId");
+    return value.toString();
+  }
+
+  set assetId(value: string) {
+    this.set("assetId", Value.fromString(value));
   }
 }
 

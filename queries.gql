@@ -1,4 +1,20 @@
 {
+  assetOwnerships (where: { creatorBeneficiary: "0x2c390ca49cefb345330cfe86a518b7de85e577fa" }) {
+    assetId {
+      id
+    }
+  }
+}
+
+{
+  assetOwnerships (where: { counterpartyBeneficiary: "0x2c390ca49cefb345330cfe86a518b7de85e577fa" }) {
+    assetId {
+      id
+    }
+  }
+}
+
+{
   assets(first: 10) {
     assetId
   }
