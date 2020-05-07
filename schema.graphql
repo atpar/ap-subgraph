@@ -146,3 +146,17 @@ type Asset @entity {
   nextScheduleIndex: BigInt!
   nextScheduledEvent: Bytes!
 }
+
+type DataPoint @entity {
+  id: ID!
+  dataPoint: BigInt!
+  timestamp: BigInt!
+  provider: Bytes!
+}
+
+type MarketObject @entity {
+  id: ID!
+  providers: [Bytes!]
+  dataPoints: [DataPoint!]
+  lastUpdated: BigInt
+}

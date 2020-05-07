@@ -1323,3 +1323,143 @@ export class Asset extends Entity {
     this.set("nextScheduledEvent", Value.fromBytes(value));
   }
 }
+
+export class DataPoint extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save DataPoint entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save DataPoint entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("DataPoint", id.toString(), this);
+  }
+
+  static load(id: string): DataPoint | null {
+    return store.get("DataPoint", id) as DataPoint | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dataPoint(): BigInt {
+    let value = this.get("dataPoint");
+    return value.toBigInt();
+  }
+
+  set dataPoint(value: BigInt) {
+    this.set("dataPoint", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get provider(): Bytes {
+    let value = this.get("provider");
+    return value.toBytes();
+  }
+
+  set provider(value: Bytes) {
+    this.set("provider", Value.fromBytes(value));
+  }
+}
+
+export class MarketObject extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save MarketObject entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save MarketObject entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("MarketObject", id.toString(), this);
+  }
+
+  static load(id: string): MarketObject | null {
+    return store.get("MarketObject", id) as MarketObject | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get providers(): Array<Bytes> | null {
+    let value = this.get("providers");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set providers(value: Array<Bytes> | null) {
+    if (value === null) {
+      this.unset("providers");
+    } else {
+      this.set("providers", Value.fromBytesArray(value as Array<Bytes>));
+    }
+  }
+
+  get dataPoints(): Array<string> | null {
+    let value = this.get("dataPoints");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set dataPoints(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("dataPoints");
+    } else {
+      this.set("dataPoints", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get lastUpdated(): BigInt | null {
+    let value = this.get("lastUpdated");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set lastUpdated(value: BigInt | null) {
+    if (value === null) {
+      this.unset("lastUpdated");
+    } else {
+      this.set("lastUpdated", Value.fromBigInt(value as BigInt));
+    }
+  }
+}

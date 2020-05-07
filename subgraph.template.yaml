@@ -75,4 +75,28 @@ dataSources:
         - event: RegisteredTemplate(indexed bytes32)
           handler: handleRegisteredTemplate
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: MarketObjectRegistry
+    network: {{network}}
+    source:
+      address: '{{MarketObjectRegistry}}'
+      abi: MarketObjectRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Template
+      abis:
+        - name: MarketObjectRegistry
+          file: ./build/contracts/MarketObjectRegistry.json
+      eventHandlers:
+        - event: UpdatedMarketObjectProvider(indexed bytes32,address)
+          handler: handleUpdatedMarketObjectProvider
+        - event: PublishedDataPoint(indexed bytes32,int256)
+          handler:  handlePublishedDataPoint
+      # callHandlers:
+      #   - function: publishDataPointOfMarketObject(bytes32,uint256,int256)
+      #     handler: handlePublishDataPointOfMarketObject
+      file: ./src/mapping.ts
 

@@ -3,5 +3,6 @@
   "description": "ACTUS Protocol (ropsten)",
   "AssetActor": "0xf262236cE949F885855E67A7F1F5D0dd037cD681",
   "AssetRegistry": "0x4cb91A2A518D5A24E59a41dB86128b14BC0fccDf",
+  "MarketObjectRegistry": "0x278D5eB46B86eBfA2f9E11d3A18359153BE826F4",
   "TemplateRegistry": "0xca4fE1e91dcB0D9AC25A59cCEDED90c49e3BdC7a"
 }

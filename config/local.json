@@ -3,5 +3,6 @@
   "description": "ACTUS Protocol (local)",
   "AssetActor": "0x54aF1553Ea0D564E1B45FFe3EB1Bca85F0703331",
   "AssetRegistry": "0x882FbD67A3a5b2905730548C8378b5fE44336154",
+  "MarketObjectRegistry": "0xE1fcFd1F2a7C04391a66a8031522b4f071C1BEAE",
   "TemplateRegistry": "0xeBEABDe323B77c0f6EBc01e5C61d586D201636F3"
 }

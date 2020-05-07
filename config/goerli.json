@@ -3,5 +3,6 @@
   "description": "ACTUS Protocol (goerli)",
   "AssetActor": "0x0510098a11f86bc05D6B6DEdC7A6D72e11c7bC1B",
   "AssetRegistry": "0x0de8fF7d80b08f18612aC2D633b010a6a0Dde93c",
+  "MarketObjectRegistry": "0xe8C8c515103f92866b8E9DC99B78360E4277ae76",
   "TemplateRegistry": "0xF1a61E51d939b70f959DF5C89b3dB74dAdfE0A5b"
 }

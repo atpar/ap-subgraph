@@ -1,8 +1,9 @@
-import { log, Bytes } from "@graphprotocol/graph-ts";
+import { log } from "@graphprotocol/graph-ts";
 
 import { AssetActor, ProgressedAsset } from '../generated/AssetActor/AssetActor';
 import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary, SetRootAccess, RevokedAccess } from '../generated/AssetRegistry/AssetRegistry';
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
+import { MarketObjectRegistry, UpdatedMarketObjectProvider, PublishDataPointOfMarketObjectCall } from '../generated/MarketObjectRegistry/MarketObjectRegistry';
 
 import {
   Admins,
@@ -13,7 +14,9 @@ import {
   ContractReference,
   State,
   Template,
-  TemplateTerms
+  TemplateTerms,
+  MarketObject,
+  DataPoint
 } from '../generated/schema';
 
 
@@ -282,3 +285,46 @@ export function handleUpdatedBeneficiary (event: UpdatedBeneficiary): void {
   ownership.counterpartyBeneficiary = _ownership.counterpartyBeneficiary;
   ownership.save();
 }
+
+export function handleUpdatedMarketObjectProvider (event: UpdatedMarketObjectProvider): void {
+  log.debug("Process event (UpdatedMarketObjectProvider) for market object ({})", [event.params.marketObjectId.toHex()]); 
+
+  let marketObject = MarketObject.load(event.params.marketObjectId.toHex());
+  if (marketObject === null) {
+    marketObject = new MarketObject(event.params.marketObjectId.toHex());
+  }
+
+  let providers = marketObject.providers;
+  providers.push(event.params.provider);
+  marketObject.providers = providers;
+
+  marketObject.save();
+}
+
+// export function handlePublishDataPointOfMarketObject (call: PublishDataPointOfMarketObjectCall): void {
+//   log.debug("Process call (PublishDataPointOfMarketObject) for market object ({})", [call.inputs.marketObjectId.toHex()]); 
+
+//   let marketObject = MarketObject.load(call.inputs.marketObjectId.toHex());
+//   if (marketObject === null) {
+//     marketObject = new MarketObject(call.inputs.marketObjectId.toHex());
+//   }
+
+//   let dataPoint = DataPoint.load(call.inputs.marketObjectId.toHex() + '-' + call.inputs.timestamp.toHex());
+//   if (dataPoint === null) {
+//     dataPoint = new DataPoint(call.inputs.marketObjectId.toHex() + '-' + call.inputs.timestamp.toHex());
+//   }
+
+//   dataPoint.dataPoint = call.inputs.dataPoint;
+//   dataPoint.timestamp = call.inputs.timestamp;
+//   dataPoint.provider = call.transaction.from;
+
+//   let dataPoints = marketObject.dataPoints;
+//   dataPoints.push(dataPoint.id);
+//   marketObject.dataPoints = dataPoints;
+
+//   if (marketObject.lastUpdated < dataPoint.timestamp) {
+//     marketObject.lastUpdated = dataPoint.timestamp;
+//   }
+
+//   marketObject.save();
+// }
