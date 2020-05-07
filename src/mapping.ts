@@ -3,7 +3,7 @@ import { log } from "@graphprotocol/graph-ts";
 import { AssetActor, ProgressedAsset } from '../generated/AssetActor/AssetActor';
 import { AssetRegistry, RegisteredAsset, UpdatedBeneficiary, SetRootAccess, RevokedAccess } from '../generated/AssetRegistry/AssetRegistry';
 import { TemplateRegistry, RegisteredTemplate } from '../generated/TemplateRegistry/TemplateRegistry';
-import { MarketObjectRegistry, UpdatedMarketObjectProvider, PublishDataPointOfMarketObjectCall } from '../generated/MarketObjectRegistry/MarketObjectRegistry';
+import { UpdatedMarketObjectProvider, PublishedDataPoint } from '../generated/MarketObjectRegistry/MarketObjectRegistry';
 
 import {
   Admins,
@@ -294,12 +294,38 @@ export function handleUpdatedMarketObjectProvider (event: UpdatedMarketObjectPro
     marketObject = new MarketObject(event.params.marketObjectId.toHex());
   }
 
-  let providers = marketObject.providers;
-  providers.push(event.params.provider);
-  marketObject.providers = providers;
+  marketObject.provider = event.params.provider;
 
   marketObject.save();
 }
+
+// export function handlePublishedDataPoint (event: PublishedDataPoint): void {
+//   log.debug("Process event (PublishedDataPoint) for market object ({})", [event.params.marketObjectId.toHex()]); 
+
+//   let marketObject = MarketObject.load(event.params.marketObjectId.toHex());
+//   if (marketObject === null) {
+//     marketObject = new MarketObject(event.params.marketObjectId.toHex());
+//   }
+
+//   let dataPoint = DataPoint.load(event.params.marketObjectId.toHex() + '-' + event.params.timestamp.toHex());
+//   if (dataPoint === null) {
+//     dataPoint = new DataPoint(event.params.marketObjectId.toHex() + '-' + event.params.timestamp.toHex());
+//   }
+
+//   dataPoint.dataPoint = event.params.dataPoint;
+//   dataPoint.timestamp = event.params.timestamp;
+//   dataPoint.provider = marketObject.provider;
+
+//   let dataPoints = marketObject.dataPoints;
+//   dataPoints.push(dataPoint.id);
+//   marketObject.dataPoints = dataPoints;
+
+//   if (marketObject.lastUpdated < dataPoint.timestamp) {
+//     marketObject.lastUpdated = dataPoint.timestamp;
+//   }
+
+//   marketObject.save();
+// }
 
 // export function handlePublishDataPointOfMarketObject (call: PublishDataPointOfMarketObjectCall): void {
 //   log.debug("Process call (PublishDataPointOfMarketObject) for market object ({})", [call.inputs.marketObjectId.toHex()]); 

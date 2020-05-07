@@ -156,7 +156,7 @@ type DataPoint @entity {
 
 type MarketObject @entity {
   id: ID!
-  providers: [Bytes!]
+  provider: Bytes!
   dataPoints: [DataPoint!]
   lastUpdated: BigInt
 }

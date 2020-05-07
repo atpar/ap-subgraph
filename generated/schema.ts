@@ -1412,21 +1412,13 @@ export class MarketObject extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get providers(): Array<Bytes> | null {
-    let value = this.get("providers");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
+  get provider(): Bytes {
+    let value = this.get("provider");
+    return value.toBytes();
   }
 
-  set providers(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("providers");
-    } else {
-      this.set("providers", Value.fromBytesArray(value as Array<Bytes>));
-    }
+  set provider(value: Bytes) {
+    this.set("provider", Value.fromBytes(value));
   }
 
   get dataPoints(): Array<string> | null {
