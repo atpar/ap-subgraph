@@ -1,4 +1,12 @@
 {
+  holders (where: { address: "0x79561db79bdb335a1eb9657fed42ad914c995b99" }) {
+    distributor {
+      address
+    }
+  }
+}
+
+{
   creator: assetOwnerships (where: { creatorBeneficiary: "0x79561db79bdb335a1eb9657fed42ad914c995b99" }) {
     asset {
       assetId
