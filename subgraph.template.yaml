@@ -99,4 +99,43 @@ dataSources:
       #   - function: publishDataPointOfMarketObject(bytes32,uint256,int256)
       #     handler: handlePublishDataPointOfMarketObject
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: TokenizationFactory
+    network: {{network}}
+    source:
+      address: '{{TokenizationFactory}}'
+      abi: TokenizationFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Distributor
+      abis:
+        - name: TokenizationFactory
+          file: ./build/contracts/TokenizationFactory.json
+      eventHandlers:
+        - event: DeployedDistributor(address,address)
+          handler: handleDeployedDistributor
+      file: ./src/mapping.ts
+templates:
+  - kind: ethereum/contract
+    name: FDT
+    network: {{network}}
+    source:
+      abi: VanillaFDT
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Distributor
+        - Holder
+      abis:
+        - name: VanillaFDT
+          file: ./build/contracts/VanillaFDT.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
 

@@ -152,6 +152,7 @@ type DataPoint @entity {
   dataPoint: BigInt!
   timestamp: BigInt!
   provider: Bytes!
+  marketObject: MarketObject! @derivedFrom(field: "dataPoints")
 }
 
 type MarketObject @entity {
@@ -160,3 +161,17 @@ type MarketObject @entity {
   dataPoints: [DataPoint!]
   lastUpdated: BigInt
 }
+
+type Holder @entity {
+  id: ID!
+  address: Bytes!
+  balanceOf: BigInt!
+  withdrawnFundsOf: BigInt!
+  distributor: Distributor! @derivedFrom(field: "holder")
+}
+
+type Distributor @entity {
+  id: ID!
+  address: Bytes!
+  holder: [Holder!]
+} 
