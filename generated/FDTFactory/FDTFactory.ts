@@ -37,54 +37,9 @@ export class DeployedDistributor__Params {
   }
 }
 
-export class TokenizationFactory extends SmartContract {
-  static bind(address: Address): TokenizationFactory {
-    return new TokenizationFactory("TokenizationFactory", address);
-  }
-
-  assetRegistry(): Address {
-    let result = super.call("assetRegistry", []);
-
-    return result[0].toAddress();
-  }
-
-  try_assetRegistry(): CallResult<Address> {
-    let result = super.tryCall("assetRegistry", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toAddress());
-  }
-}
-
-export class ConstructorCall extends EthereumCall {
-  get inputs(): ConstructorCall__Inputs {
-    return new ConstructorCall__Inputs(this);
-  }
-
-  get outputs(): ConstructorCall__Outputs {
-    return new ConstructorCall__Outputs(this);
-  }
-}
-
-export class ConstructorCall__Inputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
-  }
-
-  get _assetRegistry(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class ConstructorCall__Outputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
+export class FDTFactory extends SmartContract {
+  static bind(address: Address): FDTFactory {
+    return new FDTFactory("FDTFactory", address);
   }
 }
 

@@ -309,21 +309,6 @@ export class VanillaFDT extends SmartContract {
     return CallResult.fromValue(value[0].toBoolean());
   }
 
-  isOwner(): boolean {
-    let result = super.call("isOwner", []);
-
-    return result[0].toBoolean();
-  }
-
-  try_isOwner(): CallResult<boolean> {
-    let result = super.tryCall("isOwner", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBoolean());
-  }
-
   name(): string {
     let result = super.call("name", []);
 

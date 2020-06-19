@@ -5,76 +5,225 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: AssetRegistry
+    name: ANNRegistry
     network: {{network}}
     source:
-      address: '{{AssetRegistry}}'
-      abi: AssetRegistry
+      address: '{{ANNRegistry}}'
+      abi: ANNRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - Asset
-        - Template
+        - ANNAsset
+        - ANNTerms
+        - State
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
         - Admins
       abis:
-        - name: AssetRegistry
-          file: ./build/contracts/AssetRegistry.json
-        - name: TemplateRegistry
-          file: ./build/contracts/TemplateRegistry.json
-        - name: IEngine
-          file: ./build/contracts/IEngine.json
+        - name: ANNRegistry
+          file: ./build/contracts/ANNRegistry.json
       eventHandlers:
         - event: RegisteredAsset(bytes32)
-          handler: handleRegisteredAsset
+          handler: handleRegisteredAssetANN
         - event: SetRootAccess(indexed bytes32,indexed address)
-          handler: handleSetRootAccess
+          handler: handleSetRootAccessANN
         - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
-          handler: handleRevokedAccess
+          handler: handleRevokedAccessANN
         - event: UpdatedBeneficiary(bytes32,address,address)
-          handler: handleUpdatedBeneficiary
-      file: ./src/mapping.ts
+          handler: handleUpdatedBeneficiaryANN
+      file: ./src/ANN.ts
   - kind: ethereum/contract
-    name: AssetActor
+    name: ANNActor
     network: {{network}}
     source:
-      address: '{{AssetActor}}'
-      abi: AssetActor
+      address: '{{ANNActor}}'
+      abi: ANNActor
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - Asset
+        - State
+        - Schedule
       abis:
-        - name: AssetActor
-          file: ./build/contracts/AssetActor.json
-        - name: AssetRegistry
-          file: ./build/contracts/AssetRegistry.json
+        - name: ANNActor
+          file: ./build/contracts/ANNActor.json
+        - name: ANNRegistry
+          file: ./build/contracts/ANNRegistry.json
       eventHandlers:
         - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
-          handler: handleProgressedAsset
-      file: ./src/mapping.ts
+          handler: handleProgressedAssetANN
+      file: ./src/ANN.ts
   - kind: ethereum/contract
-    name: TemplateRegistry
+    name: CECRegistry
     network: {{network}}
     source:
-      address: '{{TemplateRegistry}}'
-      abi: TemplateRegistry
+      address: '{{CECRegistry}}'
+      abi: CECRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - Template
+        - CECAsset
+        - CECTerms
+        - State
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
+        - Admins
       abis:
-        - name: TemplateRegistry
-          file: ./build/contracts/TemplateRegistry.json
+        - name: CECRegistry
+          file: ./build/contracts/CECRegistry.json
       eventHandlers:
-        - event: RegisteredTemplate(indexed bytes32)
-          handler: handleRegisteredTemplate
-      file: ./src/mapping.ts
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAssetCEC
+        - event: SetRootAccess(indexed bytes32,indexed address)
+          handler: handleSetRootAccessCEC
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccessCEC
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiaryCEC
+      file: ./src/CEC.ts
+  - kind: ethereum/contract
+    name: CECActor
+    network: {{network}}
+    source:
+      address: '{{CECActor}}'
+      abi: CECActor
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - State
+        - Schedule
+      abis:
+        - name: CECActor
+          file: ./build/contracts/CECActor.json
+        - name: CECRegistry
+          file: ./build/contracts/CECRegistry.json
+      eventHandlers:
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
+          handler: handleProgressedAssetCEC
+      file: ./src/CEC.ts
+  - kind: ethereum/contract
+    name: CEGRegistry
+    network: {{network}}
+    source:
+      address: '{{CEGRegistry}}'
+      abi: CEGRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - CEGAsset
+        - CEGTerms
+        - State
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
+        - Admins
+      abis:
+        - name: CEGRegistry
+          file: ./build/contracts/CEGRegistry.json
+      eventHandlers:
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAssetCEG
+        - event: SetRootAccess(indexed bytes32,indexed address)
+          handler: handleSetRootAccessCEG
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccessCEG
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiaryCEG
+      file: ./src/CEG.ts
+  - kind: ethereum/contract
+    name: CEGActor
+    network: {{network}}
+    source:
+      address: '{{CEGActor}}'
+      abi: CEGActor
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - State
+        - Schedule
+      abis:
+        - name: CEGActor
+          file: ./build/contracts/CEGActor.json
+        - name: CEGRegistry
+          file: ./build/contracts/CEGRegistry.json
+      eventHandlers:
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
+          handler: handleProgressedAssetCEG
+      file: ./src/CEG.ts
+  - kind: ethereum/contract
+    name: PAMRegistry
+    network: {{network}}
+    source:
+      address: '{{PAMRegistry}}'
+      abi: PAMRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - PAMAsset
+        - PAMTerms
+        - State
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
+        - Admins
+      abis:
+        - name: PAMRegistry
+          file: ./build/contracts/PAMRegistry.json
+      eventHandlers:
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAssetPAM
+        - event: SetRootAccess(indexed bytes32,indexed address)
+          handler: handleSetRootAccessPAM
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccessPAM
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiaryPAM
+      file: ./src/PAM.ts
+  - kind: ethereum/contract
+    name: PAMActor
+    network: {{network}}
+    source:
+      address: '{{PAMActor}}'
+      abi: PAMActor
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - State
+        - Schedule
+      abis:
+        - name: PAMActor
+          file: ./build/contracts/PAMActor.json
+        - name: PAMRegistry
+          file: ./build/contracts/PAMRegistry.json
+      eventHandlers:
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
+          handler: handleProgressedAssetPAM
+      file: ./src/PAM.ts
   - kind: ethereum/contract
     name: MarketObjectRegistry
     network: {{network}}
@@ -86,38 +235,37 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - Template
+        - MarketObject
+        - DataPoint
       abis:
         - name: MarketObjectRegistry
           file: ./build/contracts/MarketObjectRegistry.json
       eventHandlers:
         - event: UpdatedMarketObjectProvider(indexed bytes32,address)
           handler: handleUpdatedMarketObjectProvider
-        - event: PublishedDataPoint(indexed bytes32,int256)
+        - event: PublishedDataPoint(indexed bytes32,int256,uint256)
           handler:  handlePublishedDataPoint
-      # callHandlers:
-      #   - function: publishDataPointOfMarketObject(bytes32,uint256,int256)
-      #     handler: handlePublishDataPointOfMarketObject
-      file: ./src/mapping.ts
+      file: ./src/MOR.ts
   - kind: ethereum/contract
-    name: TokenizationFactory
+    name: FDTFactory
     network: {{network}}
     source:
-      address: '{{TokenizationFactory}}'
-      abi: TokenizationFactory
+      address: '{{FDTFactory}}'
+      abi: FDTFactory
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Distributor
+        - Holder
       abis:
-        - name: TokenizationFactory
-          file: ./build/contracts/TokenizationFactory.json
+        - name: FDTFactory
+          file: ./build/contracts/FDTFactory.json
       eventHandlers:
         - event: DeployedDistributor(address,address)
           handler: handleDeployedDistributor
-      file: ./src/mapping.ts
+      file: ./src/FDT.ts
 templates:
   - kind: ethereum/contract
     name: FDT
@@ -137,5 +285,5 @@ templates:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/mapping.ts
+      file: ./src/FDT.ts
 

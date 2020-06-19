@@ -1,152 +1,3 @@
-type Period @entity {
-  id: ID!
-  i: BigInt!
-  p: Int!
-  isSet: Boolean!
-}
-
-type ContractReference @entity {
-  id: ID!
-  object: Bytes!
-  _type: Int!
-  role: Int!
-}
-
-type TemplateTerms @entity {
-  id: ID!
-  calendar: Int!
-  contractRole: Int!
-  dayCountConvention: Int!
-  businessDayConvention: Int!
-  endOfMonthConvention: Int!
-  scalingEffect: Int!
-  penaltyType: Int!
-  feeBasis: Int!
-  creditEventTypeCovered: Int!
-  currency: Bytes!
-  settlementCurrency: Bytes!
-  marketObjectCodeRateReset: Bytes!
-  statusDateOffset: BigInt!
-  maturityDateOffset: BigInt!
-  notionalPrincipal: BigInt!
-  nominalInterestRate: BigInt!
-  feeAccrued: BigInt!
-  accruedInterest: BigInt!
-  rateMultiplier: BigInt!
-  rateSpread: BigInt!
-  feeRate: BigInt!
-  nextResetRate: BigInt!
-  penaltyRate: BigInt!
-  premiumDiscountAtIED: BigInt!
-  priceAtPurchaseDate: BigInt!
-  nextPrincipalRedemptionPayment: BigInt!
-  coverageOfCreditEnhancement: BigInt!
-  lifeCap: BigInt!
-  lifeFloor: BigInt!
-  periodCap: BigInt!
-  periodFloor: BigInt!
-  gracePeriod: Period!
-  delinquencyPeriod: Period!
-  template: Template! @derivedFrom(field: "templateTerms")
-}
-
-type Template @entity {
-  id: ID!
-  templateId: Bytes!
-  templateTerms: TemplateTerms!
-  templateSchedule: [Bytes!]!
-  asset: [Asset!] @derivedFrom(field: "template")
-}
-
-type AssetOwnership @entity {
-  id: ID!
-  creatorObligor: Bytes!
-  creatorBeneficiary: Bytes!
-  counterpartyObligor: Bytes!
-  counterpartyBeneficiary: Bytes!  
-  asset: Asset! @derivedFrom(field: "ownership")
-}
-
-type LifecycleTerms @entity {
-  id: ID!
-  calendar: Int!
-  contractRole: Int!
-  dayCountConvention: Int!
-  businessDayConvention: Int!
-  endOfMonthConvention: Int!
-  scalingEffect: Int!
-  penaltyType: Int!
-  feeBasis: Int!
-  creditEventTypeCovered: Int!
-  currency: Bytes!
-  settlementCurrency: Bytes!
-  marketObjectCodeRateReset: Bytes!
-  statusDate: BigInt!
-  maturityDate: BigInt!
-  notionalPrincipal: BigInt!
-  nominalInterestRate: BigInt!
-  feeAccrued: BigInt!
-  accruedInterest: BigInt!
-  rateMultiplier: BigInt!
-  rateSpread: BigInt!
-  feeRate: BigInt!
-  nextResetRate: BigInt!
-  penaltyRate: BigInt!
-  premiumDiscountAtIED: BigInt!
-  priceAtPurchaseDate: BigInt!
-  nextPrincipalRedemptionPayment: BigInt!
-  coverageOfCreditEnhancement: BigInt!
-  lifeCap: BigInt!
-  lifeFloor: BigInt!
-  periodCap: BigInt!
-  periodFloor: BigInt!
-  gracePeriod: Period!
-  delinquencyPeriod: Period!
-  contractReference_1: ContractReference!
-  contractReference_2: ContractReference!
-  asset: Asset! @derivedFrom(field: "lifecycleTerms")
-}
-
-type State @entity {
-  id: ID!
-  contractPerformance: Int!
-  statusDate: BigInt!
-  nonPerformingDate: BigInt!
-  maturityDate: BigInt!
-  exerciseDate: BigInt!
-  terminationDate: BigInt!
-  notionalPrincipal: BigInt!
-  accruedInterest: BigInt!
-  feeAccrued: BigInt!
-  nominalInterestRate: BigInt!
-  interestScalingMultiplier: BigInt!
-  notionalScalingMultiplier: BigInt!
-  nextPrincipalRedemptionPayment: BigInt!
-  exerciseAmount: BigInt!
-  asset: Asset! @derivedFrom(field: "state")
-}
-
-type Admins @entity {
-  id: ID!
-  accounts: [Bytes!]
-  asset: Asset! @derivedFrom(field: "admins")
-}
-
-type Asset @entity {
-  id: ID!
-  assetId: Bytes!
-  template: Template!
-  engine: Bytes!
-  actor: Bytes!
-  admins: Admins!
-  ownership: AssetOwnership!
-  anchorDate: BigInt!
-  lifecycleTerms: LifecycleTerms!
-  state: State!
-  nextScheduleIndex: BigInt!
-  nextScheduledEvent: Bytes!
-}
-
 type DataPoint @entity {
   id: ID!
   dataPoint: BigInt!
@@ -175,3 +26,363 @@ type Distributor @entity {
   address: Bytes!
   holder: [Holder!]
 } 
+
+type Period @entity {
+  id: ID!
+  i: BigInt!
+  p: Int!
+  isSet: Boolean!
+}
+
+type Cycle @entity {
+  id: ID!
+  i: BigInt!
+  p: Int!
+  s: Int!
+  isSet: Boolean!
+}
+
+type ContractReference @entity {
+  id: ID!
+  object: Bytes!
+  object2: Bytes!
+  _type: Int!
+  role: Int!
+}
+
+type AssetOwnership @entity {
+  id: ID!
+  creatorObligor: Bytes!
+  creatorBeneficiary: Bytes!
+  counterpartyObligor: Bytes!
+  counterpartyBeneficiary: Bytes!  
+  asset: Asset! @derivedFrom(field: "ownership")
+}
+
+type Schedule @entity {
+  id: ID!
+  events: [Bytes!]!
+  nextScheduleIndex: BigInt!
+  pendingEvent: Bytes!
+  nextScheduledEvent: Bytes!
+  asset: Asset! @derivedFrom(field: "schedule")
+}
+
+type Admins @entity {
+  id: ID!
+  accounts: [Bytes!]
+  asset: Asset! @derivedFrom(field: "admins")
+}
+
+type State @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  exerciseDate: BigInt!
+  terminationDate: BigInt!
+
+  notionalPrincipal: BigInt!
+  # notionalPrincipal2: BigInt!
+  accruedInterest: BigInt!
+  # accruedInterest2: BigInt!
+  feeAccrued: BigInt!
+  nominalInterestRate: BigInt!
+  # nominalInterestRate2: BigInt!
+  # interestCalculationAmount: BigInt
+  interestScalingMultiplier: BigInt!
+  notionalScalingMultiplier: BigInt!
+  nextPrincipalRedemptionPayment: BigInt!
+  exerciseAmount: BigInt!
+
+  asset: Asset! @derivedFrom(field: "state")
+}
+
+type ANNTerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  scalingEffect: Int!
+  penaltyType: Int!
+  feeBasis: Int!
+  # contractPerformance: Int! state only
+  # seniority: Int! not implemented
+  # prepaymentEffect: Int! not implemented
+  # interestCalculationBase: Int! not implemented
+
+  currency: Bytes!
+  settlementCurrency: Bytes!
+
+  # bytes32 marketObjectCode: Bytes! not implemented
+  marketObjectCodeRateReset: Bytes!
+  # marketObjectCodeOfScalingIndex: Bytes! not implemented
+
+  contractDealDate: BigInt!
+  statusDate: BigInt!
+  initialExchangeDate: BigInt!
+  maturityDate: BigInt!
+  # terminationDate: BigInt! state only
+  purchaseDate: BigInt!
+  capitalizationEndDate: BigInt!
+  # ammortizationDate: BigInt! not implemented
+  # optionExerciseEndDate: BigInt! not implemented
+  # nonPerformingDate: BigInt! state only
+  cycleAnchorDateOfInterestPayment: BigInt!
+  # cycleAnchorDateOfInterestCalculationBase: BigInt! not implemented
+  cycleAnchorDateOfRateReset: BigInt!
+  cycleAnchorDateOfScalingIndex: BigInt!
+  cycleAnchorDateOfFee: BigInt!
+  cycleAnchorDateOfPrincipalRedemption: BigInt!
+  # cycleAnchorDateOfOptionality: BigInt! not implemented
+
+  notionalPrincipal: BigInt!
+  nominalInterestRate: BigInt!
+  accruedInterest: BigInt!
+  rateMultiplier: BigInt!
+  rateSpread: BigInt!
+  nextResetRate: BigInt!
+  feeRate: BigInt!
+  feeAccrued: BigInt!
+  penaltyRate: BigInt!
+  delinquencyRate: BigInt!
+  premiumDiscountAtIED: BigInt!
+  priceAtPurchaseDate: BigInt!
+  # priceAtTerminationDate: BigInt! not implemented
+  # creditLineAmount: BigInt! not implemented
+  # scalingIndexAtStatusDate: BigInt! not implemented
+  # marketValueObserved: BigInt! not implemented
+  nextPrincipalRedemptionPayment: BigInt!
+  # coverageOfCreditEnhancement: BigInt!
+  # interestCalculationBaseAmount: BigInt! not implemented
+  lifeCap: BigInt!
+  lifeFloor: BigInt!
+  periodCap: BigInt!
+  periodFloor: BigInt!
+
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
+  # prepaymentPeriod: Period! not implemented
+  # fixingPeriod: Period! not implemented
+
+  cycleOfInterestPayment: Cycle!
+  cycleOfRateReset: Cycle!
+  cycleOfScalingIndex: Cycle!
+  cycleOfFee: Cycle!
+  cycleOfPrincipalRedemption: Cycle!
+  # cycleOfOptionality: Cycle! not implemented
+  # cycleOfInterestCalculationBase: Cycle! not implemented
+
+  asset: ANNAsset! @derivedFrom(field: "terms")
+}
+
+type CECTerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  creditEventTypeCovered: Int!
+  feeBasis: Int!
+
+  statusDate: BigInt!
+  maturityDate: BigInt!
+  # exerciseDate: BigInt! state only
+
+  notionalPrincipal: BigInt!
+  feeRate: BigInt!
+  # exerciseAmount: BigInt! state only
+  coverageOfCreditEnhancement: BigInt!
+
+  # settlementPeriod: Period! not implemented
+
+  contractReference_1: ContractReference!
+  contractReference_2: ContractReference!
+
+  asset: CECAsset! @derivedFrom(field: "terms")
+}
+
+type CEGTerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  feeBasis: Int!
+  # contractPerformance: Int! state only
+  creditEventTypeCovered: Int!
+  # guaranteedExposure: Int! state only
+
+  currency: Bytes!
+  settlementCurrency: Bytes!
+
+  contractDealDate: BigInt!
+  statusDate: BigInt!
+  maturityDate: BigInt!
+  purchaseDate: BigInt!
+  cycleAnchorDateOfFee: BigInt!
+  # exerciseDate: BigInt! state only
+  # nonPerformingDate: BigInt! state only
+
+  notionalPrincipal: BigInt!
+  delinquencyRate: BigInt!
+  feeAccrued: BigInt!
+  feeRate: BigInt!
+  priceAtPurchaseDate: BigInt!
+  # priceAtTerminationDate: BigInt! not implemented
+  coverageOfCreditEnhancement: BigInt!
+  # exerciseAmount: BigInt! state only
+  
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
+  # settlementPeriod: Period! not implemented
+
+  cycleOfFee: Cycle!
+
+  contractReference_1: ContractReference!
+  contractReference_2: ContractReference!
+
+  asset: CEGAsset! @derivedFrom(field: "terms")
+}
+
+type PAMTerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  scalingEffect: Int!
+  penaltyType: Int!
+  feeBasis: Int!
+  # contractPerformance: Int! state only
+  # seniority: Int! not implemented
+  # prepaymentEffect: Int! not implemented
+  # cyclePointOfInterestPayment not implemented
+  # cyclePointOfRateReset not implemented
+
+  currency: Bytes!
+  settlementCurrency: Bytes!
+
+  # bytes32 marketObjectCode: Bytes! not implemented
+  marketObjectCodeRateReset: Bytes!
+  # marketObjectCodeOfScalingIndex: Bytes! not implemented
+
+  contractDealDate: BigInt!
+  statusDate: BigInt!
+  initialExchangeDate: BigInt!
+  maturityDate: BigInt!
+  # terminationDate: BigInt! state only
+  purchaseDate: BigInt!
+  capitalizationEndDate: BigInt!
+  # optionExerciseEndDate: BigInt! not implemented
+  # nonPerformingDate: BigInt! state only
+  cycleAnchorDateOfInterestPayment: BigInt!
+  cycleAnchorDateOfRateReset: BigInt!
+  cycleAnchorDateOfScalingIndex: BigInt!
+  cycleAnchorDateOfFee: BigInt!
+  # cycleAnchorDateOfOptionality: BigInt! not implemented
+
+  notionalPrincipal: BigInt!
+  nominalInterestRate: BigInt!
+  accruedInterest: BigInt!
+  rateMultiplier: BigInt!
+  rateSpread: BigInt!
+  nextResetRate: BigInt!
+  feeRate: BigInt!
+  feeAccrued: BigInt!
+  penaltyRate: BigInt!
+  delinquencyRate: BigInt!
+  premiumDiscountAtIED: BigInt!
+  priceAtPurchaseDate: BigInt!
+  # priceAtTerminationDate: BigInt! not implemented
+  # creditLineAmount: BigInt! not implemented
+  # scalingIndexAtStatusDate: BigInt! not implemented
+  # marketValueObserved: BigInt! not implemented
+  lifeCap: BigInt!
+  lifeFloor: BigInt!
+  periodCap: BigInt!
+  periodFloor: BigInt!
+
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
+  # prepaymentPeriod: Period! not implemented
+  # fixingPeriod: Period! not implemented
+
+  cycleOfInterestPayment: Cycle!
+  cycleOfRateReset: Cycle!
+  cycleOfScalingIndex: Cycle!
+  cycleOfFee: Cycle!
+  # cycleOfOptionality: Cycle! not implemented
+
+  asset: PAMAsset! @derivedFrom(field: "terms")
+}
+
+type ANNAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: ANNTerms!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  admins: Admins!
+}
+
+type CECAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: CECTerms!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  admins: Admins!
+}
+
+type CEGAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: CEGTerms!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  admins: Admins!
+}
+
+type PAMAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: PAMTerms!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  admins: Admins!
+}
+
+interface Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  admins: Admins!
+}

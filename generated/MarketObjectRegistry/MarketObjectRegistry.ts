@@ -57,6 +57,10 @@ export class PublishedDataPoint__Params {
   get dataPoint(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
+
+  get timestamp(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
 }
 
 export class UpdatedMarketObjectProvider extends EthereumEvent {
@@ -103,51 +107,6 @@ export class MarketObjectRegistry extends SmartContract {
     return new MarketObjectRegistry("MarketObjectRegistry", address);
   }
 
-  ONE_POINT_ZERO(): BigInt {
-    let result = super.call("ONE_POINT_ZERO", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_ONE_POINT_ZERO(): CallResult<BigInt> {
-    let result = super.tryCall("ONE_POINT_ZERO", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  PRECISION(): BigInt {
-    let result = super.call("PRECISION", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_PRECISION(): CallResult<BigInt> {
-    let result = super.tryCall("PRECISION", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  isOwner(): boolean {
-    let result = super.call("isOwner", []);
-
-    return result[0].toBoolean();
-  }
-
-  try_isOwner(): CallResult<boolean> {
-    let result = super.tryCall("isOwner", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBoolean());
-  }
-
   owner(): Address {
     let result = super.call("owner", []);
 
@@ -161,6 +120,25 @@ export class MarketObjectRegistry extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toAddress());
+  }
+
+  isRegistered(marketObjectId: Bytes): boolean {
+    let result = super.call("isRegistered", [
+      EthereumValue.fromFixedBytes(marketObjectId)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_isRegistered(marketObjectId: Bytes): CallResult<boolean> {
+    let result = super.tryCall("isRegistered", [
+      EthereumValue.fromFixedBytes(marketObjectId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
   }
 
   getDataPointOfMarketObject(
@@ -217,6 +195,25 @@ export class MarketObjectRegistry extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getMarketObjectProvider(marketObjectId: Bytes): Address {
+    let result = super.call("getMarketObjectProvider", [
+      EthereumValue.fromFixedBytes(marketObjectId)
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_getMarketObjectProvider(marketObjectId: Bytes): CallResult<Address> {
+    let result = super.tryCall("getMarketObjectProvider", [
+      EthereumValue.fromFixedBytes(marketObjectId)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
   }
 }
 
