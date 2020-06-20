@@ -10,9 +10,6 @@
   creator: assetOwnerships (where: { creatorBeneficiary: "0x79561db79bdb335a1eb9657fed42ad914c995b99" }) {
     asset {
       assetId
-      template {
-        templateId
-      }
       engine
       actor
     }
@@ -20,9 +17,6 @@
   counterparty: assetOwnerships (where: { counterpartyBeneficiary: "0x79561db79bdb335a1eb9657fed42ad914c995b99" }) {
     asset {
       assetId
-      template {
-        templateId
-      }
       engine
       actor
     }
@@ -38,9 +32,6 @@
 {
   assets(first: 1) {
     assetId
-    template {
-      templateId
-    }
     engine
     actor
     ownership {
@@ -48,59 +39,6 @@
       creatorBeneficiary
       counterpartyObligor
       counterpartyBeneficiary
-    }
-    lifecycleTerms {
-      calendar
-      contractRole
-      dayCountConvention
-      businessDayConvention
-      endOfMonthConvention
-      scalingEffect
-      penaltyType
-      feeBasis
-      creditEventTypeCovered
-      contractReference_1 {
-        object
-        _type
-        role
-      }
-      contractReference_2 {
-        object
-        _type
-        role
-      }
-      currency
-      settlementCurrency
-      marketObjectCodeRateReset
-      statusDate
-      maturityDate
-      notionalPrincipal
-      nominalInterestRate
-      feeAccrued
-      accruedInterest
-      rateMultiplier
-      rateSpread
-      feeRate
-      nextResetRate
-      penaltyRate
-      premiumDiscountAtIED
-      priceAtPurchaseDate
-      nextPrincipalRedemptionPayment
-      coverageOfCreditEnhancement
-      gracePeriod {
-        i
-        p
-        isSet
-      }
-      delinquencyPeriod {
-        i
-        p
-        isSet
-      }
-      lifeCap
-      lifeFloor
-      periodCap
-      periodFloor
     }
     state {
       contractPerformance
@@ -118,57 +56,9 @@
       exerciseAmount
     
     }
-    anchorDate
-    nextScheduledEvent
-    nextScheduleIndex
-  }
-}
-
-{
-  templates(first: 10) {
-    templateId
-  }
-}
-
-{
-  templates(first: 1) {
-    templateId
-    templateTerms {
-      calendar
-      contractRole
-      dayCountConvention
-      businessDayConvention
-      endOfMonthConvention
-      scalingEffect
-      penaltyType
-      feeBasis
-      creditEventTypeCovered
-      currency
-      settlementCurrency
-      marketObjectCodeRateReset
-      statusDateOffset
-      maturityDateOffset
-      feeAccrued
-      accruedInterest
-      rateMultiplier
-      feeRate
-      nextResetRate
-      penaltyRate
-      priceAtPurchaseDate
-      nextPrincipalRedemptionPayment
-      gracePeriod {
-        i
-        p
-        isSet
-      }
-      delinquencyPeriod {
-        i
-        p
-        isSet
-      }
-      periodCap
-      periodFloor
+    schedule {
+      pendingEvent
+      nextScheduledEvent
     }
-    templateSchedule
   }
 }
