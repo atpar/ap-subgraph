@@ -762,6 +762,15 @@ export class State extends Entity {
     this.set("terminationDate", Value.fromBigInt(value));
   }
 
+  get lastCouponDay(): BigInt {
+    let value = this.get("lastCouponDay");
+    return value.toBigInt();
+  }
+
+  set lastCouponDay(value: BigInt) {
+    this.set("lastCouponDay", Value.fromBigInt(value));
+  }
+
   get notionalPrincipal(): BigInt {
     let value = this.get("notionalPrincipal");
     return value.toBigInt();
@@ -832,6 +841,51 @@ export class State extends Entity {
 
   set exerciseAmount(value: BigInt) {
     this.set("exerciseAmount", Value.fromBigInt(value));
+  }
+
+  get exerciseQuantity(): BigInt {
+    let value = this.get("exerciseQuantity");
+    return value.toBigInt();
+  }
+
+  set exerciseQuantity(value: BigInt) {
+    this.set("exerciseQuantity", Value.fromBigInt(value));
+  }
+
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
+  }
+
+  get couponAmountFixed(): BigInt {
+    let value = this.get("couponAmountFixed");
+    return value.toBigInt();
+  }
+
+  set couponAmountFixed(value: BigInt) {
+    this.set("couponAmountFixed", Value.fromBigInt(value));
+  }
+
+  get marginFactor(): BigInt {
+    let value = this.get("marginFactor");
+    return value.toBigInt();
+  }
+
+  set marginFactor(value: BigInt) {
+    this.set("marginFactor", Value.fromBigInt(value));
+  }
+
+  get adjustmentFactor(): BigInt {
+    let value = this.get("adjustmentFactor");
+    return value.toBigInt();
+  }
+
+  set adjustmentFactor(value: BigInt) {
+    this.set("adjustmentFactor", Value.fromBigInt(value));
   }
 
   get asset(): string {
@@ -1756,6 +1810,334 @@ export class CEGTerms extends Entity {
   }
 }
 
+export class CERTFTerms extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save CERTFTerms entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save CERTFTerms entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("CERTFTerms", id.toString(), this);
+  }
+
+  static load(id: string): CERTFTerms | null {
+    return store.get("CERTFTerms", id) as CERTFTerms | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get contractType(): i32 {
+    let value = this.get("contractType");
+    return value.toI32();
+  }
+
+  set contractType(value: i32) {
+    this.set("contractType", Value.fromI32(value));
+  }
+
+  get calendar(): i32 {
+    let value = this.get("calendar");
+    return value.toI32();
+  }
+
+  set calendar(value: i32) {
+    this.set("calendar", Value.fromI32(value));
+  }
+
+  get contractRole(): i32 {
+    let value = this.get("contractRole");
+    return value.toI32();
+  }
+
+  set contractRole(value: i32) {
+    this.set("contractRole", Value.fromI32(value));
+  }
+
+  get dayCountConvention(): i32 {
+    let value = this.get("dayCountConvention");
+    return value.toI32();
+  }
+
+  set dayCountConvention(value: i32) {
+    this.set("dayCountConvention", Value.fromI32(value));
+  }
+
+  get businessDayConvention(): i32 {
+    let value = this.get("businessDayConvention");
+    return value.toI32();
+  }
+
+  set businessDayConvention(value: i32) {
+    this.set("businessDayConvention", Value.fromI32(value));
+  }
+
+  get endOfMonthConvention(): i32 {
+    let value = this.get("endOfMonthConvention");
+    return value.toI32();
+  }
+
+  set endOfMonthConvention(value: i32) {
+    this.set("endOfMonthConvention", Value.fromI32(value));
+  }
+
+  get couponType(): i32 {
+    let value = this.get("couponType");
+    return value.toI32();
+  }
+
+  set couponType(value: i32) {
+    this.set("couponType", Value.fromI32(value));
+  }
+
+  get currency(): Bytes {
+    let value = this.get("currency");
+    return value.toBytes();
+  }
+
+  set currency(value: Bytes) {
+    this.set("currency", Value.fromBytes(value));
+  }
+
+  get settlementCurrency(): Bytes {
+    let value = this.get("settlementCurrency");
+    return value.toBytes();
+  }
+
+  set settlementCurrency(value: Bytes) {
+    this.set("settlementCurrency", Value.fromBytes(value));
+  }
+
+  get contractDealDate(): BigInt {
+    let value = this.get("contractDealDate");
+    return value.toBigInt();
+  }
+
+  set contractDealDate(value: BigInt) {
+    this.set("contractDealDate", Value.fromBigInt(value));
+  }
+
+  get statusDate(): BigInt {
+    let value = this.get("statusDate");
+    return value.toBigInt();
+  }
+
+  set statusDate(value: BigInt) {
+    this.set("statusDate", Value.fromBigInt(value));
+  }
+
+  get initialExchangeDate(): BigInt {
+    let value = this.get("initialExchangeDate");
+    return value.toBigInt();
+  }
+
+  set initialExchangeDate(value: BigInt) {
+    this.set("initialExchangeDate", Value.fromBigInt(value));
+  }
+
+  get maturityDate(): BigInt {
+    let value = this.get("maturityDate");
+    return value.toBigInt();
+  }
+
+  set maturityDate(value: BigInt) {
+    this.set("maturityDate", Value.fromBigInt(value));
+  }
+
+  get issueDate(): BigInt {
+    let value = this.get("issueDate");
+    return value.toBigInt();
+  }
+
+  set issueDate(value: BigInt) {
+    this.set("issueDate", Value.fromBigInt(value));
+  }
+
+  get cycleAnchorDateOfRedemption(): BigInt {
+    let value = this.get("cycleAnchorDateOfRedemption");
+    return value.toBigInt();
+  }
+
+  set cycleAnchorDateOfRedemption(value: BigInt) {
+    this.set("cycleAnchorDateOfRedemption", Value.fromBigInt(value));
+  }
+
+  get cycleAnchorDateOfTermination(): BigInt {
+    let value = this.get("cycleAnchorDateOfTermination");
+    return value.toBigInt();
+  }
+
+  set cycleAnchorDateOfTermination(value: BigInt) {
+    this.set("cycleAnchorDateOfTermination", Value.fromBigInt(value));
+  }
+
+  get cycleAnchorDateOfCoupon(): BigInt {
+    let value = this.get("cycleAnchorDateOfCoupon");
+    return value.toBigInt();
+  }
+
+  set cycleAnchorDateOfCoupon(value: BigInt) {
+    this.set("cycleAnchorDateOfCoupon", Value.fromBigInt(value));
+  }
+
+  get nominalPrice(): BigInt {
+    let value = this.get("nominalPrice");
+    return value.toBigInt();
+  }
+
+  set nominalPrice(value: BigInt) {
+    this.set("nominalPrice", Value.fromBigInt(value));
+  }
+
+  get issuePrice(): BigInt {
+    let value = this.get("issuePrice");
+    return value.toBigInt();
+  }
+
+  set issuePrice(value: BigInt) {
+    this.set("issuePrice", Value.fromBigInt(value));
+  }
+
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
+  }
+
+  get denominationRatio(): BigInt {
+    let value = this.get("denominationRatio");
+    return value.toBigInt();
+  }
+
+  set denominationRatio(value: BigInt) {
+    this.set("denominationRatio", Value.fromBigInt(value));
+  }
+
+  get couponRate(): BigInt {
+    let value = this.get("couponRate");
+    return value.toBigInt();
+  }
+
+  set couponRate(value: BigInt) {
+    this.set("couponRate", Value.fromBigInt(value));
+  }
+
+  get gracePeriod(): string {
+    let value = this.get("gracePeriod");
+    return value.toString();
+  }
+
+  set gracePeriod(value: string) {
+    this.set("gracePeriod", Value.fromString(value));
+  }
+
+  get delinquencyPeriod(): string {
+    let value = this.get("delinquencyPeriod");
+    return value.toString();
+  }
+
+  set delinquencyPeriod(value: string) {
+    this.set("delinquencyPeriod", Value.fromString(value));
+  }
+
+  get settlementPeriod(): string {
+    let value = this.get("settlementPeriod");
+    return value.toString();
+  }
+
+  set settlementPeriod(value: string) {
+    this.set("settlementPeriod", Value.fromString(value));
+  }
+
+  get fixingPeriod(): string {
+    let value = this.get("fixingPeriod");
+    return value.toString();
+  }
+
+  set fixingPeriod(value: string) {
+    this.set("fixingPeriod", Value.fromString(value));
+  }
+
+  get exercisePeriod(): string {
+    let value = this.get("exercisePeriod");
+    return value.toString();
+  }
+
+  set exercisePeriod(value: string) {
+    this.set("exercisePeriod", Value.fromString(value));
+  }
+
+  get cycleOfRedemption(): string {
+    let value = this.get("cycleOfRedemption");
+    return value.toString();
+  }
+
+  set cycleOfRedemption(value: string) {
+    this.set("cycleOfRedemption", Value.fromString(value));
+  }
+
+  get cycleOfTermination(): string {
+    let value = this.get("cycleOfTermination");
+    return value.toString();
+  }
+
+  set cycleOfTermination(value: string) {
+    this.set("cycleOfTermination", Value.fromString(value));
+  }
+
+  get cycleOfCoupon(): string {
+    let value = this.get("cycleOfCoupon");
+    return value.toString();
+  }
+
+  set cycleOfCoupon(value: string) {
+    this.set("cycleOfCoupon", Value.fromString(value));
+  }
+
+  get contractReference_1(): string {
+    let value = this.get("contractReference_1");
+    return value.toString();
+  }
+
+  set contractReference_1(value: string) {
+    this.set("contractReference_1", Value.fromString(value));
+  }
+
+  get contractReference_2(): string {
+    let value = this.get("contractReference_2");
+    return value.toString();
+  }
+
+  set contractReference_2(value: string) {
+    this.set("contractReference_2", Value.fromString(value));
+  }
+
+  get asset(): string {
+    let value = this.get("asset");
+    return value.toString();
+  }
+
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
+  }
+}
+
 export class PAMTerms extends Entity {
   constructor(id: string) {
     super();
@@ -2417,6 +2799,109 @@ export class CEGAsset extends Entity {
 
   static load(id: string): CEGAsset | null {
     return store.get("CEGAsset", id) as CEGAsset | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get assetId(): Bytes {
+    let value = this.get("assetId");
+    return value.toBytes();
+  }
+
+  set assetId(value: Bytes) {
+    this.set("assetId", Value.fromBytes(value));
+  }
+
+  get terms(): string {
+    let value = this.get("terms");
+    return value.toString();
+  }
+
+  set terms(value: string) {
+    this.set("terms", Value.fromString(value));
+  }
+
+  get state(): string {
+    let value = this.get("state");
+    return value.toString();
+  }
+
+  set state(value: string) {
+    this.set("state", Value.fromString(value));
+  }
+
+  get schedule(): string {
+    let value = this.get("schedule");
+    return value.toString();
+  }
+
+  set schedule(value: string) {
+    this.set("schedule", Value.fromString(value));
+  }
+
+  get ownership(): string {
+    let value = this.get("ownership");
+    return value.toString();
+  }
+
+  set ownership(value: string) {
+    this.set("ownership", Value.fromString(value));
+  }
+
+  get engine(): Bytes {
+    let value = this.get("engine");
+    return value.toBytes();
+  }
+
+  set engine(value: Bytes) {
+    this.set("engine", Value.fromBytes(value));
+  }
+
+  get actor(): Bytes {
+    let value = this.get("actor");
+    return value.toBytes();
+  }
+
+  set actor(value: Bytes) {
+    this.set("actor", Value.fromBytes(value));
+  }
+
+  get admins(): string {
+    let value = this.get("admins");
+    return value.toString();
+  }
+
+  set admins(value: string) {
+    this.set("admins", Value.fromString(value));
+  }
+}
+
+export class CERTFAsset extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save CERTFAsset entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save CERTFAsset entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("CERTFAsset", id.toString(), this);
+  }
+
+  static load(id: string): CERTFAsset | null {
+    return store.get("CERTFAsset", id) as CERTFAsset | null;
   }
 
   get id(): string {

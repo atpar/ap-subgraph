@@ -119,7 +119,7 @@ export class Status__Params {
   }
 }
 
-export class CECActor__decodeCollateralObjectResult {
+export class CERTFActor__decodeCollateralObjectResult {
   value0: Address;
   value1: BigInt;
 
@@ -136,7 +136,7 @@ export class CECActor__decodeCollateralObjectResult {
   }
 }
 
-export class CECActor__decodeEventResult {
+export class CERTFActor__decodeEventResult {
   value0: i32;
   value1: BigInt;
 
@@ -156,9 +156,9 @@ export class CECActor__decodeEventResult {
   }
 }
 
-export class CECActor extends SmartContract {
-  static bind(address: Address): CECActor {
-    return new CECActor("CECActor", address);
+export class CERTFActor extends SmartContract {
+  static bind(address: Address): CERTFActor {
+    return new CERTFActor("CERTFActor", address);
   }
 
   assetRegistry(): Address {
@@ -178,12 +178,12 @@ export class CECActor extends SmartContract {
 
   decodeCollateralObject(
     object: Bytes
-  ): CECActor__decodeCollateralObjectResult {
+  ): CERTFActor__decodeCollateralObjectResult {
     let result = super.call("decodeCollateralObject", [
       EthereumValue.fromFixedBytes(object)
     ]);
 
-    return new CECActor__decodeCollateralObjectResult(
+    return new CERTFActor__decodeCollateralObjectResult(
       result[0].toAddress(),
       result[1].toBigInt()
     );
@@ -191,7 +191,7 @@ export class CECActor extends SmartContract {
 
   try_decodeCollateralObject(
     object: Bytes
-  ): CallResult<CECActor__decodeCollateralObjectResult> {
+  ): CallResult<CERTFActor__decodeCollateralObjectResult> {
     let result = super.tryCall("decodeCollateralObject", [
       EthereumValue.fromFixedBytes(object)
     ]);
@@ -200,25 +200,25 @@ export class CECActor extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(
-      new CECActor__decodeCollateralObjectResult(
+      new CERTFActor__decodeCollateralObjectResult(
         value[0].toAddress(),
         value[1].toBigInt()
       )
     );
   }
 
-  decodeEvent(_event: Bytes): CECActor__decodeEventResult {
+  decodeEvent(_event: Bytes): CERTFActor__decodeEventResult {
     let result = super.call("decodeEvent", [
       EthereumValue.fromFixedBytes(_event)
     ]);
 
-    return new CECActor__decodeEventResult(
+    return new CERTFActor__decodeEventResult(
       result[0].toI32(),
       result[1].toBigInt()
     );
   }
 
-  try_decodeEvent(_event: Bytes): CallResult<CECActor__decodeEventResult> {
+  try_decodeEvent(_event: Bytes): CallResult<CERTFActor__decodeEventResult> {
     let result = super.tryCall("decodeEvent", [
       EthereumValue.fromFixedBytes(_event)
     ]);
@@ -227,7 +227,7 @@ export class CECActor extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(
-      new CECActor__decodeEventResult(value[0].toI32(), value[1].toBigInt())
+      new CERTFActor__decodeEventResult(value[0].toI32(), value[1].toBigInt())
     );
   }
 
@@ -553,20 +553,16 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[1].value.toBytesArray();
   }
 
-  get engine(): Address {
-    return this._call.inputValues[2].value.toAddress();
+  get ownership(): InitializeCallOwnershipStruct {
+    return this._call.inputValues[2].value.toTuple() as InitializeCallOwnershipStruct;
   }
 
-  get admin(): Address {
+  get engine(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get custodian(): Address {
+  get admin(): Address {
     return this._call.inputValues[4].value.toAddress();
-  }
-
-  get underlyingRegistry(): Address {
-    return this._call.inputValues[5].value.toAddress();
   }
 }
 
@@ -603,40 +599,232 @@ export class InitializeCallTermsStruct extends EthereumTuple {
     return this[5].toI32();
   }
 
-  get creditEventTypeCovered(): i32 {
+  get couponType(): i32 {
     return this[6].toI32();
   }
 
-  get feeBasis(): i32 {
-    return this[7].toI32();
+  get currency(): Address {
+    return this[7].toAddress();
   }
 
-  get statusDate(): BigInt {
-    return this[8].toBigInt();
+  get settlementCurrency(): Address {
+    return this[8].toAddress();
   }
 
-  get maturityDate(): BigInt {
+  get contractDealDate(): BigInt {
     return this[9].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get statusDate(): BigInt {
     return this[10].toBigInt();
   }
 
-  get feeRate(): BigInt {
+  get initialExchangeDate(): BigInt {
     return this[11].toBigInt();
   }
 
-  get coverageOfCreditEnhancement(): BigInt {
+  get maturityDate(): BigInt {
     return this[12].toBigInt();
   }
 
+  get issueDate(): BigInt {
+    return this[13].toBigInt();
+  }
+
+  get cycleAnchorDateOfRedemption(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get cycleAnchorDateOfTermination(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get cycleAnchorDateOfCoupon(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get nominalPrice(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get issuePrice(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get quantity(): BigInt {
+    return this[19].toBigInt();
+  }
+
+  get denominationRatio(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get couponRate(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get gracePeriod(): InitializeCallTermsGracePeriodStruct {
+    return this[22].toTuple() as InitializeCallTermsGracePeriodStruct;
+  }
+
+  get delinquencyPeriod(): InitializeCallTermsDelinquencyPeriodStruct {
+    return this[23].toTuple() as InitializeCallTermsDelinquencyPeriodStruct;
+  }
+
+  get settlementPeriod(): InitializeCallTermsSettlementPeriodStruct {
+    return this[24].toTuple() as InitializeCallTermsSettlementPeriodStruct;
+  }
+
+  get fixingPeriod(): InitializeCallTermsFixingPeriodStruct {
+    return this[25].toTuple() as InitializeCallTermsFixingPeriodStruct;
+  }
+
+  get exercisePeriod(): InitializeCallTermsExercisePeriodStruct {
+    return this[26].toTuple() as InitializeCallTermsExercisePeriodStruct;
+  }
+
+  get cycleOfRedemption(): InitializeCallTermsCycleOfRedemptionStruct {
+    return this[27].toTuple() as InitializeCallTermsCycleOfRedemptionStruct;
+  }
+
+  get cycleOfTermination(): InitializeCallTermsCycleOfTerminationStruct {
+    return this[28].toTuple() as InitializeCallTermsCycleOfTerminationStruct;
+  }
+
+  get cycleOfCoupon(): InitializeCallTermsCycleOfCouponStruct {
+    return this[29].toTuple() as InitializeCallTermsCycleOfCouponStruct;
+  }
+
   get contractReference_1(): InitializeCallTermsContractReference_1Struct {
-    return this[13].toTuple() as InitializeCallTermsContractReference_1Struct;
+    return this[30].toTuple() as InitializeCallTermsContractReference_1Struct;
   }
 
   get contractReference_2(): InitializeCallTermsContractReference_2Struct {
-    return this[14].toTuple() as InitializeCallTermsContractReference_2Struct;
+    return this[31].toTuple() as InitializeCallTermsContractReference_2Struct;
+  }
+}
+
+export class InitializeCallTermsGracePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class InitializeCallTermsDelinquencyPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class InitializeCallTermsSettlementPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class InitializeCallTermsFixingPeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class InitializeCallTermsExercisePeriodStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[2].toBoolean();
+  }
+}
+
+export class InitializeCallTermsCycleOfRedemptionStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get s(): i32 {
+    return this[2].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[3].toBoolean();
+  }
+}
+
+export class InitializeCallTermsCycleOfTerminationStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get s(): i32 {
+    return this[2].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[3].toBoolean();
+  }
+}
+
+export class InitializeCallTermsCycleOfCouponStruct extends EthereumTuple {
+  get i(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get p(): i32 {
+    return this[1].toI32();
+  }
+
+  get s(): i32 {
+    return this[2].toI32();
+  }
+
+  get isSet(): boolean {
+    return this[3].toBoolean();
   }
 }
 
@@ -673,5 +861,23 @@ export class InitializeCallTermsContractReference_2Struct extends EthereumTuple 
 
   get role(): i32 {
     return this[3].toI32();
+  }
+}
+
+export class InitializeCallOwnershipStruct extends EthereumTuple {
+  get creatorObligor(): Address {
+    return this[0].toAddress();
+  }
+
+  get creatorBeneficiary(): Address {
+    return this[1].toAddress();
+  }
+
+  get counterpartyObligor(): Address {
+    return this[2].toAddress();
+  }
+
+  get counterpartyBeneficiary(): Address {
+    return this[3].toAddress();
   }
 }

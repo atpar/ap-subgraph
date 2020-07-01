@@ -41,28 +41,6 @@ export class GrantedAccess__Params {
   }
 }
 
-export class IncrementedScheduleIndex extends EthereumEvent {
-  get params(): IncrementedScheduleIndex__Params {
-    return new IncrementedScheduleIndex__Params(this);
-  }
-}
-
-export class IncrementedScheduleIndex__Params {
-  _event: IncrementedScheduleIndex;
-
-  constructor(event: IncrementedScheduleIndex) {
-    this._event = event;
-  }
-
-  get assetId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get nextScheduleIndex(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
 export class RegisteredAsset extends EthereumEvent {
   get params(): RegisteredAsset__Params {
     return new RegisteredAsset__Params(this);
@@ -104,28 +82,6 @@ export class RevokedAccess__Params {
 
   get methodSignature(): Bytes {
     return this._event.parameters[2].value.toBytes();
-  }
-}
-
-export class SetRootAccess extends EthereumEvent {
-  get params(): SetRootAccess__Params {
-    return new SetRootAccess__Params(this);
-  }
-}
-
-export class SetRootAccess__Params {
-  _event: SetRootAccess;
-
-  constructor(event: SetRootAccess) {
-    this._event = event;
-  }
-
-  get assetId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get account(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -295,23 +251,6 @@ export class UpdatedTerms__Params {
   }
 }
 
-export class PAMRegistry__decodeCollateralObjectResult {
-  value0: Address;
-  value1: BigInt;
-
-  constructor(value0: Address, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, EthereumValue> {
-    let map = new TypedMap<string, EthereumValue>();
-    map.set("value0", EthereumValue.fromAddress(this.value0));
-    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
-    return map;
-  }
-}
-
 export class PAMRegistry__decodeEventResult {
   value0: i32;
   value1: BigInt;
@@ -357,36 +296,60 @@ export class PAMRegistry__getFinalizedStateResultValue0Struct extends EthereumTu
     return this[5].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastCouponDay(): BigInt {
     return this[6].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[7].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[8].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[9].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[10].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[13].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get exerciseQuantity(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get quantity(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get couponAmountFixed(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get marginFactor(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[19].toBigInt();
   }
 }
 
@@ -433,36 +396,60 @@ export class PAMRegistry__getStateResultValue0Struct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastCouponDay(): BigInt {
     return this[6].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[7].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[8].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[9].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[10].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[13].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get exerciseQuantity(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get quantity(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get couponAmountFixed(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get marginFactor(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[19].toBigInt();
   }
 }
 
@@ -816,72 +803,6 @@ export class PAMRegistry extends SmartContract {
     return new PAMRegistry("PAMRegistry", address);
   }
 
-  computeEventTimeForEvent(
-    _event: Bytes,
-    bdc: i32,
-    calendar: i32,
-    maturityDate: BigInt
-  ): BigInt {
-    let result = super.call("computeEventTimeForEvent", [
-      EthereumValue.fromFixedBytes(_event),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(bdc)),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
-      EthereumValue.fromUnsignedBigInt(maturityDate)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_computeEventTimeForEvent(
-    _event: Bytes,
-    bdc: i32,
-    calendar: i32,
-    maturityDate: BigInt
-  ): CallResult<BigInt> {
-    let result = super.tryCall("computeEventTimeForEvent", [
-      EthereumValue.fromFixedBytes(_event),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(bdc)),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
-      EthereumValue.fromUnsignedBigInt(maturityDate)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  decodeCollateralObject(
-    object: Bytes
-  ): PAMRegistry__decodeCollateralObjectResult {
-    let result = super.call("decodeCollateralObject", [
-      EthereumValue.fromFixedBytes(object)
-    ]);
-
-    return new PAMRegistry__decodeCollateralObjectResult(
-      result[0].toAddress(),
-      result[1].toBigInt()
-    );
-  }
-
-  try_decodeCollateralObject(
-    object: Bytes
-  ): CallResult<PAMRegistry__decodeCollateralObjectResult> {
-    let result = super.tryCall("decodeCollateralObject", [
-      EthereumValue.fromFixedBytes(object)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      new PAMRegistry__decodeCollateralObjectResult(
-        value[0].toAddress(),
-        value[1].toBigInt()
-      )
-    );
-  }
-
   decodeEvent(_event: Bytes): PAMRegistry__decodeEventResult {
     let result = super.call("decodeEvent", [
       EthereumValue.fromFixedBytes(_event)
@@ -904,33 +825,6 @@ export class PAMRegistry extends SmartContract {
     return CallResult.fromValue(
       new PAMRegistry__decodeEventResult(value[0].toI32(), value[1].toBigInt())
     );
-  }
-
-  encodeCollateralAsObject(
-    collateralToken: Address,
-    collateralAmount: BigInt
-  ): Bytes {
-    let result = super.call("encodeCollateralAsObject", [
-      EthereumValue.fromAddress(collateralToken),
-      EthereumValue.fromUnsignedBigInt(collateralAmount)
-    ]);
-
-    return result[0].toBytes();
-  }
-
-  try_encodeCollateralAsObject(
-    collateralToken: Address,
-    collateralAmount: BigInt
-  ): CallResult<Bytes> {
-    let result = super.tryCall("encodeCollateralAsObject", [
-      EthereumValue.fromAddress(collateralToken),
-      EthereumValue.fromUnsignedBigInt(collateralAmount)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBytes());
   }
 
   encodeEvent(eventType: i32, scheduleTime: BigInt): Bytes {
@@ -2249,36 +2143,60 @@ export class SetFinalizedStateCallStateStruct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastCouponDay(): BigInt {
     return this[6].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[7].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[8].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[9].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[10].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[13].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get exerciseQuantity(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get quantity(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get couponAmountFixed(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get marginFactor(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[19].toBigInt();
   }
 }
 
@@ -2341,36 +2259,60 @@ export class SetStateCallStateStruct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastCouponDay(): BigInt {
     return this[6].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[7].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[8].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[9].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[10].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[13].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get exerciseQuantity(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get quantity(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get couponAmountFixed(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get marginFactor(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[19].toBigInt();
   }
 }
 
@@ -2735,36 +2677,60 @@ export class RegisterAssetCallStateStruct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastCouponDay(): BigInt {
     return this[6].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[7].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[8].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[9].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[10].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[11].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[13].toBigInt();
+  }
+
+  get exerciseAmount(): BigInt {
+    return this[14].toBigInt();
+  }
+
+  get exerciseQuantity(): BigInt {
+    return this[15].toBigInt();
+  }
+
+  get quantity(): BigInt {
+    return this[16].toBigInt();
+  }
+
+  get couponAmountFixed(): BigInt {
+    return this[17].toBigInt();
+  }
+
+  get marginFactor(): BigInt {
+    return this[18].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[19].toBigInt();
   }
 }
 

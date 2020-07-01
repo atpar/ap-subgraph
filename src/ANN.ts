@@ -1,15 +1,17 @@
 import { log } from "@graphprotocol/graph-ts";
 
 import { ANNActor, ProgressedAsset } from '../generated/ANNActor/ANNActor';
-import { ANNRegistry, RegisteredAsset, SetRootAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/ANNRegistry/ANNRegistry';
+import { ANNRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/ANNRegistry/ANNRegistry';
 
 import { Admins, ANNAsset, AssetOwnership, Schedule, ANNTerms, Period, State, Cycle } from '../generated/schema';
 
 
-// SetRootAccess event may be processed before or after RegisteredAsset event,
+// GrantedAccess event may be processed before or after RegisteredAsset event,
 // hence wehave to store it as a separate entity
-export function handleSetRootAccessANN(event: SetRootAccess): void {
+export function handleGrantedAccessANN(event: GrantedAccess): void {
   log.debug("Process event (SetRootAsset) for asset ({})", [event.params.assetId.toHex()]);
+
+  if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
 
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   if (admins === null) {
@@ -96,7 +98,7 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   cycleOfInterestPayment.isSet = _annTerms.cycleOfInterestPayment.isSet;
   cycleOfInterestPayment.save();
 
-  let cycleOfRateReset = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfInterestPayment');
+  let cycleOfRateReset = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfRateReset');
   cycleOfRateReset.i = _annTerms.cycleOfRateReset.i;
   cycleOfRateReset.p = _annTerms.cycleOfRateReset.p;
   cycleOfRateReset.s = _annTerms.cycleOfRateReset.s;
@@ -181,6 +183,7 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   state.maturityDate = _state.maturityDate;
   state.exerciseDate = _state.exerciseDate;
   state.terminationDate = _state.terminationDate;
+  state.lastCouponDay = _state.lastCouponDay;
   state.notionalPrincipal = _state.notionalPrincipal;
   state.accruedInterest = _state.accruedInterest;
   state.feeAccrued = _state.feeAccrued;
@@ -189,9 +192,14 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
   state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
   state.exerciseAmount = _state.exerciseAmount;
+  state.exerciseQuantity = _state.exerciseQuantity;
+  state.quantity = _state.quantity;
+  state.couponAmountFixed = _state.couponAmountFixed;
+  state.marginFactor = _state.marginFactor;
+  state.adjustmentFactor = _state.adjustmentFactor;
   state.save();
 
-  // SetRootAccess event may be processed before or after RegisteredAsset event
+  // GrantedAccess event may be processed before or after RegisteredAsset event
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   if (admins === null) {
     admins = new Admins(event.params.assetId.toHex() + '-admins');
@@ -223,6 +231,7 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
   state.maturityDate = _state.maturityDate;
   state.exerciseDate = _state.exerciseDate;
   state.terminationDate = _state.terminationDate;
+  state.lastCouponDay = _state.lastCouponDay;
   state.notionalPrincipal = _state.notionalPrincipal;
   state.accruedInterest = _state.accruedInterest;
   state.feeAccrued = _state.feeAccrued;
@@ -231,6 +240,11 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
   state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
   state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
   state.exerciseAmount = _state.exerciseAmount;
+  state.exerciseQuantity = _state.exerciseQuantity;
+  state.quantity = _state.quantity;
+  state.couponAmountFixed = _state.couponAmountFixed;
+  state.marginFactor = _state.marginFactor;
+  state.adjustmentFactor = _state.adjustmentFactor;
   state.save();
 
   let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');

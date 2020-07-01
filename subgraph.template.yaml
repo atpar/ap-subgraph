@@ -30,8 +30,8 @@ dataSources:
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAssetANN
-        - event: SetRootAccess(indexed bytes32,indexed address)
-          handler: handleSetRootAccessANN
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessANN
         - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
           handler: handleRevokedAccessANN
         - event: UpdatedBeneficiary(bytes32,address,address)
@@ -85,8 +85,8 @@ dataSources:
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAssetCEC
-        - event: SetRootAccess(indexed bytes32,indexed address)
-          handler: handleSetRootAccessCEC
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessCEC
         - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
           handler: handleRevokedAccessCEC
         - event: UpdatedBeneficiary(bytes32,address,address)
@@ -140,8 +140,8 @@ dataSources:
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAssetCEG
-        - event: SetRootAccess(indexed bytes32,indexed address)
-          handler: handleSetRootAccessCEG
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessCEG
         - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
           handler: handleRevokedAccessCEG
         - event: UpdatedBeneficiary(bytes32,address,address)
@@ -170,6 +170,61 @@ dataSources:
           handler: handleProgressedAssetCEG
       file: ./src/CEG.ts
   - kind: ethereum/contract
+    name: CERTFRegistry
+    network: {{network}}
+    source:
+      address: '{{CERTFRegistry}}'
+      abi: CERTFRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - CERTFAsset
+        - CERTFTerms
+        - State
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
+        - Admins
+      abis:
+        - name: CERTFRegistry
+          file: ./build/contracts/CERTFRegistry.json
+      eventHandlers:
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAssetCERTF
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessCERTF
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccessCERTF
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiaryCERTF
+      file: ./src/CERTF.ts
+  - kind: ethereum/contract
+    name: CERTFActor
+    network: {{network}}
+    source:
+      address: '{{CERTFActor}}'
+      abi: CERTFActor
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - State
+        - Schedule
+      abis:
+        - name: CERTFActor
+          file: ./build/contracts/CERTFActor.json
+        - name: CERTFRegistry
+          file: ./build/contracts/CERTFRegistry.json
+      eventHandlers:
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
+          handler: handleProgressedAssetCERTF
+      file: ./src/CERTF.ts
+  - kind: ethereum/contract
     name: PAMRegistry
     network: {{network}}
     source:
@@ -195,8 +250,8 @@ dataSources:
       eventHandlers:
         - event: RegisteredAsset(bytes32)
           handler: handleRegisteredAssetPAM
-        - event: SetRootAccess(indexed bytes32,indexed address)
-          handler: handleSetRootAccessPAM
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessPAM
         - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
           handler: handleRevokedAccessPAM
         - event: UpdatedBeneficiary(bytes32,address,address)

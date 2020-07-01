@@ -83,19 +83,27 @@ type State @entity {
   maturityDate: BigInt!
   exerciseDate: BigInt!
   terminationDate: BigInt!
+  lastCouponDay: BigInt!
 
   notionalPrincipal: BigInt!
-  # notionalPrincipal2: BigInt!
+  # notionalPrincipal2: BigInt! not implemented
   accruedInterest: BigInt!
-  # accruedInterest2: BigInt!
+  # accruedInterest2: BigInt! not implemented
   feeAccrued: BigInt!
   nominalInterestRate: BigInt!
-  # nominalInterestRate2: BigInt!
-  # interestCalculationAmount: BigInt
+  # nominalInterestRate2: BigInt! not implemented
+  # interestCalculationBaseAmount: BigInt! not implemented
   interestScalingMultiplier: BigInt!
   notionalScalingMultiplier: BigInt!
   nextPrincipalRedemptionPayment: BigInt!
   exerciseAmount: BigInt!
+  exerciseQuantity: BigInt!
+  
+  quantity: BigInt!
+  couponAmountFixed: BigInt!
+  # exerciseQuantityOrdered: BigInt! not implemented
+  marginFactor: BigInt!
+  adjustmentFactor: BigInt!
 
   asset: Asset! @derivedFrom(field: "state")
 }
@@ -254,6 +262,62 @@ type CEGTerms @entity {
   asset: CEGAsset! @derivedFrom(field: "terms")
 }
 
+type CERTFTerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  couponType: Int!
+  # contractPerformance: Int! state only
+
+  currency: Bytes!
+  settlementCurrency: Bytes!
+
+  # marketObjectCode: Bytes! not implemented
+
+  contractDealDate: BigInt!
+  statusDate: BigInt!
+  initialExchangeDate: BigInt!
+  maturityDate: BigInt!
+  # nonPerformingDate: BigInt!state only
+  issueDate: BigInt!
+  # lastCouponDay: BigInt! state only
+  cycleAnchorDateOfRedemption: BigInt!
+  cycleAnchorDateOfTermination: BigInt!
+  cycleAnchorDateOfCoupon: BigInt!
+
+  nominalPrice: BigInt!
+  issuePrice: BigInt!
+  # delinquencyRate: BigInt not implemented
+  quantity: BigInt!
+  # exerciseQuantity: BigInt! state only
+  # exerciseQuantityOrdered: BigInt! state only
+  # marginFactor: BigInt!  state only
+  # adjustmentFactor: BigInt! state only
+  denominationRatio: BigInt!
+  couponRate: BigInt!
+  # exerciseAmount: BigInt! state only
+  # couponAmountFixed: BigInt! state only
+
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
+  settlementPeriod: Period!
+  fixingPeriod: Period!
+  exercisePeriod: Period!
+
+  cycleOfRedemption: Cycle!
+  cycleOfTermination: Cycle!
+  cycleOfCoupon: Cycle!
+
+  contractReference_1: ContractReference!
+  contractReference_2: ContractReference!
+
+  asset: CERTFAsset! @derivedFrom(field: "terms")
+}
+
 type PAMTerms @entity {
   id: ID!
   contractType: Int!
@@ -356,6 +420,18 @@ type CEGAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: CEGTerms!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  admins: Admins!
+}
+
+type CERTFAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: CERTFTerms!
   state: State!
   schedule: Schedule!
   ownership: AssetOwnership!

@@ -1,15 +1,17 @@
 import { log } from "@graphprotocol/graph-ts";
 
 import { CEGActor, ProgressedAsset } from '../generated/CEGActor/CEGActor';
-import { CEGRegistry, RegisteredAsset, SetRootAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/CEGRegistry/CEGRegistry';
+import { CEGRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/CEGRegistry/CEGRegistry';
 
 import { Admins, CEGAsset, AssetOwnership, Schedule, CEGTerms, Period, ContractReference, State, Cycle } from '../generated/schema';
 
 
-// SetRootAccess event may be processed before or after RegisteredAsset event,
+// GrantedAccess event may be processed before or after RegisteredAsset event,
 // hence wehave to store it as a separate entity
-export function handleSetRootAccessCEG(event: SetRootAccess): void {
+export function handleGrantedAccessCEG(event: GrantedAccess): void {
   log.debug("Process event (SetRootAsset) for asset ({})", [event.params.assetId.toHex()]);
+
+  if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
 
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   if (admins === null) {
@@ -144,6 +146,7 @@ export function handleRegisteredAssetCEG(event: RegisteredAsset): void {
   state.maturityDate = _state.maturityDate;
   state.exerciseDate = _state.exerciseDate;
   state.terminationDate = _state.terminationDate;
+  state.lastCouponDay = _state.lastCouponDay;
   state.notionalPrincipal = _state.notionalPrincipal;
   state.accruedInterest = _state.accruedInterest;
   state.feeAccrued = _state.feeAccrued;
@@ -152,9 +155,14 @@ export function handleRegisteredAssetCEG(event: RegisteredAsset): void {
   state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
   state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
   state.exerciseAmount = _state.exerciseAmount;
+  state.exerciseQuantity = _state.exerciseQuantity;
+  state.quantity = _state.quantity;
+  state.couponAmountFixed = _state.couponAmountFixed;
+  state.marginFactor = _state.marginFactor;
+  state.adjustmentFactor = _state.adjustmentFactor;
   state.save();
 
-  // SetRootAccess event may be processed before or after RegisteredAsset event
+  // GrantedAccess event may be processed before or after RegisteredAsset event
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   if (admins === null) {
     admins = new Admins(event.params.assetId.toHex() + '-admins');
@@ -186,6 +194,7 @@ export function handleProgressedAssetCEG(event: ProgressedAsset): void {
   state.maturityDate = _state.maturityDate;
   state.exerciseDate = _state.exerciseDate;
   state.terminationDate = _state.terminationDate;
+  state.lastCouponDay = _state.lastCouponDay;
   state.notionalPrincipal = _state.notionalPrincipal;
   state.accruedInterest = _state.accruedInterest;
   state.feeAccrued = _state.feeAccrued;
@@ -194,6 +203,11 @@ export function handleProgressedAssetCEG(event: ProgressedAsset): void {
   state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
   state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
   state.exerciseAmount = _state.exerciseAmount;
+  state.exerciseQuantity = _state.exerciseQuantity;
+  state.quantity = _state.quantity;
+  state.couponAmountFixed = _state.couponAmountFixed;
+  state.marginFactor = _state.marginFactor;
+  state.adjustmentFactor = _state.adjustmentFactor;
   state.save();
 
   let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');

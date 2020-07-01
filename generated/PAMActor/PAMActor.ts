@@ -176,41 +176,6 @@ export class PAMActor extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
-  computeEventTimeForEvent(
-    _event: Bytes,
-    bdc: i32,
-    calendar: i32,
-    maturityDate: BigInt
-  ): BigInt {
-    let result = super.call("computeEventTimeForEvent", [
-      EthereumValue.fromFixedBytes(_event),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(bdc)),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
-      EthereumValue.fromUnsignedBigInt(maturityDate)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_computeEventTimeForEvent(
-    _event: Bytes,
-    bdc: i32,
-    calendar: i32,
-    maturityDate: BigInt
-  ): CallResult<BigInt> {
-    let result = super.tryCall("computeEventTimeForEvent", [
-      EthereumValue.fromFixedBytes(_event),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(bdc)),
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
-      EthereumValue.fromUnsignedBigInt(maturityDate)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
   decodeCollateralObject(
     object: Bytes
   ): PAMActor__decodeCollateralObjectResult {
