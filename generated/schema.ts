@@ -651,21 +651,13 @@ export class Admins extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get accounts(): Array<Bytes> | null {
+  get accounts(): Array<Bytes> {
     let value = this.get("accounts");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
+    return value.toBytesArray();
   }
 
-  set accounts(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("accounts");
-    } else {
-      this.set("accounts", Value.fromBytesArray(value as Array<Bytes>));
-    }
+  set accounts(value: Array<Bytes>) {
+    this.set("accounts", Value.fromBytesArray(value));
   }
 
   get asset(): string {

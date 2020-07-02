@@ -14,7 +14,7 @@ export function handleGrantedAccessCEC(event: GrantedAccess): void {
   if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
 
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
-  if (admins === null) {
+  if (admins == null) {
     admins = new Admins(event.params.assetId.toHex() + '-admins');
     admins.accounts = [];
   }
@@ -36,7 +36,7 @@ export function handleRevokedAccessCEC(event: RevokedAccess): void {
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   
   // no admins prev. registered 
-  if (admins === null) { return; }
+  if (admins == null) { return; }
   
   // remove admin since access was revoked for the account
   let accounts = admins.accounts.filter((account) => (account !== event.params.account));
@@ -134,7 +134,7 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
 
   // GrantedAccess event may be processed before or after RegisteredAsset event
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
-  if (admins === null) {
+  if (admins == null) {
     admins = new Admins(event.params.assetId.toHex() + '-admins');
   }
 

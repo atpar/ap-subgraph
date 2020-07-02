@@ -9,7 +9,7 @@ export function handleUpdatedMarketObjectProvider (event: UpdatedMarketObjectPro
   log.debug("Process event (UpdatedMarketObjectProvider) for market object ({})", [event.params.marketObjectId.toHex()]); 
 
   let marketObject = MarketObject.load(event.params.marketObjectId.toHex());
-  if (marketObject === null) {
+  if (marketObject == null) {
     marketObject = new MarketObject(event.params.marketObjectId.toHex());
   }
 

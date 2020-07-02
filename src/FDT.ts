@@ -23,17 +23,17 @@ export function handleTransfer(event: Transfer): void {
   let fdt = VanillaFDT.bind(event.address); 
 
   let distributor = Distributor.load(event.address.toHex());
-  if (distributor === null) {
+  if (distributor == null) {
     distributor = new Distributor(event.address.toHex());
     distributor.address = event.address;
   }
   let holder_from = Holder.load(event.address.toHex() + '-' + event.params.from.toHex());
-  if (holder_from === null) {
+  if (holder_from == null) {
     holder_from = new Holder(event.address.toHex() + '-' + event.params.from.toHex());
     holder_from.address = event.params.from;
   }
   let holder_to = Holder.load(event.address.toHex() + '-' + event.params.from.toHex());
-  if (holder_to === null) {
+  if (holder_to == null) {
     holder_to = new Holder(event.address.toHex() + '-' + event.params.from.toHex());
     holder_to.address = event.params.to;
   }
@@ -58,12 +58,12 @@ export function handleFundsWithdrawn(event: FundsWithdrawn): void {
   let fdt = VanillaFDT.bind(event.address);
 
   let distributor = Distributor.load(event.address.toHex());
-  if (distributor === null) {
+  if (distributor == null) {
     distributor = new Distributor(event.address.toHex());
     distributor.address = event.address;
   }
   let holder = Holder.load(event.address.toHex() + '-' + event.params.by.toHex());
-  if (holder === null) {
+  if (holder == null) {
     holder = new Holder(event.address.toHex() + '-' + event.params.by.toHex());
     holder.address = event.params.by;
   }
