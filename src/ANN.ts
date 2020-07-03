@@ -203,7 +203,9 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
   if (admins == null) {
     admins = new Admins(event.params.assetId.toHex() + '-admins');
+    admins.accounts = [];
   }
+  admins.save();
 
   let asset = new ANNAsset(event.params.assetId.toHex());
   asset.assetId = event.params.assetId;
