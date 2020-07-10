@@ -12,7 +12,7 @@ import "@atpar/ap-contracts/contracts/Core/CEG/CEGRegistry.sol";
 import "@atpar/ap-contracts/contracts/Core/CERTF/CERTFRegistry.sol";
 import "@atpar/ap-contracts/contracts/Core/PAM/PAMRegistry.sol";
 
-import "@atpar/ap-contracts/contracts/Core/Base/MarketObjectRegistry/MarketObjectRegistry.sol";
+import "@atpar/ap-contracts/contracts/Core/Base/DataRegistry/DataRegistry.sol";
 import "@atpar/ap-contracts/contracts/FDT/FDTFactory.sol";
 import "@atpar/ap-contracts/contracts/FDT/VanillaFDT.sol";
 

@@ -1328,8 +1328,8 @@ export class CEGRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBytes());
   }
 
-  getUIntValueForForTermsAttribute(assetId: Bytes, attribute: Bytes): BigInt {
-    let result = super.call("getUIntValueForForTermsAttribute", [
+  getUIntValueForTermsAttribute(assetId: Bytes, attribute: Bytes): BigInt {
+    let result = super.call("getUIntValueForTermsAttribute", [
       EthereumValue.fromFixedBytes(assetId),
       EthereumValue.fromFixedBytes(attribute)
     ]);
@@ -1337,11 +1337,11 @@ export class CEGRegistry extends SmartContract {
     return result[0].toBigInt();
   }
 
-  try_getUIntValueForForTermsAttribute(
+  try_getUIntValueForTermsAttribute(
     assetId: Bytes,
     attribute: Bytes
   ): CallResult<BigInt> {
-    let result = super.tryCall("getUIntValueForForTermsAttribute", [
+    let result = super.tryCall("getUIntValueForTermsAttribute", [
       EthereumValue.fromFixedBytes(assetId),
       EthereumValue.fromFixedBytes(attribute)
     ]);
@@ -1352,8 +1352,8 @@ export class CEGRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  getIntValueForForTermsAttribute(assetId: Bytes, attribute: Bytes): BigInt {
-    let result = super.call("getIntValueForForTermsAttribute", [
+  getIntValueForTermsAttribute(assetId: Bytes, attribute: Bytes): BigInt {
+    let result = super.call("getIntValueForTermsAttribute", [
       EthereumValue.fromFixedBytes(assetId),
       EthereumValue.fromFixedBytes(attribute)
     ]);
@@ -1361,11 +1361,11 @@ export class CEGRegistry extends SmartContract {
     return result[0].toBigInt();
   }
 
-  try_getIntValueForForTermsAttribute(
+  try_getIntValueForTermsAttribute(
     assetId: Bytes,
     attribute: Bytes
   ): CallResult<BigInt> {
-    let result = super.tryCall("getIntValueForForTermsAttribute", [
+    let result = super.tryCall("getIntValueForTermsAttribute", [
       EthereumValue.fromFixedBytes(assetId),
       EthereumValue.fromFixedBytes(attribute)
     ]);

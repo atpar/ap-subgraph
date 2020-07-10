@@ -69,17 +69,17 @@ export class DataPoint extends Entity {
     this.set("provider", Value.fromBytes(value));
   }
 
-  get marketObject(): string {
-    let value = this.get("marketObject");
+  get dataSet(): string {
+    let value = this.get("dataSet");
     return value.toString();
   }
 
-  set marketObject(value: string) {
-    this.set("marketObject", Value.fromString(value));
+  set dataSet(value: string) {
+    this.set("dataSet", Value.fromString(value));
   }
 }
 
-export class MarketObject extends Entity {
+export class DataSet extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -87,17 +87,17 @@ export class MarketObject extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save MarketObject entity without an ID");
+    assert(id !== null, "Cannot save DataSet entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save MarketObject entity with non-string ID. " +
+      "Cannot save DataSet entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("MarketObject", id.toString(), this);
+    store.set("DataSet", id.toString(), this);
   }
 
-  static load(id: string): MarketObject | null {
-    return store.get("MarketObject", id) as MarketObject | null;
+  static load(id: string): DataSet | null {
+    return store.get("DataSet", id) as DataSet | null;
   }
 
   get id(): string {

@@ -3,10 +3,10 @@ type DataPoint @entity {
   dataPoint: BigInt!
   timestamp: BigInt!
   provider: Bytes!
-  marketObject: MarketObject! @derivedFrom(field: "dataPoints")
+  dataSet: DataSet! @derivedFrom(field: "dataPoints")
 }
 
-type MarketObject @entity {
+type DataSet @entity {
   id: ID!
   provider: Bytes!
   dataPoints: [DataPoint!]

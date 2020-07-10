@@ -176,6 +176,21 @@ export class ANNActor extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
+  dataRegistry(): Address {
+    let result = super.call("dataRegistry", []);
+
+    return result[0].toAddress();
+  }
+
+  try_dataRegistry(): CallResult<Address> {
+    let result = super.tryCall("dataRegistry", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
   decodeCollateralObject(
     object: Bytes
   ): ANNActor__decodeCollateralObjectResult {
@@ -313,21 +328,6 @@ export class ANNActor extends SmartContract {
     return CallResult.fromValue(value[0].toBoolean());
   }
 
-  marketObjectRegistry(): Address {
-    let result = super.call("marketObjectRegistry", []);
-
-    return result[0].toAddress();
-  }
-
-  try_marketObjectRegistry(): CallResult<Address> {
-    let result = super.tryCall("marketObjectRegistry", []);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toAddress());
-  }
-
   owner(): Address {
     let result = super.call("owner", []);
 
@@ -365,7 +365,7 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get marketObjectRegistry(): Address {
+  get dataRegistry(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 }

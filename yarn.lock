@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@atpar/actus-solidity@0.4.0-beta.8":
-  version "0.4.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@atpar/actus-solidity/-/actus-solidity-0.4.0-beta.8.tgz#33594a77a46abe26844d2eb6621a1e7d80641f6c"
-  integrity sha512-jjwn//eyWGEaFc7eAxF3tTh/DRfI1Xgd2vF+q6mbQ7p9Z+qw0HtWUAWdN9+UP3O9PGRRmoikY+IGCWyCBuPvGQ==
+"@atpar/actus-solidity@0.4.0-beta.9":
+  version "0.4.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@atpar/actus-solidity/-/actus-solidity-0.4.0-beta.9.tgz#d322a616a59313967110e159dfaa9c57a5ba3ef9"
+  integrity sha512-/mk3EZ/R2nIV5wIs4HwDvOo4sVvJId1a1vz06EHO9wdXdUSGGArWcfYMKfZm1wKUaLMOoOC8Lg5jMsjVlLWCCw==
 
-"@atpar/ap-contracts@0.4.0-beta.8":
-  version "0.4.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@atpar/ap-contracts/-/ap-contracts-0.4.0-beta.8.tgz#ce577cb84941e5a4d04decea46157542aa4a7acd"
-  integrity sha512-SPG9KKnXFzxh+RKHp6Pv1LW/ecOZglKRLD3pzIkmMTc7ZknkkuJB3Qwmuoe66R/NtdM4XVYJORbSWl0iUgxF5A==
+"@atpar/ap-contracts@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@atpar/ap-contracts/-/ap-contracts-0.4.0.tgz#e7d24c9085c8a6bf4e55a236e3945aaa81c5d3a5"
+  integrity sha512-rC1qOjyRHFcP3UnY26m2GLEQAQ/bE2u/6Xjbjkb68RRK6Logu5b0iuDVbZfpGgXp6SVOvDAoTuyypknwJgbKug==
   dependencies:
-    "@atpar/actus-solidity" "0.4.0-beta.8"
+    "@atpar/actus-solidity" "0.4.0-beta.9"
     openzeppelin-solidity "^3.0.2"
     truffle-hdwallet-provider "^1.0.9"
 

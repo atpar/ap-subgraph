@@ -280,27 +280,27 @@ dataSources:
           handler: handleProgressedAssetPAM
       file: ./src/PAM.ts
   - kind: ethereum/contract
-    name: MarketObjectRegistry
+    name: DataRegistry
     network: {{network}}
     source:
-      address: '{{MarketObjectRegistry}}'
-      abi: MarketObjectRegistry
+      address: '{{DataRegistry}}'
+      abi: DataRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - MarketObject
+        - DataSet
         - DataPoint
       abis:
-        - name: MarketObjectRegistry
-          file: ./build/contracts/MarketObjectRegistry.json
+        - name: DataRegistry
+          file: ./build/contracts/DataRegistry.json
       eventHandlers:
-        - event: UpdatedMarketObjectProvider(indexed bytes32,address)
-          handler: handleUpdatedMarketObjectProvider
+        - event: UpdatedDataProvider(indexed bytes32,address)
+          handler: handleUpdatedDataProvider
         - event: PublishedDataPoint(indexed bytes32,int256,uint256)
           handler:  handlePublishedDataPoint
-      file: ./src/MOR.ts
+      file: ./src/DR.ts
   - kind: ethereum/contract
     name: FDTFactory
     network: {{network}}
