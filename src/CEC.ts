@@ -81,12 +81,14 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
 
   let contractReference_1 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_1');
   contractReference_1.object = _cecTerms.contractReference_1.object;
+  contractReference_1.object2 = _cecTerms.contractReference_1.object2;
   contractReference_1._type = _cecTerms.contractReference_1._type;
   contractReference_1.role = _cecTerms.contractReference_1.role;
   contractReference_1.save();
 
   let contractReference_2 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_2');
   contractReference_2.object = _cecTerms.contractReference_2.object;
+  contractReference_2.object2 = _cecTerms.contractReference_2.object2;
   contractReference_2._type = _cecTerms.contractReference_2._type;
   contractReference_2.role = _cecTerms.contractReference_2.role;
   contractReference_2.save();
