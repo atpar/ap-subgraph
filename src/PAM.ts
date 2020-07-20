@@ -76,7 +76,7 @@ export function handleRegisteredAssetPAM(event: RegisteredAsset): void {
   schedule.events = pamRegistry.getSchedule(event.params.assetId);
   schedule.nextScheduleIndex = pamRegistry.getNextScheduleIndex(event.params.assetId);
   schedule.pendingEvent = pamRegistry.getPendingEvent(event.params.assetId);
-  schedule.nextScheduledEvent = pamRegistry.getNextScheduledEvent(event.params.assetId);
+  schedule.nextScheduledEvent = pamRegistry.try_getNextScheduledEvent(event.params.assetId).value;
   schedule.save();
 
   let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
