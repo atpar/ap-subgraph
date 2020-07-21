@@ -12,6 +12,7 @@ export function handleDeployedDistributor(event: DeployedDistributor): void {
   
   let distributor = new Distributor(event.params.distributor.toHex());
   distributor.address = event.params.distributor;
+  distributor.holder = [];
   distributor.save();
   
   FDT.create(event.params.distributor);
@@ -26,6 +27,7 @@ export function handleTransfer(event: Transfer): void {
   if (distributor == null) {
     distributor = new Distributor(event.address.toHex());
     distributor.address = event.address;
+    distributor.holder = [];
   }
   let holder_from = Holder.load(event.address.toHex() + '-' + event.params.from.toHex());
   if (holder_from == null) {
@@ -70,6 +72,7 @@ export function handleFundsWithdrawn(event: FundsWithdrawn): void {
   if (distributor == null) {
     distributor = new Distributor(event.address.toHex());
     distributor.address = event.address;
+    distributor.holder = [];
   }
   let holder = Holder.load(event.address.toHex() + '-' + event.params.by.toHex());
   if (holder == null) {
