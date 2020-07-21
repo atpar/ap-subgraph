@@ -259,21 +259,13 @@ export class Distributor extends Entity {
     this.set("address", Value.fromBytes(value));
   }
 
-  get holder(): Array<string> | null {
+  get holder(): Array<string> {
     let value = this.get("holder");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
+    return value.toStringArray();
   }
 
-  set holder(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("holder");
-    } else {
-      this.set("holder", Value.fromStringArray(value as Array<string>));
-    }
+  set holder(value: Array<string>) {
+    this.set("holder", Value.fromStringArray(value));
   }
 }
 

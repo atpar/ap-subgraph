@@ -24,7 +24,7 @@ type Holder @entity {
 type Distributor @entity {
   id: ID!
   address: Bytes!
-  holder: [Holder!]
+  holder: [Holder!]!
 } 
 
 type Period @entity {

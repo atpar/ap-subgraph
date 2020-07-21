@@ -38,11 +38,20 @@ export function handleTransfer(event: Transfer): void {
     holder_to.address = event.params.to;
   }
 
-  holder_from.balanceOf = fdt.balanceOf(event.params.from);
-  holder_from.withdrawnFundsOf = fdt.withdrawableFundsOf(event.params.from);
+  let holderFromBalanceOfCallResult = fdt.try_balanceOf(event.params.from);
+  if (holderFromBalanceOfCallResult.reverted) { return; }
+  let holderFromWithdrawnFundsOfCallResult = fdt.try_withdrawableFundsOf(event.params.from);
+  if (holderFromWithdrawnFundsOfCallResult.reverted) { return; }
+  let holderToBalanceOfCallResult = fdt.try_balanceOf(event.params.to);
+  if (holderToBalanceOfCallResult.reverted) { return; }
+  let holderToWithdrawnFundsOfCallResult = fdt.try_withdrawableFundsOf(event.params.to);
+  if (holderToWithdrawnFundsOfCallResult.reverted) { return; }
+
+  holder_from.balanceOf = holderFromBalanceOfCallResult.value;
+  holder_from.withdrawnFundsOf = holderFromBalanceOfCallResult.value;
   holder_from.save();
-  holder_to.balanceOf = fdt.balanceOf(event.params.to);
-  holder_to.withdrawnFundsOf = fdt.withdrawableFundsOf(event.params.to);
+  holder_to.balanceOf = holderToBalanceOfCallResult.value;
+  holder_to.withdrawnFundsOf = holderToWithdrawnFundsOfCallResult.value;
   holder_to.save();
 
   let holders = distributor.holder;
@@ -68,8 +77,13 @@ export function handleFundsWithdrawn(event: FundsWithdrawn): void {
     holder.address = event.params.by;
   }
 
-  holder.balanceOf = fdt.balanceOf(event.params.by);
-  holder.withdrawnFundsOf = fdt.withdrawableFundsOf(event.params.by);
+  let balanceOfCallResult = fdt.try_balanceOf(event.params.by);
+  if (balanceOfCallResult.reverted) { return; }
+  let withdrawnFundsOfCallResult = fdt.try_withdrawableFundsOf(event.params.by);
+  if (withdrawnFundsOfCallResult.reverted) { return; }
+
+  holder.balanceOf = balanceOfCallResult.value;
+  holder.withdrawnFundsOf = withdrawnFundsOfCallResult.value;
   holder.save();
 
   let holders = distributor.holder;

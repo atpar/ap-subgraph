@@ -49,11 +49,12 @@ export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
   let annRegistry = ANNRegistry.bind(event.address);
-  let _ownership = annRegistry.getOwnership(event.params.assetId);
+  let ownershipCallResult = annRegistry.try_getOwnership(event.params.assetId);
+  if (ownershipCallResult.reverted) { return; }
   
   let ownership = AssetOwnership.load(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorBeneficiary = _ownership.creatorBeneficiary;
-  ownership.counterpartyBeneficiary = _ownership.counterpartyBeneficiary;
+  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
+  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
   ownership.save();
 }
 
@@ -61,112 +62,127 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   log.debug("Process event (RegisteredAsset) for asset ({})", [event.params.assetId.toHex()]);
 
   let annRegistry = ANNRegistry.bind(event.address);
-  let _annTerms = annRegistry.getTerms(event.params.assetId);
-  let _state = annRegistry.getState(event.params.assetId);
-  let _ownership = annRegistry.getOwnership(event.params.assetId);
+  let engineCallResult = annRegistry.try_getEngine(event.params.assetId);
+  if (engineCallResult.reverted) { return; }
+  let actorCallResult = annRegistry.try_getActor(event.params.assetId);
+  if (actorCallResult.reverted) { return; }
+  let annTermsCallResult = annRegistry.try_getTerms(event.params.assetId);
+  if (annTermsCallResult.reverted) { return; }
+  let stateCallResult = annRegistry.try_getState(event.params.assetId);
+  if (stateCallResult.reverted) { return; }
+  let ownershipCallResult = annRegistry.try_getOwnership(event.params.assetId);
+  if (ownershipCallResult.reverted) { return; }
+  let eventsCallResult = annRegistry.try_getSchedule(event.params.assetId);
+  if (eventsCallResult.reverted) { return; }
+  let nextScheduleIndexCallResult = annRegistry.try_getNextScheduleIndex(event.params.assetId);
+  if (nextScheduleIndexCallResult.reverted) { return; }
+  let pendingEventCallResult = annRegistry.try_getPendingEvent(event.params.assetId);
+  if (pendingEventCallResult.reverted) { return; }
+  let nextScheduledEventCallResult = annRegistry.try_getNextScheduledEvent(event.params.assetId);
+  if (nextScheduledEventCallResult.reverted) { return; }
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorObligor = _ownership.creatorObligor;
-  ownership.creatorBeneficiary = _ownership.creatorBeneficiary;
-  ownership.counterpartyObligor = _ownership.counterpartyObligor;
-  ownership.counterpartyBeneficiary = _ownership.counterpartyBeneficiary;
+  ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
+  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
+  ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
+  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
   ownership.save();
 
   let schedule = new Schedule(event.params.assetId.toHex() + '-schedule');
-  schedule.events = annRegistry.getSchedule(event.params.assetId);
-  schedule.nextScheduleIndex = annRegistry.getNextScheduleIndex(event.params.assetId);
-  schedule.pendingEvent = annRegistry.getPendingEvent(event.params.assetId);
-  schedule.nextScheduledEvent = annRegistry.getNextScheduledEvent(event.params.assetId);
+  schedule.events = eventsCallResult.value;
+  schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
+  schedule.pendingEvent = pendingEventCallResult.value;
+  schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.save();
 
   let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
-  gracePeriod.i = _annTerms.gracePeriod.i;
-  gracePeriod.p = _annTerms.gracePeriod.p;
-  gracePeriod.isSet = _annTerms.gracePeriod.isSet;
+  gracePeriod.i = annTermsCallResult.value.gracePeriod.i;
+  gracePeriod.p = annTermsCallResult.value.gracePeriod.p;
+  gracePeriod.isSet = annTermsCallResult.value.gracePeriod.isSet;
   gracePeriod.save();
 
   let delinquencyPeriod = new Period(event.params.assetId.toHex() + '-terms-delinquencyPeriod');
-  delinquencyPeriod.i = _annTerms.delinquencyPeriod.i;
-  delinquencyPeriod.p = _annTerms.delinquencyPeriod.p;
-  delinquencyPeriod.isSet = _annTerms.delinquencyPeriod.isSet;
+  delinquencyPeriod.i = annTermsCallResult.value.delinquencyPeriod.i;
+  delinquencyPeriod.p = annTermsCallResult.value.delinquencyPeriod.p;
+  delinquencyPeriod.isSet = annTermsCallResult.value.delinquencyPeriod.isSet;
   delinquencyPeriod.save();
 
   let cycleOfInterestPayment = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfInterestPayment');
-  cycleOfInterestPayment.i = _annTerms.cycleOfInterestPayment.i;
-  cycleOfInterestPayment.p = _annTerms.cycleOfInterestPayment.p;
-  cycleOfInterestPayment.s = _annTerms.cycleOfInterestPayment.s;
-  cycleOfInterestPayment.isSet = _annTerms.cycleOfInterestPayment.isSet;
+  cycleOfInterestPayment.i = annTermsCallResult.value.cycleOfInterestPayment.i;
+  cycleOfInterestPayment.p = annTermsCallResult.value.cycleOfInterestPayment.p;
+  cycleOfInterestPayment.s = annTermsCallResult.value.cycleOfInterestPayment.s;
+  cycleOfInterestPayment.isSet = annTermsCallResult.value.cycleOfInterestPayment.isSet;
   cycleOfInterestPayment.save();
 
   let cycleOfRateReset = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfRateReset');
-  cycleOfRateReset.i = _annTerms.cycleOfRateReset.i;
-  cycleOfRateReset.p = _annTerms.cycleOfRateReset.p;
-  cycleOfRateReset.s = _annTerms.cycleOfRateReset.s;
-  cycleOfRateReset.isSet = _annTerms.cycleOfRateReset.isSet;
+  cycleOfRateReset.i = annTermsCallResult.value.cycleOfRateReset.i;
+  cycleOfRateReset.p = annTermsCallResult.value.cycleOfRateReset.p;
+  cycleOfRateReset.s = annTermsCallResult.value.cycleOfRateReset.s;
+  cycleOfRateReset.isSet = annTermsCallResult.value.cycleOfRateReset.isSet;
   cycleOfRateReset.save();
 
   let cycleOfScalingIndex = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfScalingIndex');
-  cycleOfScalingIndex.i = _annTerms.cycleOfScalingIndex.i;
-  cycleOfScalingIndex.p = _annTerms.cycleOfScalingIndex.p;
-  cycleOfScalingIndex.s = _annTerms.cycleOfScalingIndex.s;
-  cycleOfScalingIndex.isSet = _annTerms.cycleOfScalingIndex.isSet;
+  cycleOfScalingIndex.i = annTermsCallResult.value.cycleOfScalingIndex.i;
+  cycleOfScalingIndex.p = annTermsCallResult.value.cycleOfScalingIndex.p;
+  cycleOfScalingIndex.s = annTermsCallResult.value.cycleOfScalingIndex.s;
+  cycleOfScalingIndex.isSet = annTermsCallResult.value.cycleOfScalingIndex.isSet;
   cycleOfScalingIndex.save();
 
   let cycleOfFee = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfFee');
-  cycleOfFee.i = _annTerms.cycleOfFee.i;
-  cycleOfFee.p = _annTerms.cycleOfFee.p;
-  cycleOfFee.s = _annTerms.cycleOfFee.s;
-  cycleOfFee.isSet = _annTerms.cycleOfFee.isSet;
+  cycleOfFee.i = annTermsCallResult.value.cycleOfFee.i;
+  cycleOfFee.p = annTermsCallResult.value.cycleOfFee.p;
+  cycleOfFee.s = annTermsCallResult.value.cycleOfFee.s;
+  cycleOfFee.isSet = annTermsCallResult.value.cycleOfFee.isSet;
   cycleOfFee.save();
 
   let cycleOfPrincipalRedemption = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfPrincipalRedemption');
-  cycleOfPrincipalRedemption.i = _annTerms.cycleOfPrincipalRedemption.i;
-  cycleOfPrincipalRedemption.p = _annTerms.cycleOfPrincipalRedemption.p;
-  cycleOfPrincipalRedemption.s = _annTerms.cycleOfPrincipalRedemption.s;
-  cycleOfPrincipalRedemption.isSet = _annTerms.cycleOfPrincipalRedemption.isSet;
+  cycleOfPrincipalRedemption.i = annTermsCallResult.value.cycleOfPrincipalRedemption.i;
+  cycleOfPrincipalRedemption.p = annTermsCallResult.value.cycleOfPrincipalRedemption.p;
+  cycleOfPrincipalRedemption.s = annTermsCallResult.value.cycleOfPrincipalRedemption.s;
+  cycleOfPrincipalRedemption.isSet = annTermsCallResult.value.cycleOfPrincipalRedemption.isSet;
   cycleOfPrincipalRedemption.save();
   
   let terms = new ANNTerms(event.params.assetId.toHex() + '-terms');
-  terms.contractType = _annTerms.contractType;
-  terms.calendar = _annTerms.calendar;
-  terms.contractRole = _annTerms.contractRole;
-  terms.dayCountConvention = _annTerms.dayCountConvention;
-  terms.businessDayConvention = _annTerms.businessDayConvention;
-  terms.endOfMonthConvention = _annTerms.endOfMonthConvention;
-  terms.scalingEffect = _annTerms.scalingEffect;
-  terms.penaltyType = _annTerms.penaltyType;
-  terms.feeBasis = _annTerms.feeBasis;
-  terms.currency = _annTerms.currency;
-  terms.settlementCurrency = _annTerms.settlementCurrency;
-  terms.marketObjectCodeRateReset = _annTerms.marketObjectCodeRateReset;
-  terms.contractDealDate = _annTerms.contractDealDate;
-  terms.statusDate = _annTerms.statusDate;
-  terms.initialExchangeDate = _annTerms.initialExchangeDate;
-  terms.maturityDate = _annTerms.maturityDate;
-  terms.purchaseDate = _annTerms.purchaseDate;
-  terms.capitalizationEndDate = _annTerms.capitalizationEndDate;
-  terms.cycleAnchorDateOfInterestPayment = _annTerms.cycleAnchorDateOfInterestPayment;
-  terms.cycleAnchorDateOfRateReset = _annTerms.cycleAnchorDateOfRateReset;
-  terms.cycleAnchorDateOfScalingIndex = _annTerms.cycleAnchorDateOfScalingIndex;
-  terms.cycleAnchorDateOfFee = _annTerms.cycleAnchorDateOfFee;
-  terms.cycleAnchorDateOfPrincipalRedemption = _annTerms.cycleAnchorDateOfPrincipalRedemption;
-  terms.notionalPrincipal = _annTerms.notionalPrincipal;
-  terms.nominalInterestRate = _annTerms.nominalInterestRate;
-  terms.accruedInterest = _annTerms.accruedInterest;
-  terms.rateMultiplier = _annTerms.rateMultiplier;
-  terms.rateSpread = _annTerms.rateSpread;
-  terms.nextResetRate = _annTerms.nextResetRate;
-  terms.feeRate = _annTerms.feeRate;
-  terms.feeAccrued = _annTerms.feeAccrued;
-  terms.penaltyRate = _annTerms.penaltyRate;
-  terms.delinquencyRate = _annTerms.delinquencyRate;
-  terms.premiumDiscountAtIED = _annTerms.premiumDiscountAtIED;
-  terms.priceAtPurchaseDate = _annTerms.priceAtPurchaseDate;
-  terms.nextPrincipalRedemptionPayment = _annTerms.nextPrincipalRedemptionPayment;
-  terms.lifeCap = _annTerms.lifeCap;
-  terms.lifeFloor = _annTerms.lifeFloor;
-  terms.periodCap = _annTerms.periodCap;
-  terms.periodFloor = _annTerms.periodFloor;
+  terms.contractType = annTermsCallResult.value.contractType;
+  terms.calendar = annTermsCallResult.value.calendar;
+  terms.contractRole = annTermsCallResult.value.contractRole;
+  terms.dayCountConvention = annTermsCallResult.value.dayCountConvention;
+  terms.businessDayConvention = annTermsCallResult.value.businessDayConvention;
+  terms.endOfMonthConvention = annTermsCallResult.value.endOfMonthConvention;
+  terms.scalingEffect = annTermsCallResult.value.scalingEffect;
+  terms.penaltyType = annTermsCallResult.value.penaltyType;
+  terms.feeBasis = annTermsCallResult.value.feeBasis;
+  terms.currency = annTermsCallResult.value.currency;
+  terms.settlementCurrency = annTermsCallResult.value.settlementCurrency;
+  terms.marketObjectCodeRateReset = annTermsCallResult.value.marketObjectCodeRateReset;
+  terms.contractDealDate = annTermsCallResult.value.contractDealDate;
+  terms.statusDate = annTermsCallResult.value.statusDate;
+  terms.initialExchangeDate = annTermsCallResult.value.initialExchangeDate;
+  terms.maturityDate = annTermsCallResult.value.maturityDate;
+  terms.purchaseDate = annTermsCallResult.value.purchaseDate;
+  terms.capitalizationEndDate = annTermsCallResult.value.capitalizationEndDate;
+  terms.cycleAnchorDateOfInterestPayment = annTermsCallResult.value.cycleAnchorDateOfInterestPayment;
+  terms.cycleAnchorDateOfRateReset = annTermsCallResult.value.cycleAnchorDateOfRateReset;
+  terms.cycleAnchorDateOfScalingIndex = annTermsCallResult.value.cycleAnchorDateOfScalingIndex;
+  terms.cycleAnchorDateOfFee = annTermsCallResult.value.cycleAnchorDateOfFee;
+  terms.cycleAnchorDateOfPrincipalRedemption = annTermsCallResult.value.cycleAnchorDateOfPrincipalRedemption;
+  terms.notionalPrincipal = annTermsCallResult.value.notionalPrincipal;
+  terms.nominalInterestRate = annTermsCallResult.value.nominalInterestRate;
+  terms.accruedInterest = annTermsCallResult.value.accruedInterest;
+  terms.rateMultiplier = annTermsCallResult.value.rateMultiplier;
+  terms.rateSpread = annTermsCallResult.value.rateSpread;
+  terms.nextResetRate = annTermsCallResult.value.nextResetRate;
+  terms.feeRate = annTermsCallResult.value.feeRate;
+  terms.feeAccrued = annTermsCallResult.value.feeAccrued;
+  terms.penaltyRate = annTermsCallResult.value.penaltyRate;
+  terms.delinquencyRate = annTermsCallResult.value.delinquencyRate;
+  terms.premiumDiscountAtIED = annTermsCallResult.value.premiumDiscountAtIED;
+  terms.priceAtPurchaseDate = annTermsCallResult.value.priceAtPurchaseDate;
+  terms.nextPrincipalRedemptionPayment = annTermsCallResult.value.nextPrincipalRedemptionPayment;
+  terms.lifeCap = annTermsCallResult.value.lifeCap;
+  terms.lifeFloor = annTermsCallResult.value.lifeFloor;
+  terms.periodCap = annTermsCallResult.value.periodCap;
+  terms.periodFloor = annTermsCallResult.value.periodFloor;
   terms.gracePeriod = gracePeriod.id;
   terms.delinquencyPeriod = delinquencyPeriod.id;
   terms.cycleOfInterestPayment = cycleOfInterestPayment.id;
@@ -177,26 +193,26 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   terms.save();
 
   let state = new State(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = _state.contractPerformance;
-  state.statusDate = _state.statusDate;
-  state.nonPerformingDate = _state.nonPerformingDate;
-  state.maturityDate = _state.maturityDate;
-  state.exerciseDate = _state.exerciseDate;
-  state.terminationDate = _state.terminationDate;
-  state.lastCouponDay = _state.lastCouponDay;
-  state.notionalPrincipal = _state.notionalPrincipal;
-  state.accruedInterest = _state.accruedInterest;
-  state.feeAccrued = _state.feeAccrued;
-  state.nominalInterestRate = _state.nominalInterestRate;
-  state.interestScalingMultiplier = _state.interestScalingMultiplier;
-  state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = _state.exerciseAmount;
-  state.exerciseQuantity = _state.exerciseQuantity;
-  state.quantity = _state.quantity;
-  state.couponAmountFixed = _state.couponAmountFixed;
-  state.marginFactor = _state.marginFactor;
-  state.adjustmentFactor = _state.adjustmentFactor;
+  state.contractPerformance = stateCallResult.value.contractPerformance;
+  state.statusDate = stateCallResult.value.statusDate;
+  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
+  state.maturityDate = stateCallResult.value.maturityDate;
+  state.exerciseDate = stateCallResult.value.exerciseDate;
+  state.terminationDate = stateCallResult.value.terminationDate;
+  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
+  state.accruedInterest = stateCallResult.value.accruedInterest;
+  state.feeAccrued = stateCallResult.value.feeAccrued;
+  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
+  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
+  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
+  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
+  state.exerciseAmount = stateCallResult.value.exerciseAmount;
+  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
+  state.quantity = stateCallResult.value.quantity;
+  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
+  state.marginFactor = stateCallResult.value.marginFactor;
+  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
   state.save();
 
   // GrantedAccess event may be processed before or after RegisteredAsset event
@@ -213,8 +229,8 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   asset.state = state.id;
   asset.schedule = schedule.id;
   asset.ownership = ownership.id;
-  asset.engine = annRegistry.getEngine(event.params.assetId);
-  asset.actor = annRegistry.getActor(event.params.assetId);
+  asset.engine = engineCallResult.value;
+  asset.actor = actorCallResult.value;
   asset.admins = admins.id;
   asset.save();
 }
@@ -224,34 +240,41 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
 
   let annActor = ANNActor.bind(event.address);
   let annRegistry = ANNRegistry.bind(annActor.assetRegistry());
-  let _state = annRegistry.getState(event.params.assetId);
+  let stateCallResult = annRegistry.try_getState(event.params.assetId);
+  if (stateCallResult.reverted) { return; }
+  let nextScheduleIndexCallResult = annRegistry.try_getNextScheduleIndex(event.params.assetId);
+  if (nextScheduleIndexCallResult.reverted) { return; }
+  let pendingEventCallResult = annRegistry.try_getPendingEvent(event.params.assetId);
+  if (pendingEventCallResult.reverted) { return; }
+  let nextScheduledEventCallResult = annRegistry.try_getNextScheduledEvent(event.params.assetId);
+  if (nextScheduledEventCallResult.reverted) { return; }
 
   let state = State.load(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = _state.contractPerformance;
-  state.statusDate = _state.statusDate;
-  state.nonPerformingDate = _state.nonPerformingDate;
-  state.maturityDate = _state.maturityDate;
-  state.exerciseDate = _state.exerciseDate;
-  state.terminationDate = _state.terminationDate;
-  state.lastCouponDay = _state.lastCouponDay;
-  state.notionalPrincipal = _state.notionalPrincipal;
-  state.accruedInterest = _state.accruedInterest;
-  state.feeAccrued = _state.feeAccrued;
-  state.nominalInterestRate = _state.nominalInterestRate;
-  state.interestScalingMultiplier = _state.interestScalingMultiplier;
-  state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = _state.exerciseAmount;
-  state.exerciseQuantity = _state.exerciseQuantity;
-  state.quantity = _state.quantity;
-  state.couponAmountFixed = _state.couponAmountFixed;
-  state.marginFactor = _state.marginFactor;
-  state.adjustmentFactor = _state.adjustmentFactor;
+  state.contractPerformance = stateCallResult.value.contractPerformance;
+  state.statusDate = stateCallResult.value.statusDate;
+  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
+  state.maturityDate = stateCallResult.value.maturityDate;
+  state.exerciseDate = stateCallResult.value.exerciseDate;
+  state.terminationDate = stateCallResult.value.terminationDate;
+  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
+  state.accruedInterest = stateCallResult.value.accruedInterest;
+  state.feeAccrued = stateCallResult.value.feeAccrued;
+  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
+  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
+  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
+  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
+  state.exerciseAmount = stateCallResult.value.exerciseAmount;
+  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
+  state.quantity = stateCallResult.value.quantity;
+  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
+  state.marginFactor = stateCallResult.value.marginFactor;
+  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
   state.save();
 
   let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');
-  schedule.nextScheduleIndex = annRegistry.getNextScheduleIndex(event.params.assetId);
-  schedule.pendingEvent = annRegistry.getPendingEvent(event.params.assetId);
-  schedule.nextScheduledEvent = annRegistry.getNextScheduledEvent(event.params.assetId);
+  schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
+  schedule.pendingEvent = pendingEventCallResult.value;
+  schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.save();
 }

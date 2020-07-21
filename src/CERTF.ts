@@ -49,11 +49,12 @@ export function handleUpdatedBeneficiaryCERTF(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
   let certfRegistry = CERTFRegistry.bind(event.address);
-  let _ownership = certfRegistry.getOwnership(event.params.assetId);
+  let ownershipCallResult = certfRegistry.try_getOwnership(event.params.assetId);
+  if (ownershipCallResult.reverted) { return; }
   
   let ownership = AssetOwnership.load(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorBeneficiary = _ownership.creatorBeneficiary;
-  ownership.counterpartyBeneficiary = _ownership.counterpartyBeneficiary;
+  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
+  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
   ownership.save();
 }
 
@@ -61,112 +62,127 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   log.debug("Process event (RegisteredAsset) for asset ({})", [event.params.assetId.toHex()]);
 
   let certfRegistry = CERTFRegistry.bind(event.address);
-  let _certfTerms = certfRegistry.getTerms(event.params.assetId);
-  let _state = certfRegistry.getState(event.params.assetId);
-  let _ownership = certfRegistry.getOwnership(event.params.assetId);
+  let engineCallResult = certfRegistry.try_getEngine(event.params.assetId);
+  if (engineCallResult.reverted) { return; }
+  let actorCallResult = certfRegistry.try_getActor(event.params.assetId);
+  if (actorCallResult.reverted) { return; }
+  let certfTermsCallResult = certfRegistry.try_getTerms(event.params.assetId);
+  if (certfTermsCallResult.reverted) { return; }
+  let stateCallResult = certfRegistry.try_getState(event.params.assetId);
+  if (stateCallResult.reverted) { return; }
+  let ownershipCallResult = certfRegistry.try_getOwnership(event.params.assetId);
+  if (ownershipCallResult.reverted) { return; }
+  let eventsCallResult = certfRegistry.try_getSchedule(event.params.assetId);
+  if (eventsCallResult.reverted) { return; }
+  let nextScheduleIndexCallResult = certfRegistry.try_getNextScheduleIndex(event.params.assetId);
+  if (nextScheduleIndexCallResult.reverted) { return; }
+  let pendingEventCallResult = certfRegistry.try_getPendingEvent(event.params.assetId);
+  if (pendingEventCallResult.reverted) { return; }
+  let nextScheduledEventCallResult = certfRegistry.try_getNextScheduledEvent(event.params.assetId);
+  if (nextScheduledEventCallResult.reverted) { return; }
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorObligor = _ownership.creatorObligor;
-  ownership.creatorBeneficiary = _ownership.creatorBeneficiary;
-  ownership.counterpartyObligor = _ownership.counterpartyObligor;
-  ownership.counterpartyBeneficiary = _ownership.counterpartyBeneficiary;
+  ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
+  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
+  ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
+  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
   ownership.save();
 
   let schedule = new Schedule(event.params.assetId.toHex() + '-schedule');
-  schedule.events = certfRegistry.getSchedule(event.params.assetId);
-  schedule.nextScheduleIndex = certfRegistry.getNextScheduleIndex(event.params.assetId);
-  schedule.pendingEvent = certfRegistry.getPendingEvent(event.params.assetId);
-  schedule.nextScheduledEvent = certfRegistry.getNextScheduledEvent(event.params.assetId);
+  schedule.events = eventsCallResult.value;
+  schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
+  schedule.pendingEvent = pendingEventCallResult.value;
+  schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.save();
 
   let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
-  gracePeriod.i = _certfTerms.gracePeriod.i;
-  gracePeriod.p = _certfTerms.gracePeriod.p;
-  gracePeriod.isSet = _certfTerms.gracePeriod.isSet;
+  gracePeriod.i = certfTermsCallResult.value.gracePeriod.i;
+  gracePeriod.p = certfTermsCallResult.value.gracePeriod.p;
+  gracePeriod.isSet = certfTermsCallResult.value.gracePeriod.isSet;
   gracePeriod.save();
 
   let delinquencyPeriod = new Period(event.params.assetId.toHex() + '-terms-delinquencyPeriod');
-  delinquencyPeriod.i = _certfTerms.delinquencyPeriod.i;
-  delinquencyPeriod.p = _certfTerms.delinquencyPeriod.p;
-  delinquencyPeriod.isSet = _certfTerms.delinquencyPeriod.isSet;
+  delinquencyPeriod.i = certfTermsCallResult.value.delinquencyPeriod.i;
+  delinquencyPeriod.p = certfTermsCallResult.value.delinquencyPeriod.p;
+  delinquencyPeriod.isSet = certfTermsCallResult.value.delinquencyPeriod.isSet;
   delinquencyPeriod.save();
 
   let settlementPeriod = new Period(event.params.assetId.toHex() + '-terms-settlementPeriod');
-  settlementPeriod.i = _certfTerms.settlementPeriod.i;
-  settlementPeriod.p = _certfTerms.settlementPeriod.p;
-  settlementPeriod.isSet = _certfTerms.settlementPeriod.isSet;
+  settlementPeriod.i = certfTermsCallResult.value.settlementPeriod.i;
+  settlementPeriod.p = certfTermsCallResult.value.settlementPeriod.p;
+  settlementPeriod.isSet = certfTermsCallResult.value.settlementPeriod.isSet;
   settlementPeriod.save();
 
   let fixingPeriod = new Period(event.params.assetId.toHex() + '-terms-fixingPeriod');
-  fixingPeriod.i = _certfTerms.fixingPeriod.i;
-  fixingPeriod.p = _certfTerms.fixingPeriod.p;
-  fixingPeriod.isSet = _certfTerms.fixingPeriod.isSet;
+  fixingPeriod.i = certfTermsCallResult.value.fixingPeriod.i;
+  fixingPeriod.p = certfTermsCallResult.value.fixingPeriod.p;
+  fixingPeriod.isSet = certfTermsCallResult.value.fixingPeriod.isSet;
   fixingPeriod.save();
 
   let exercisePeriod = new Period(event.params.assetId.toHex() + '-terms-exercisePeriod');
-  exercisePeriod.i = _certfTerms.exercisePeriod.i;
-  exercisePeriod.p = _certfTerms.exercisePeriod.p;
-  exercisePeriod.isSet = _certfTerms.exercisePeriod.isSet;
+  exercisePeriod.i = certfTermsCallResult.value.exercisePeriod.i;
+  exercisePeriod.p = certfTermsCallResult.value.exercisePeriod.p;
+  exercisePeriod.isSet = certfTermsCallResult.value.exercisePeriod.isSet;
   exercisePeriod.save();
 
   let cycleOfRedemption = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfRedemption');
-  cycleOfRedemption.i = _certfTerms.cycleOfRedemption.i;
-  cycleOfRedemption.p = _certfTerms.cycleOfRedemption.p;
-  cycleOfRedemption.s = _certfTerms.cycleOfRedemption.s;
-  cycleOfRedemption.isSet = _certfTerms.cycleOfRedemption.isSet;
+  cycleOfRedemption.i = certfTermsCallResult.value.cycleOfRedemption.i;
+  cycleOfRedemption.p = certfTermsCallResult.value.cycleOfRedemption.p;
+  cycleOfRedemption.s = certfTermsCallResult.value.cycleOfRedemption.s;
+  cycleOfRedemption.isSet = certfTermsCallResult.value.cycleOfRedemption.isSet;
   cycleOfRedemption.save();
 
   let cycleOfTermination = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfTermination');
-  cycleOfTermination.i = _certfTerms.cycleOfTermination.i;
-  cycleOfTermination.p = _certfTerms.cycleOfTermination.p;
-  cycleOfTermination.s = _certfTerms.cycleOfTermination.s;
-  cycleOfTermination.isSet = _certfTerms.cycleOfTermination.isSet;
+  cycleOfTermination.i = certfTermsCallResult.value.cycleOfTermination.i;
+  cycleOfTermination.p = certfTermsCallResult.value.cycleOfTermination.p;
+  cycleOfTermination.s = certfTermsCallResult.value.cycleOfTermination.s;
+  cycleOfTermination.isSet = certfTermsCallResult.value.cycleOfTermination.isSet;
   cycleOfTermination.save();
 
   let cycleOfCoupon = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfCoupon');
-  cycleOfCoupon.i = _certfTerms.cycleOfCoupon.i;
-  cycleOfCoupon.p = _certfTerms.cycleOfCoupon.p;
-  cycleOfCoupon.s = _certfTerms.cycleOfCoupon.s;
-  cycleOfCoupon.isSet = _certfTerms.cycleOfCoupon.isSet;
+  cycleOfCoupon.i = certfTermsCallResult.value.cycleOfCoupon.i;
+  cycleOfCoupon.p = certfTermsCallResult.value.cycleOfCoupon.p;
+  cycleOfCoupon.s = certfTermsCallResult.value.cycleOfCoupon.s;
+  cycleOfCoupon.isSet = certfTermsCallResult.value.cycleOfCoupon.isSet;
   cycleOfCoupon.save();
 
   let contractReference_1 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_1');
-  contractReference_1.object = _certfTerms.contractReference_1.object;
-  contractReference_1.object2 = _certfTerms.contractReference_1.object2;
-  contractReference_1._type = _certfTerms.contractReference_1._type;
-  contractReference_1.role = _certfTerms.contractReference_1.role;
+  contractReference_1.object = certfTermsCallResult.value.contractReference_1.object;
+  contractReference_1.object2 = certfTermsCallResult.value.contractReference_1.object2;
+  contractReference_1._type = certfTermsCallResult.value.contractReference_1._type;
+  contractReference_1.role = certfTermsCallResult.value.contractReference_1.role;
   contractReference_1.save();
 
   let contractReference_2 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_2');
-  contractReference_2.object = _certfTerms.contractReference_2.object;
-  contractReference_2.object2 = _certfTerms.contractReference_2.object2;
-  contractReference_2._type = _certfTerms.contractReference_2._type;
-  contractReference_2.role = _certfTerms.contractReference_2.role;
+  contractReference_2.object = certfTermsCallResult.value.contractReference_2.object;
+  contractReference_2.object2 = certfTermsCallResult.value.contractReference_2.object2;
+  contractReference_2._type = certfTermsCallResult.value.contractReference_2._type;
+  contractReference_2.role = certfTermsCallResult.value.contractReference_2.role;
   contractReference_2.save();
 
   let terms = new CERTFTerms(event.params.assetId.toHex() + '-terms');
-  terms.contractType = _certfTerms.contractType;
-  terms.calendar = _certfTerms.calendar;
-  terms.contractRole = _certfTerms.contractRole;
-  terms.dayCountConvention = _certfTerms.dayCountConvention;
-  terms.businessDayConvention = _certfTerms.businessDayConvention;
-  terms.endOfMonthConvention = _certfTerms.endOfMonthConvention;
-  terms.couponType = _certfTerms.couponType;
-  terms.currency = _certfTerms.currency;
-  terms.settlementCurrency = _certfTerms.settlementCurrency;
-  terms.contractDealDate = _certfTerms.contractDealDate;
-  terms.statusDate = _certfTerms.statusDate;
-  terms.initialExchangeDate = _certfTerms.initialExchangeDate;
-  terms.maturityDate = _certfTerms.maturityDate;
-  terms.issueDate = _certfTerms.issueDate;
-  terms.cycleAnchorDateOfRedemption = _certfTerms.cycleAnchorDateOfRedemption;
-  terms.cycleAnchorDateOfTermination = _certfTerms.cycleAnchorDateOfTermination;
-  terms.cycleAnchorDateOfCoupon = _certfTerms.cycleAnchorDateOfCoupon;
-  terms.nominalPrice = _certfTerms.nominalPrice;
-  terms.issuePrice = _certfTerms.issuePrice;
-  terms.quantity = _certfTerms.quantity;
-  terms.denominationRatio = _certfTerms.denominationRatio;
-  terms.couponRate = _certfTerms.couponRate;
+  terms.contractType = certfTermsCallResult.value.contractType;
+  terms.calendar = certfTermsCallResult.value.calendar;
+  terms.contractRole = certfTermsCallResult.value.contractRole;
+  terms.dayCountConvention = certfTermsCallResult.value.dayCountConvention;
+  terms.businessDayConvention = certfTermsCallResult.value.businessDayConvention;
+  terms.endOfMonthConvention = certfTermsCallResult.value.endOfMonthConvention;
+  terms.couponType = certfTermsCallResult.value.couponType;
+  terms.currency = certfTermsCallResult.value.currency;
+  terms.settlementCurrency = certfTermsCallResult.value.settlementCurrency;
+  terms.contractDealDate = certfTermsCallResult.value.contractDealDate;
+  terms.statusDate = certfTermsCallResult.value.statusDate;
+  terms.initialExchangeDate = certfTermsCallResult.value.initialExchangeDate;
+  terms.maturityDate = certfTermsCallResult.value.maturityDate;
+  terms.issueDate = certfTermsCallResult.value.issueDate;
+  terms.cycleAnchorDateOfRedemption = certfTermsCallResult.value.cycleAnchorDateOfRedemption;
+  terms.cycleAnchorDateOfTermination = certfTermsCallResult.value.cycleAnchorDateOfTermination;
+  terms.cycleAnchorDateOfCoupon = certfTermsCallResult.value.cycleAnchorDateOfCoupon;
+  terms.nominalPrice = certfTermsCallResult.value.nominalPrice;
+  terms.issuePrice = certfTermsCallResult.value.issuePrice;
+  terms.quantity = certfTermsCallResult.value.quantity;
+  terms.denominationRatio = certfTermsCallResult.value.denominationRatio;
+  terms.couponRate = certfTermsCallResult.value.couponRate;
   terms.gracePeriod = gracePeriod.id;
   terms.settlementPeriod = settlementPeriod.id;
   terms.delinquencyPeriod = delinquencyPeriod.id;
@@ -180,26 +196,26 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   terms.save();
 
   let state = new State(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = _state.contractPerformance;
-  state.statusDate = _state.statusDate;
-  state.nonPerformingDate = _state.nonPerformingDate;
-  state.maturityDate = _state.maturityDate;
-  state.exerciseDate = _state.exerciseDate;
-  state.terminationDate = _state.terminationDate;
-  state.lastCouponDay = _state.lastCouponDay;
-  state.notionalPrincipal = _state.notionalPrincipal;
-  state.accruedInterest = _state.accruedInterest;
-  state.feeAccrued = _state.feeAccrued;
-  state.nominalInterestRate = _state.nominalInterestRate;
-  state.interestScalingMultiplier = _state.interestScalingMultiplier;
-  state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = _state.exerciseAmount;
-  state.exerciseQuantity = _state.exerciseQuantity;
-  state.quantity = _state.quantity;
-  state.couponAmountFixed = _state.couponAmountFixed;
-  state.marginFactor = _state.marginFactor;
-  state.adjustmentFactor = _state.adjustmentFactor;
+  state.contractPerformance = stateCallResult.value.contractPerformance;
+  state.statusDate = stateCallResult.value.statusDate;
+  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
+  state.maturityDate = stateCallResult.value.maturityDate;
+  state.exerciseDate = stateCallResult.value.exerciseDate;
+  state.terminationDate = stateCallResult.value.terminationDate;
+  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
+  state.accruedInterest = stateCallResult.value.accruedInterest;
+  state.feeAccrued = stateCallResult.value.feeAccrued;
+  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
+  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
+  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
+  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
+  state.exerciseAmount = stateCallResult.value.exerciseAmount;
+  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
+  state.quantity = stateCallResult.value.quantity;
+  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
+  state.marginFactor = stateCallResult.value.marginFactor;
+  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
   state.save();
 
   // GrantedAccess event may be processed before or after RegisteredAsset event
@@ -216,8 +232,8 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   asset.state = state.id;
   asset.schedule = schedule.id;
   asset.ownership = ownership.id;
-  asset.engine = certfRegistry.getEngine(event.params.assetId);
-  asset.actor = certfRegistry.getActor(event.params.assetId);
+  asset.engine = engineCallResult.value;
+  asset.actor = actorCallResult.value;
   asset.admins = admins.id;
   asset.save();
 }
@@ -227,34 +243,41 @@ export function handleProgressedAssetCERTF(event: ProgressedAsset): void {
 
   let certfActor = CERTFActor.bind(event.address);
   let certfRegistry = CERTFRegistry.bind(certfActor.assetRegistry());
-  let _state = certfRegistry.getState(event.params.assetId);
+  let stateCallResult = certfRegistry.try_getState(event.params.assetId);
+  if (stateCallResult.reverted) { return; }
+  let nextScheduleIndexCallResult = certfRegistry.try_getNextScheduleIndex(event.params.assetId);
+  if (nextScheduleIndexCallResult.reverted) { return; }
+  let pendingEventCallResult = certfRegistry.try_getPendingEvent(event.params.assetId);
+  if (pendingEventCallResult.reverted) { return; }
+  let nextScheduledEventCallResult = certfRegistry.try_getNextScheduledEvent(event.params.assetId);
+  if (nextScheduledEventCallResult.reverted) { return; }
 
   let state = State.load(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = _state.contractPerformance;
-  state.statusDate = _state.statusDate;
-  state.nonPerformingDate = _state.nonPerformingDate;
-  state.maturityDate = _state.maturityDate;
-  state.exerciseDate = _state.exerciseDate;
-  state.terminationDate = _state.terminationDate;
-  state.lastCouponDay = _state.lastCouponDay;
-  state.notionalPrincipal = _state.notionalPrincipal;
-  state.accruedInterest = _state.accruedInterest;
-  state.feeAccrued = _state.feeAccrued;
-  state.nominalInterestRate = _state.nominalInterestRate;
-  state.interestScalingMultiplier = _state.interestScalingMultiplier;
-  state.notionalScalingMultiplier = _state.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = _state.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = _state.exerciseAmount;
-  state.exerciseQuantity = _state.exerciseQuantity;
-  state.quantity = _state.quantity;
-  state.couponAmountFixed = _state.couponAmountFixed;
-  state.marginFactor = _state.marginFactor;
-  state.adjustmentFactor = _state.adjustmentFactor;
+  state.contractPerformance = stateCallResult.value.contractPerformance;
+  state.statusDate = stateCallResult.value.statusDate;
+  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
+  state.maturityDate = stateCallResult.value.maturityDate;
+  state.exerciseDate = stateCallResult.value.exerciseDate;
+  state.terminationDate = stateCallResult.value.terminationDate;
+  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
+  state.accruedInterest = stateCallResult.value.accruedInterest;
+  state.feeAccrued = stateCallResult.value.feeAccrued;
+  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
+  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
+  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
+  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
+  state.exerciseAmount = stateCallResult.value.exerciseAmount;
+  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
+  state.quantity = stateCallResult.value.quantity;
+  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
+  state.marginFactor = stateCallResult.value.marginFactor;
+  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
   state.save();
 
   let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');
-  schedule.nextScheduleIndex = certfRegistry.getNextScheduleIndex(event.params.assetId);
-  schedule.pendingEvent = certfRegistry.getPendingEvent(event.params.assetId);
-  schedule.nextScheduledEvent = certfRegistry.getNextScheduledEvent(event.params.assetId);
+  schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
+  schedule.pendingEvent = pendingEventCallResult.value;
+  schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.save();
 }
