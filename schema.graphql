@@ -402,6 +402,7 @@ type ANNAsset implements Asset @entity {
   engine: Bytes!
   actor: Bytes!
   admins: Admins!
+  createdOn: BigInt!
 }
 
 type CECAsset implements Asset @entity {
@@ -414,6 +415,7 @@ type CECAsset implements Asset @entity {
   engine: Bytes!
   actor: Bytes!
   admins: Admins!
+  createdOn: BigInt!
 }
 
 type CEGAsset implements Asset @entity {
@@ -426,6 +428,7 @@ type CEGAsset implements Asset @entity {
   engine: Bytes!
   actor: Bytes!
   admins: Admins!
+  createdOn: BigInt!
 }
 
 type CERTFAsset implements Asset @entity {
@@ -438,6 +441,7 @@ type CERTFAsset implements Asset @entity {
   engine: Bytes!
   actor: Bytes!
   admins: Admins!
+  createdOn: BigInt!
 }
 
 type PAMAsset implements Asset @entity {
@@ -450,6 +454,7 @@ type PAMAsset implements Asset @entity {
   engine: Bytes!
   actor: Bytes!
   admins: Admins!
+  createdOn: BigInt!
 }
 
 interface Asset @entity {
@@ -461,4 +466,5 @@ interface Asset @entity {
   engine: Bytes!
   actor: Bytes!
   admins: Admins!
+  createdOn: BigInt!
 }

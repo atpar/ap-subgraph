@@ -222,6 +222,7 @@ export function handleRegisteredAssetPAM(event: RegisteredAsset): void {
   asset.engine = engineCallResult.value;
   asset.actor = actorCallResult.value;
   asset.admins = admins.id;
+  asset.createdOn = event.block.timestamp;
   asset.save();
 }
 

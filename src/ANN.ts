@@ -1,4 +1,4 @@
-import { log } from "@graphprotocol/graph-ts";
+import { log, BigInt } from "@graphprotocol/graph-ts";
 
 import { ANNActor, ProgressedAsset } from '../generated/ANNActor/ANNActor';
 import { ANNRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/ANNRegistry/ANNRegistry';
@@ -232,6 +232,7 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   asset.engine = engineCallResult.value;
   asset.actor = actorCallResult.value;
   asset.admins = admins.id;
+  asset.createdOn = event.block.timestamp;
   asset.save();
 }
 

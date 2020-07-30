@@ -2659,6 +2659,15 @@ export class ANNAsset extends Entity {
   set admins(value: string) {
     this.set("admins", Value.fromString(value));
   }
+
+  get createdOn(): BigInt {
+    let value = this.get("createdOn");
+    return value.toBigInt();
+  }
+
+  set createdOn(value: BigInt) {
+    this.set("createdOn", Value.fromBigInt(value));
+  }
 }
 
 export class CECAsset extends Entity {
@@ -2761,6 +2770,15 @@ export class CECAsset extends Entity {
 
   set admins(value: string) {
     this.set("admins", Value.fromString(value));
+  }
+
+  get createdOn(): BigInt {
+    let value = this.get("createdOn");
+    return value.toBigInt();
+  }
+
+  set createdOn(value: BigInt) {
+    this.set("createdOn", Value.fromBigInt(value));
   }
 }
 
@@ -2865,6 +2883,15 @@ export class CEGAsset extends Entity {
   set admins(value: string) {
     this.set("admins", Value.fromString(value));
   }
+
+  get createdOn(): BigInt {
+    let value = this.get("createdOn");
+    return value.toBigInt();
+  }
+
+  set createdOn(value: BigInt) {
+    this.set("createdOn", Value.fromBigInt(value));
+  }
 }
 
 export class CERTFAsset extends Entity {
@@ -2968,6 +2995,15 @@ export class CERTFAsset extends Entity {
   set admins(value: string) {
     this.set("admins", Value.fromString(value));
   }
+
+  get createdOn(): BigInt {
+    let value = this.get("createdOn");
+    return value.toBigInt();
+  }
+
+  set createdOn(value: BigInt) {
+    this.set("createdOn", Value.fromBigInt(value));
+  }
 }
 
 export class PAMAsset extends Entity {
@@ -3070,5 +3106,14 @@ export class PAMAsset extends Entity {
 
   set admins(value: string) {
     this.set("admins", Value.fromString(value));
+  }
+
+  get createdOn(): BigInt {
+    let value = this.get("createdOn");
+    return value.toBigInt();
+  }
+
+  set createdOn(value: BigInt) {
+    this.set("createdOn", Value.fromBigInt(value));
   }
 }
