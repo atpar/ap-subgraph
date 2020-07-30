@@ -8,6 +8,7 @@
     "codegen": "graph codegen",
     "deploy:local": "NETWORK=local ./deploy.sh",
     "deploy:goerli": "NETWORK=goerli ./deploy.sh",
+    "deploy:goerli-staging": "NETWORK=goerli-staging ./deploy.sh",
     "deploy:ropsten": "NETWORK=ropsten ./deploy.sh"
   },
   "devDependencies": {
