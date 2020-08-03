@@ -4,9 +4,9 @@
 set -o errexit
 
 # Validate network
-networks=(local goerli ropsten goerli-staging)
+networks=(local goerli ropsten goerli-staging rinkeby)
 if [[ -z $NETWORK || ! " ${networks[@]} " =~ " ${NETWORK} " ]]; then
-  echo 'Please make sure the network provided is either local, goerli, ropsten.'
+  echo 'Please make sure the network provided is either local, goerli, goerli-staging, ropsten, rinkeby.'
   exit 1
 fi
 
