@@ -321,6 +321,29 @@ dataSources:
         - event: DeployedDistributor(address,address)
           handler: handleDeployedDistributor
       file: ./src/FDT.ts
+  - kind: ethereum/contract
+    name: DvPSettlement
+    network: {{network}}
+    source:
+      address: '{{DvPSettlement}}'
+      abi: DvPSettlement
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - DvPSettlementData
+      abis:
+        - name: DvPSettlement
+          file: ./build/contracts/DvPSettlement.json
+      eventHandlers:
+        - event: SettlementInitialized(indexed uint256,(address,address,uint256,address,address,address,uint256,uint256,uint8))
+          handler: handleSettlementInitialized        
+        - event: SettlementExecuted(indexed uint256,indexed address)
+          handler: handleSettlementExecuted
+        - event: SettlementExpired(indexed uint256)
+          handler: handleSettlementExpired
+      file: ./src/DvP.ts
 templates:
   - kind: ethereum/contract
     name: FDT

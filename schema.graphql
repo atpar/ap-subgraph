@@ -468,3 +468,17 @@ interface Asset @entity {
   admins: Admins!
   createdOn: BigInt!
 }
+
+type DvPSettlementData @entity {
+  id: ID!
+  settlementId: BigInt!
+  creator: Bytes!
+  creatorToken: Bytes!
+  creatorAmount: BigInt!
+  creatorBeneficiary: Bytes!
+  counterparty: Bytes!
+  counterpartyToken: Bytes!
+  counterpartyAmount: BigInt!
+  expirationDate: BigInt!
+  status: Int!
+}

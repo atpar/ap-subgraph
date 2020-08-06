@@ -16,4 +16,7 @@ import "@atpar/ap-contracts/contracts/Core/Base/DataRegistry/DataRegistry.sol";
 import "@atpar/ap-contracts/contracts/FDT/FDTFactory.sol";
 import "@atpar/ap-contracts/contracts/FDT/VanillaFDT.sol";
 
+import "../local/DvPSettlement.sol";
+
+
 contract Dependencies {}
