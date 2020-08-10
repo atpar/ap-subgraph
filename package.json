@@ -10,6 +10,7 @@
     "deploy:goerli": "NETWORK=goerli ./deploy.sh",
     "deploy:goerli-staging": "NETWORK=goerli-staging ./deploy.sh",
     "deploy:rinkeby": "NETWORK=rinkeby ./deploy.sh",
+    "deploy:rinkeby-staging": "NETWORK=rinkeby-staging ./deploy.sh",
     "deploy:ropsten": "NETWORK=ropsten ./deploy.sh"
   },
   "devDependencies": {

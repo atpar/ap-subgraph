@@ -3117,3 +3117,124 @@ export class PAMAsset extends Entity {
     this.set("createdOn", Value.fromBigInt(value));
   }
 }
+
+export class DvPSettlementData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save DvPSettlementData entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save DvPSettlementData entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("DvPSettlementData", id.toString(), this);
+  }
+
+  static load(id: string): DvPSettlementData | null {
+    return store.get("DvPSettlementData", id) as DvPSettlementData | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get settlementId(): BigInt {
+    let value = this.get("settlementId");
+    return value.toBigInt();
+  }
+
+  set settlementId(value: BigInt) {
+    this.set("settlementId", Value.fromBigInt(value));
+  }
+
+  get creator(): Bytes {
+    let value = this.get("creator");
+    return value.toBytes();
+  }
+
+  set creator(value: Bytes) {
+    this.set("creator", Value.fromBytes(value));
+  }
+
+  get creatorToken(): Bytes {
+    let value = this.get("creatorToken");
+    return value.toBytes();
+  }
+
+  set creatorToken(value: Bytes) {
+    this.set("creatorToken", Value.fromBytes(value));
+  }
+
+  get creatorAmount(): BigInt {
+    let value = this.get("creatorAmount");
+    return value.toBigInt();
+  }
+
+  set creatorAmount(value: BigInt) {
+    this.set("creatorAmount", Value.fromBigInt(value));
+  }
+
+  get creatorBeneficiary(): Bytes {
+    let value = this.get("creatorBeneficiary");
+    return value.toBytes();
+  }
+
+  set creatorBeneficiary(value: Bytes) {
+    this.set("creatorBeneficiary", Value.fromBytes(value));
+  }
+
+  get counterparty(): Bytes {
+    let value = this.get("counterparty");
+    return value.toBytes();
+  }
+
+  set counterparty(value: Bytes) {
+    this.set("counterparty", Value.fromBytes(value));
+  }
+
+  get counterpartyToken(): Bytes {
+    let value = this.get("counterpartyToken");
+    return value.toBytes();
+  }
+
+  set counterpartyToken(value: Bytes) {
+    this.set("counterpartyToken", Value.fromBytes(value));
+  }
+
+  get counterpartyAmount(): BigInt {
+    let value = this.get("counterpartyAmount");
+    return value.toBigInt();
+  }
+
+  set counterpartyAmount(value: BigInt) {
+    this.set("counterpartyAmount", Value.fromBigInt(value));
+  }
+
+  get expirationDate(): BigInt {
+    let value = this.get("expirationDate");
+    return value.toBigInt();
+  }
+
+  set expirationDate(value: BigInt) {
+    this.set("expirationDate", Value.fromBigInt(value));
+  }
+
+  get status(): i32 {
+    let value = this.get("status");
+    return value.toI32();
+  }
+
+  set status(value: i32) {
+    this.set("status", Value.fromI32(value));
+  }
+}
