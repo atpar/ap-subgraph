@@ -1,6 +1,6 @@
 {
   "network": "rinkeby",
-  "description": "ACTUS Protocol (rinkeby)",
+  "description": "ACTUS Protocol (rinkeby-staging)",
   "ANNActor": "0x485F6f4d894181edF494EE04D8706bfb0CD8638c",
   "ANNEngine": "0x74886a51f8C45bfAb4BB3687a57eE0e92f9521FF",
   "ANNRegistry": "0x37355254Db7949266188dCf442aF2DbcdB623942",
