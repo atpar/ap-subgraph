@@ -2651,6 +2651,15 @@ export class ANNAsset extends Entity {
     this.set("actor", Value.fromBytes(value));
   }
 
+  get registry(): Bytes {
+    let value = this.get("registry");
+    return value.toBytes();
+  }
+
+  set registry(value: Bytes) {
+    this.set("registry", Value.fromBytes(value));
+  }
+
   get admins(): string {
     let value = this.get("admins");
     return value.toString();
@@ -2761,6 +2770,15 @@ export class CECAsset extends Entity {
 
   set actor(value: Bytes) {
     this.set("actor", Value.fromBytes(value));
+  }
+
+  get registry(): Bytes {
+    let value = this.get("registry");
+    return value.toBytes();
+  }
+
+  set registry(value: Bytes) {
+    this.set("registry", Value.fromBytes(value));
   }
 
   get admins(): string {
@@ -2875,6 +2893,15 @@ export class CEGAsset extends Entity {
     this.set("actor", Value.fromBytes(value));
   }
 
+  get registry(): Bytes {
+    let value = this.get("registry");
+    return value.toBytes();
+  }
+
+  set registry(value: Bytes) {
+    this.set("registry", Value.fromBytes(value));
+  }
+
   get admins(): string {
     let value = this.get("admins");
     return value.toString();
@@ -2987,6 +3014,15 @@ export class CERTFAsset extends Entity {
     this.set("actor", Value.fromBytes(value));
   }
 
+  get registry(): Bytes {
+    let value = this.get("registry");
+    return value.toBytes();
+  }
+
+  set registry(value: Bytes) {
+    this.set("registry", Value.fromBytes(value));
+  }
+
   get admins(): string {
     let value = this.get("admins");
     return value.toString();
@@ -3097,6 +3133,15 @@ export class PAMAsset extends Entity {
 
   set actor(value: Bytes) {
     this.set("actor", Value.fromBytes(value));
+  }
+
+  get registry(): Bytes {
+    let value = this.get("registry");
+    return value.toBytes();
+  }
+
+  set registry(value: Bytes) {
+    this.set("registry", Value.fromBytes(value));
   }
 
   get admins(): string {

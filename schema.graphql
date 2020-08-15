@@ -401,6 +401,7 @@ type ANNAsset implements Asset @entity {
   ownership: AssetOwnership!
   engine: Bytes!
   actor: Bytes!
+  registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
 }
@@ -414,6 +415,7 @@ type CECAsset implements Asset @entity {
   ownership: AssetOwnership!
   engine: Bytes!
   actor: Bytes!
+  registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
 }
@@ -427,6 +429,7 @@ type CEGAsset implements Asset @entity {
   ownership: AssetOwnership!
   engine: Bytes!
   actor: Bytes!
+  registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
 }
@@ -440,6 +443,7 @@ type CERTFAsset implements Asset @entity {
   ownership: AssetOwnership!
   engine: Bytes!
   actor: Bytes!
+  registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
 }
@@ -453,6 +457,7 @@ type PAMAsset implements Asset @entity {
   ownership: AssetOwnership!
   engine: Bytes!
   actor: Bytes!
+  registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
 }
@@ -465,6 +470,7 @@ interface Asset @entity {
   ownership: AssetOwnership!
   engine: Bytes!
   actor: Bytes!
+  registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
 }
