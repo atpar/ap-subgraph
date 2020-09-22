@@ -603,6 +603,15 @@ export class Schedule extends Entity {
     this.set("nextScheduledEvent", Value.fromBytes(value));
   }
 
+  get nextUnderlyingEvent(): Bytes {
+    let value = this.get("nextUnderlyingEvent");
+    return value.toBytes();
+  }
+
+  set nextUnderlyingEvent(value: Bytes) {
+    this.set("nextUnderlyingEvent", Value.fromBytes(value));
+  }
+
   get asset(): string {
     let value = this.get("asset");
     return value.toString();

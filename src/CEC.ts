@@ -80,6 +80,8 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
   if (pendingEventCallResult.reverted) { return; }
   let nextScheduledEventCallResult = cecRegistry.try_getNextScheduledEvent(event.params.assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = cecRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
   ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
@@ -93,6 +95,7 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
+  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
   schedule.save();
 
   let contractReference_1 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_1');
@@ -185,6 +188,8 @@ export function handleProgressedAssetCEC(event: ProgressedAsset): void {
   if (pendingEventCallResult.reverted) { return; }
   let nextScheduledEventCallResult = cecRegistry.try_getNextScheduledEvent(event.params.assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = cecRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
 
   let state = State.load(event.params.assetId.toHex() + '-state');
   state.contractPerformance = stateCallResult.value.contractPerformance;
@@ -213,5 +218,6 @@ export function handleProgressedAssetCEC(event: ProgressedAsset): void {
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
+  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
   schedule.save();
 }

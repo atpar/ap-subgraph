@@ -80,6 +80,8 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   if (pendingEventCallResult.reverted) { return; }
   let nextScheduledEventCallResult = certfRegistry.try_getNextScheduledEvent(event.params.assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = certfRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
   ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
@@ -93,6 +95,7 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
+  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
   schedule.save();
 
   let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
@@ -253,6 +256,8 @@ export function handleProgressedAssetCERTF(event: ProgressedAsset): void {
   if (pendingEventCallResult.reverted) { return; }
   let nextScheduledEventCallResult = certfRegistry.try_getNextScheduledEvent(event.params.assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = certfRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
 
   let state = State.load(event.params.assetId.toHex() + '-state');
   state.contractPerformance = stateCallResult.value.contractPerformance;
@@ -281,5 +286,6 @@ export function handleProgressedAssetCERTF(event: ProgressedAsset): void {
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
+  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
   schedule.save();
 }

@@ -65,6 +65,7 @@ type Schedule @entity {
   nextScheduleIndex: BigInt!
   pendingEvent: Bytes!
   nextScheduledEvent: Bytes!
+  nextUnderlyingEvent: Bytes!
   asset: Asset! @derivedFrom(field: "schedule")
 }
 

@@ -80,6 +80,8 @@ export function handleRegisteredAssetPAM(event: RegisteredAsset): void {
   if (pendingEventCallResult.reverted) { return; }
   let nextScheduledEventCallResult = pamRegistry.try_getNextScheduledEvent(event.params.assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = pamRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
 
   let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
   ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
@@ -93,6 +95,7 @@ export function handleRegisteredAssetPAM(event: RegisteredAsset): void {
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
+  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
   schedule.save();
 
   let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
@@ -240,6 +243,8 @@ export function handleProgressedAssetPAM(event: ProgressedAsset): void {
   if (pendingEventCallResult.reverted) { return; }
   let nextScheduledEventCallResult = pamRegistry.try_getNextScheduledEvent(event.params.assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = pamRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
 
   let state = State.load(event.params.assetId.toHex() + '-state');
   state.contractPerformance = stateCallResult.value.contractPerformance;
@@ -268,5 +273,6 @@ export function handleProgressedAssetPAM(event: ProgressedAsset): void {
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
+  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
   schedule.save();
 }
