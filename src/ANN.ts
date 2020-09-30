@@ -9,7 +9,7 @@ import { Admins, ANNAsset, AssetOwnership, Schedule, ANNTerms, Period, State, Cy
 // GrantedAccess event may be processed before or after RegisteredAsset event,
 // hence wehave to store it as a separate entity
 export function handleGrantedAccessANN(event: GrantedAccess): void {
-  log.debug("Process event (SetRootAsset) for asset ({})", [event.params.assetId.toHex()]);
+  log.debug("Process event (GrantedAccess) for asset ({})", [event.params.assetId.toHex()]);
 
   if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
 
