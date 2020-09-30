@@ -54,12 +54,12 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   let actorCallResult = annRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
 
-  const terms = fetchTerms(event.address, event.params.assetId);
-  const state = fetchState(event.address, event.params.assetId);
-  const ownership = fetchOwnership(event.address, event.params.assetId);
-  const schedule = fetchSchedule(event.address, event.params.assetId);
+  let terms = fetchTerms(event.address, event.params.assetId);
+  let state = fetchState(event.address, event.params.assetId);
+  let ownership = fetchOwnership(event.address, event.params.assetId);
+  let schedule = fetchSchedule(event.address, event.params.assetId);
 
-  if (terms && state && ownership && schedule) {
+  if (terms !== null && state !== null && ownership !== null && schedule !== null) {
     terms.save();
     state.save();
     ownership.save();
@@ -93,10 +93,10 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
 
   let annActor = ANNActor.bind(event.address);
 
-  const state = fetchState(annActor.assetRegistry(), event.params.assetId);
-  const schedule = fetchSchedule(annActor.assetRegistry(), event.params.assetId);
+  let state = fetchState(annActor.assetRegistry(), event.params.assetId);
+  let schedule = fetchSchedule(annActor.assetRegistry(), event.params.assetId);
 
-  if (state && schedule) {
+  if (state !== null && schedule !== null) {
     state.save();
     schedule.save();
   }
@@ -105,7 +105,7 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
 export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
-  const ownership = fetchOwnership(event.address, event.params.assetId);
+  let ownership = fetchOwnership(event.address, event.params.assetId);
   if (ownership) {
     ownership.save();
   }
@@ -114,7 +114,7 @@ export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
 export function handleUpdatedObligorANN(event: UpdatedObligor): void {
   log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
 
-  const ownership = fetchOwnership(event.address, event.params.assetId);
+  let ownership = fetchOwnership(event.address, event.params.assetId);
   if (ownership) {
     ownership.save();
   }
@@ -123,7 +123,7 @@ export function handleUpdatedObligorANN(event: UpdatedObligor): void {
 export function handleUpdatedStateANN(event: UpdatedState): void {
   log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  const state = fetchState(event.address, event.params.assetId);
+  let state = fetchState(event.address, event.params.assetId);
   if (state) {
     state.save();
   }
@@ -132,7 +132,7 @@ export function handleUpdatedStateANN(event: UpdatedState): void {
 export function handleUpdatedTermsANN(event: UpdatedState): void {
   log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
 
-  const terms = fetchTerms(event.address, event.params.assetId);
+  let terms = fetchTerms(event.address, event.params.assetId);
   if (terms) {
     terms.save();
   }
@@ -141,17 +141,17 @@ export function handleUpdatedTermsANN(event: UpdatedState): void {
 export function handleUpdatedFinalizedStateANN(event: UpdatedFinalizedState): void {
   log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  const state = fetchState(event.address, event.params.assetId);
+  let state = fetchState(event.address, event.params.assetId);
   if (state) {
     state.save();
   }
 }
 
-function fetchState(assetRegistryAddress: Address, assetId: Bytes): State {
+function fetchState(assetRegistryAddress: Address, assetId: Bytes): State | null {
 
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
   let stateCallResult = annRegistry.try_getState(assetId);
-  if (stateCallResult.reverted) { throw new Error('Call Result Reverted'); }
+  if (stateCallResult.reverted) { return null; }
 
   let state = State.load(assetId.toHex() + '-state');
   if (state == null) {
@@ -181,10 +181,10 @@ function fetchState(assetRegistryAddress: Address, assetId: Bytes): State {
   return state;
 }
 
-function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership {
+function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership | null {
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
   let ownershipCallResult = annRegistry.try_getOwnership(assetId);
-  if (ownershipCallResult.reverted) { return; }
+  if (ownershipCallResult.reverted) { return null; }
   
   let ownership = AssetOwnership.load(assetId.toHex() + '-ownership');
   if (ownership == null) {
@@ -198,19 +198,19 @@ function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwn
   return ownership;
 }
 
-function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule {
+function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule | null {
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
 
   let eventsCallResult = annRegistry.try_getSchedule(assetId);
-  if (eventsCallResult.reverted) { return; }
+  if (eventsCallResult.reverted) { return null; }
   let nextScheduleIndexCallResult = annRegistry.try_getNextScheduleIndex(assetId);
-  if (nextScheduleIndexCallResult.reverted) { return; }
+  if (nextScheduleIndexCallResult.reverted) { return null; }
   let pendingEventCallResult = annRegistry.try_getPendingEvent(assetId);
-  if (pendingEventCallResult.reverted) { return; }
+  if (pendingEventCallResult.reverted) { return null; }
   let nextScheduledEventCallResult = annRegistry.try_getNextScheduledEvent(assetId);
-  if (nextScheduledEventCallResult.reverted) { return; }
+  if (nextScheduledEventCallResult.reverted) { return null; }
   let nextUnderlyingEventCallResult = annRegistry.try_getNextUnderlyingEvent(assetId);
-  if (nextUnderlyingEventCallResult.reverted) { return; }
+  if (nextUnderlyingEventCallResult.reverted) { return null; }
 
   let schedule = Schedule.load(assetId.toHex() + '-schedule');
   if (schedule == null) {
@@ -224,10 +224,10 @@ function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule 
   return schedule;
 }
 
-function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms {
+function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms | null {
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
   let annTermsCallResult = annRegistry.try_getTerms(assetId);
-  if (annTermsCallResult.reverted) { return; }
+  if (annTermsCallResult.reverted) { return null; }
 
   let gracePeriod = Period.load(assetId.toHex() + '-terms-gracePeriod');
   if (gracePeriod == null) {

@@ -54,12 +54,12 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   let actorCallResult = certfRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
 
-  const terms = fetchTerms(event.address, event.params.assetId);
-  const state = fetchState(event.address, event.params.assetId);
-  const ownership = fetchOwnership(event.address, event.params.assetId);
-  const schedule = fetchSchedule(event.address, event.params.assetId);
+  let terms = fetchTerms(event.address, event.params.assetId);
+  let state = fetchState(event.address, event.params.assetId);
+  let ownership = fetchOwnership(event.address, event.params.assetId);
+  let schedule = fetchSchedule(event.address, event.params.assetId);
 
-  if (terms && state && ownership && schedule) {
+  if (terms !== null && state !== null && ownership !== null && schedule !== null) {
     terms.save();
     state.save();
     ownership.save();
@@ -93,10 +93,10 @@ export function handleProgressedAssetCERTF(event: ProgressedAsset): void {
 
   let certfActor = CERTFActor.bind(event.address);
 
-  const state = fetchState(certfActor.assetRegistry(), event.params.assetId);
-  const schedule = fetchSchedule(certfActor.assetRegistry(), event.params.assetId);
+  let state = fetchState(certfActor.assetRegistry(), event.params.assetId);
+  let schedule = fetchSchedule(certfActor.assetRegistry(), event.params.assetId);
 
-  if (state && schedule) {
+  if (state !== null && schedule !== null) {
     state.save();
     schedule.save();
   }
@@ -105,7 +105,7 @@ export function handleProgressedAssetCERTF(event: ProgressedAsset): void {
 export function handleUpdatedBeneficiaryCERTF(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
-  const ownership = fetchOwnership(event.address, event.params.assetId);
+  let ownership = fetchOwnership(event.address, event.params.assetId);
   if (ownership) {
     ownership.save();
   }
@@ -114,7 +114,7 @@ export function handleUpdatedBeneficiaryCERTF(event: UpdatedBeneficiary): void {
 export function handleUpdatedObligorCERTF(event: UpdatedObligor): void {
   log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
 
-  const ownership = fetchOwnership(event.address, event.params.assetId);
+  let ownership = fetchOwnership(event.address, event.params.assetId);
   if (ownership) {
     ownership.save();
   }
@@ -123,7 +123,7 @@ export function handleUpdatedObligorCERTF(event: UpdatedObligor): void {
 export function handleUpdatedStateCERTF(event: UpdatedState): void {
   log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  const state = fetchState(event.address, event.params.assetId);
+  let state = fetchState(event.address, event.params.assetId);
   if (state) {
     state.save();
   }
@@ -132,7 +132,7 @@ export function handleUpdatedStateCERTF(event: UpdatedState): void {
 export function handleUpdatedTermsCERTF(event: UpdatedState): void {
   log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
 
-  const terms = fetchTerms(event.address, event.params.assetId);
+  let terms = fetchTerms(event.address, event.params.assetId);
   if (terms) {
     terms.save();
   }
@@ -141,17 +141,17 @@ export function handleUpdatedTermsCERTF(event: UpdatedState): void {
 export function handleUpdatedFinalizedStateCERTF(event: UpdatedFinalizedState): void {
   log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  const state = fetchState(event.address, event.params.assetId);
+  let state = fetchState(event.address, event.params.assetId);
   if (state) {
     state.save();
   }
 }
 
-function fetchState(assetRegistryAddress: Address, assetId: Bytes): State {
+function fetchState(assetRegistryAddress: Address, assetId: Bytes): State | null {
 
   let certfRegistry = CERTFRegistry.bind(assetRegistryAddress);
   let stateCallResult = certfRegistry.try_getState(assetId);
-  if (stateCallResult.reverted) { throw new Error('Call Result Reverted'); }
+  if (stateCallResult.reverted) { return null; }
 
   let state = State.load(assetId.toHex() + '-state');
   if (state == null) {
@@ -181,10 +181,10 @@ function fetchState(assetRegistryAddress: Address, assetId: Bytes): State {
   return state;
 }
 
-function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership {
+function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership | null {
   let certfRegistry = CERTFRegistry.bind(assetRegistryAddress);
   let ownershipCallResult = certfRegistry.try_getOwnership(assetId);
-  if (ownershipCallResult.reverted) { return; }
+  if (ownershipCallResult.reverted) { return null; }
   
   let ownership = AssetOwnership.load(assetId.toHex() + '-ownership');
   if (ownership == null) {
@@ -198,19 +198,19 @@ function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwn
   return ownership;
 }
 
-function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule {
+function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule | null {
   let certfRegistry = CERTFRegistry.bind(assetRegistryAddress);
 
   let eventsCallResult = certfRegistry.try_getSchedule(assetId);
-  if (eventsCallResult.reverted) { return; }
+  if (eventsCallResult.reverted) { return null; }
   let nextScheduleIndexCallResult = certfRegistry.try_getNextScheduleIndex(assetId);
-  if (nextScheduleIndexCallResult.reverted) { return; }
+  if (nextScheduleIndexCallResult.reverted) { return null; }
   let pendingEventCallResult = certfRegistry.try_getPendingEvent(assetId);
-  if (pendingEventCallResult.reverted) { return; }
+  if (pendingEventCallResult.reverted) { return null; }
   let nextScheduledEventCallResult = certfRegistry.try_getNextScheduledEvent(assetId);
-  if (nextScheduledEventCallResult.reverted) { return; }
+  if (nextScheduledEventCallResult.reverted) { return null; }
   let nextUnderlyingEventCallResult = certfRegistry.try_getNextUnderlyingEvent(assetId);
-  if (nextUnderlyingEventCallResult.reverted) { return; }
+  if (nextUnderlyingEventCallResult.reverted) { return null; }
 
   let schedule = Schedule.load(assetId.toHex() + '-schedule');
   if (schedule == null) {
@@ -224,10 +224,10 @@ function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule 
   return schedule;
 }
 
-function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms {
+function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms | null {
   let certfRegistry = CERTFRegistry.bind(assetRegistryAddress);
   let certfTermsCallResult = certfRegistry.try_getTerms(assetId);
-  if (certfTermsCallResult.reverted) { return; }
+  if (certfTermsCallResult.reverted) { return null; }
 
   let contractReference_1 = ContractReference.load(assetId.toHex() + '-terms-contractReference_1');
   if (contractReference_1 == null) {
