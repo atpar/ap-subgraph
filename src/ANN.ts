@@ -54,10 +54,10 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   let actorCallResult = annRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
 
-  const terms = updateTermsANN(event.address, event.params.assetId);
-  const state = updateStateANN(event.address, event.params.assetId);
-  const ownership = updateOwnershipANN(event.address, event.params.assetId);
-  const schedule = updateScheduleANN(event.address, event.params.assetId);
+  const terms = fetchTermsANN(event.address, event.params.assetId);
+  const state = fetchStateANN(event.address, event.params.assetId);
+  const ownership = fetchOwnershipANN(event.address, event.params.assetId);
+  const schedule = fetchScheduleANN(event.address, event.params.assetId);
 
   if (terms && state && ownership && schedule) {
     terms.save();
@@ -93,8 +93,8 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
 
   let annActor = ANNActor.bind(event.address);
 
-  const state = updateStateANN(annActor.assetRegistry(), event.params.assetId);
-  const schedule = updateScheduleANN(annActor.assetRegistry(), event.params.assetId);
+  const state = fetchStateANN(annActor.assetRegistry(), event.params.assetId);
+  const schedule = fetchScheduleANN(annActor.assetRegistry(), event.params.assetId);
 
   if (state && schedule) {
     state.save();
@@ -105,7 +105,7 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
 export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
-  const ownership = updateOwnershipANN(event.address, event.params.assetId);
+  const ownership = fetchOwnershipANN(event.address, event.params.assetId);
   if (ownership) {
     ownership.save();
   }
@@ -114,7 +114,7 @@ export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
 export function handleUpdatedObligorANN(event: UpdatedObligor): void {
   log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
 
-  const ownership = updateOwnershipANN(event.address, event.params.assetId);
+  const ownership = fetchOwnershipANN(event.address, event.params.assetId);
   if (ownership) {
     ownership.save();
   }
@@ -123,7 +123,7 @@ export function handleUpdatedObligorANN(event: UpdatedObligor): void {
 export function handleUpdatedStateANN(event: UpdatedState): void {
   log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  const state = updateStateANN(event.address, event.params.assetId);
+  const state = fetchStateANN(event.address, event.params.assetId);
   if (state) {
     state.save();
   }
@@ -132,7 +132,7 @@ export function handleUpdatedStateANN(event: UpdatedState): void {
 export function handleUpdatedTermsANN(event: UpdatedState): void {
   log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
 
-  const terms = updateTermsANN(event.address, event.params.assetId);
+  const terms = fetchTermsANN(event.address, event.params.assetId);
   if (terms) {
     terms.save();
   }
@@ -141,13 +141,13 @@ export function handleUpdatedTermsANN(event: UpdatedState): void {
 export function handleUpdatedFinalizedStateANN(event: UpdatedFinalizedState): void {
   log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  const state = updateStateANN(event.address, event.params.assetId);
+  const state = fetchStateANN(event.address, event.params.assetId);
   if (state) {
     state.save();
   }
 }
 
-function updateStateANN(address: Address, assetId: Bytes): State {
+function fetchStateANN(address: Address, assetId: Bytes): State {
 
   let annRegistry = ANNRegistry.bind(address);
   let stateCallResult = annRegistry.try_getState(assetId);
@@ -181,7 +181,7 @@ function updateStateANN(address: Address, assetId: Bytes): State {
   return state;
 }
 
-function updateOwnershipANN(address: Address, assetId: Bytes): AssetOwnership {
+function fetchOwnershipANN(address: Address, assetId: Bytes): AssetOwnership {
   let annRegistry = ANNRegistry.bind(address);
   let ownershipCallResult = annRegistry.try_getOwnership(assetId);
   if (ownershipCallResult.reverted) { return; }
@@ -198,7 +198,7 @@ function updateOwnershipANN(address: Address, assetId: Bytes): AssetOwnership {
   return ownership;
 }
 
-function updateScheduleANN(address: Address, assetId: Bytes): Schedule {
+function fetchScheduleANN(address: Address, assetId: Bytes): Schedule {
   let annRegistry = ANNRegistry.bind(address);
 
   let eventsCallResult = annRegistry.try_getSchedule(assetId);
@@ -224,7 +224,7 @@ function updateScheduleANN(address: Address, assetId: Bytes): Schedule {
   return schedule;
 }
 
-function updateTermsANN(address: Address, assetId: Bytes): ANNTerms {
+function fetchTermsANN(address: Address, assetId: Bytes): ANNTerms {
   let annRegistry = ANNRegistry.bind(address);
   let annTermsCallResult = annRegistry.try_getTerms(assetId);
   if (annTermsCallResult.reverted) { return; }
