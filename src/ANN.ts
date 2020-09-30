@@ -1,7 +1,7 @@
-import { log, BigInt } from "@graphprotocol/graph-ts";
+import { log, Address, Bytes } from "@graphprotocol/graph-ts";
 
 import { ANNActor, ProgressedAsset } from '../generated/ANNActor/ANNActor';
-import { ANNRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/ANNRegistry/ANNRegistry';
+import { ANNRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary, UpdatedObligor, UpdatedState, UpdatedFinalizedState } from '../generated/ANNRegistry/ANNRegistry';
 
 import { Admins, ANNAsset, AssetOwnership, Schedule, ANNTerms, Period, State, Cycle } from '../generated/schema';
 
@@ -45,19 +45,6 @@ export function handleRevokedAccessANN(event: RevokedAccess): void {
   admins.save();
 }
 
-export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
-  log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
-
-  let annRegistry = ANNRegistry.bind(event.address);
-  let ownershipCallResult = annRegistry.try_getOwnership(event.params.assetId);
-  if (ownershipCallResult.reverted) { return; }
-  
-  let ownership = AssetOwnership.load(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
-  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
-  ownership.save();
-}
-
 export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   log.debug("Process event (RegisteredAsset) for asset ({})", [event.params.assetId.toHex()]);
 
@@ -66,86 +53,254 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   if (engineCallResult.reverted) { return; }
   let actorCallResult = annRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
-  let annTermsCallResult = annRegistry.try_getTerms(event.params.assetId);
-  if (annTermsCallResult.reverted) { return; }
-  let stateCallResult = annRegistry.try_getState(event.params.assetId);
-  if (stateCallResult.reverted) { return; }
-  let ownershipCallResult = annRegistry.try_getOwnership(event.params.assetId);
+
+  const terms = updateTermsANN(event.address, event.params.assetId);
+  const state = updateStateANN(event.address, event.params.assetId);
+  const ownership = updateOwnershipANN(event.address, event.params.assetId);
+  const schedule = updateScheduleANN(event.address, event.params.assetId);
+
+  if (terms && state && ownership && schedule) {
+    terms.save();
+    state.save();
+    ownership.save();
+    schedule.save();
+  }
+
+  // GrantedAccess event may be processed before or after RegisteredAsset event
+  let admins = Admins.load(event.params.assetId.toHex() + '-admins');
+  if (admins == null) {
+    admins = new Admins(event.params.assetId.toHex() + '-admins');
+    admins.accounts = [];
+  }
+  admins.save();
+
+  let asset = new ANNAsset(event.params.assetId.toHex());
+  asset.assetId = event.params.assetId;
+  asset.terms = terms.id;
+  asset.state = state.id;
+  asset.schedule = schedule.id;
+  asset.ownership = ownership.id;
+  asset.engine = engineCallResult.value;
+  asset.actor = actorCallResult.value;
+  asset.registry = event.address;
+  asset.admins = admins.id;
+  asset.createdOn = event.block.timestamp;
+  asset.save();
+}
+
+export function handleProgressedAssetANN(event: ProgressedAsset): void {
+  log.debug("Process event (ProgressedAsset) for asset ({})", [event.params.assetId.toHex()]);
+
+  let annActor = ANNActor.bind(event.address);
+
+  const state = updateStateANN(annActor.assetRegistry(), event.params.assetId);
+  const schedule = updateScheduleANN(annActor.assetRegistry(), event.params.assetId);
+
+  if (state && schedule) {
+    state.save();
+    schedule.save();
+  }
+}
+
+export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
+  log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
+
+  const ownership = updateOwnershipANN(event.address, event.params.assetId);
+  if (ownership) {
+    ownership.save();
+  }
+}
+
+export function handleUpdatedObligorANN(event: UpdatedObligor): void {
+  log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
+
+  const ownership = updateOwnershipANN(event.address, event.params.assetId);
+  if (ownership) {
+    ownership.save();
+  }
+}
+
+export function handleUpdatedStateANN(event: UpdatedState): void {
+  log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
+
+  const state = updateStateANN(event.address, event.params.assetId);
+  if (state) {
+    state.save();
+  }
+}
+
+export function handleUpdatedTermsANN(event: UpdatedState): void {
+  log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
+
+  const terms = updateTermsANN(event.address, event.params.assetId);
+  if (terms) {
+    terms.save();
+  }
+}
+
+export function handleUpdatedFinalizedStateANN(event: UpdatedFinalizedState): void {
+  log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
+
+  const state = updateStateANN(event.address, event.params.assetId);
+  if (state) {
+    state.save();
+  }
+}
+
+function updateStateANN(address: Address, assetId: Bytes): State {
+
+  let annRegistry = ANNRegistry.bind(address);
+  let stateCallResult = annRegistry.try_getState(assetId);
+  if (stateCallResult.reverted) { throw new Error('Call Result Reverted'); }
+
+  let state = State.load(assetId.toHex() + '-state');
+  if (state == null) {
+    state = new State(assetId.toHex() + '-state');
+  }
+  state.contractPerformance = stateCallResult.value.contractPerformance;
+  state.statusDate = stateCallResult.value.statusDate;
+  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
+  state.maturityDate = stateCallResult.value.maturityDate;
+  state.exerciseDate = stateCallResult.value.exerciseDate;
+  state.terminationDate = stateCallResult.value.terminationDate;
+  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
+  state.accruedInterest = stateCallResult.value.accruedInterest;
+  state.feeAccrued = stateCallResult.value.feeAccrued;
+  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
+  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
+  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
+  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
+  state.exerciseAmount = stateCallResult.value.exerciseAmount;
+  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
+  state.quantity = stateCallResult.value.quantity;
+  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
+  state.marginFactor = stateCallResult.value.marginFactor;
+  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
+
+  return state;
+}
+
+function updateOwnershipANN(address: Address, assetId: Bytes): AssetOwnership {
+  let annRegistry = ANNRegistry.bind(address);
+  let ownershipCallResult = annRegistry.try_getOwnership(assetId);
   if (ownershipCallResult.reverted) { return; }
-  let eventsCallResult = annRegistry.try_getSchedule(event.params.assetId);
+  
+  let ownership = AssetOwnership.load(assetId.toHex() + '-ownership');
+  if (ownership == null) {
+    ownership = new AssetOwnership(assetId.toHex() + '-ownership');
+  }
+  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
+  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
+  ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
+  ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
+
+  return ownership;
+}
+
+function updateScheduleANN(address: Address, assetId: Bytes): Schedule {
+  let annRegistry = ANNRegistry.bind(address);
+
+  let eventsCallResult = annRegistry.try_getSchedule(assetId);
   if (eventsCallResult.reverted) { return; }
-  let nextScheduleIndexCallResult = annRegistry.try_getNextScheduleIndex(event.params.assetId);
+  let nextScheduleIndexCallResult = annRegistry.try_getNextScheduleIndex(assetId);
   if (nextScheduleIndexCallResult.reverted) { return; }
-  let pendingEventCallResult = annRegistry.try_getPendingEvent(event.params.assetId);
+  let pendingEventCallResult = annRegistry.try_getPendingEvent(assetId);
   if (pendingEventCallResult.reverted) { return; }
-  let nextScheduledEventCallResult = annRegistry.try_getNextScheduledEvent(event.params.assetId);
+  let nextScheduledEventCallResult = annRegistry.try_getNextScheduledEvent(assetId);
   if (nextScheduledEventCallResult.reverted) { return; }
-  let nextUnderlyingEventCallResult = annRegistry.try_getNextUnderlyingEvent(event.params.assetId);
+  let nextUnderlyingEventCallResult = annRegistry.try_getNextUnderlyingEvent(assetId);
   if (nextUnderlyingEventCallResult.reverted) { return; }
 
-  let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
-  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
-  ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
-  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
-  ownership.save();
-
-  let schedule = new Schedule(event.params.assetId.toHex() + '-schedule');
-  schedule.events = eventsCallResult.value;
+  let schedule = Schedule.load(assetId.toHex() + '-schedule');
+  if (schedule == null) {
+    schedule = new Schedule(assetId.toHex() + '-schedule');
+  }
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
-  schedule.save();
 
-  let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
+  return schedule;
+}
+
+function updateTermsANN(address: Address, assetId: Bytes): ANNTerms {
+  let annRegistry = ANNRegistry.bind(address);
+  let annTermsCallResult = annRegistry.try_getTerms(assetId);
+  if (annTermsCallResult.reverted) { return; }
+
+  let gracePeriod = Period.load(assetId.toHex() + '-terms-gracePeriod');
+  if (gracePeriod == null) {
+    gracePeriod = new Period(assetId.toHex() + '-terms-gracePeriod');
+  }
   gracePeriod.i = annTermsCallResult.value.gracePeriod.i;
   gracePeriod.p = annTermsCallResult.value.gracePeriod.p;
   gracePeriod.isSet = annTermsCallResult.value.gracePeriod.isSet;
   gracePeriod.save();
 
-  let delinquencyPeriod = new Period(event.params.assetId.toHex() + '-terms-delinquencyPeriod');
+  let delinquencyPeriod = Period.load(assetId.toHex() + '-terms-delinquencyPeriod');
+  if (delinquencyPeriod == null) {
+    delinquencyPeriod = new Period(assetId.toHex() + '-terms-delinquencyPeriod');
+  }
   delinquencyPeriod.i = annTermsCallResult.value.delinquencyPeriod.i;
   delinquencyPeriod.p = annTermsCallResult.value.delinquencyPeriod.p;
   delinquencyPeriod.isSet = annTermsCallResult.value.delinquencyPeriod.isSet;
   delinquencyPeriod.save();
 
-  let cycleOfInterestPayment = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfInterestPayment');
+  let cycleOfInterestPayment = Cycle.load(assetId.toHex() + '-terms-cycleOfInterestPayment');
+  if (cycleOfInterestPayment == null) {
+    cycleOfInterestPayment = new Cycle(assetId.toHex() + '-terms-cycleOfInterestPayment');
+  }
   cycleOfInterestPayment.i = annTermsCallResult.value.cycleOfInterestPayment.i;
   cycleOfInterestPayment.p = annTermsCallResult.value.cycleOfInterestPayment.p;
   cycleOfInterestPayment.s = annTermsCallResult.value.cycleOfInterestPayment.s;
   cycleOfInterestPayment.isSet = annTermsCallResult.value.cycleOfInterestPayment.isSet;
   cycleOfInterestPayment.save();
 
-  let cycleOfRateReset = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfRateReset');
+  let cycleOfRateReset = Cycle.load(assetId.toHex() + '-terms-cycleOfRateReset');
+  if (cycleOfRateReset == null) {
+    cycleOfRateReset = new Cycle(assetId.toHex() + '-terms-cycleOfRateReset');
+  }
   cycleOfRateReset.i = annTermsCallResult.value.cycleOfRateReset.i;
   cycleOfRateReset.p = annTermsCallResult.value.cycleOfRateReset.p;
   cycleOfRateReset.s = annTermsCallResult.value.cycleOfRateReset.s;
   cycleOfRateReset.isSet = annTermsCallResult.value.cycleOfRateReset.isSet;
   cycleOfRateReset.save();
 
-  let cycleOfScalingIndex = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfScalingIndex');
+  let cycleOfScalingIndex = Cycle.load(assetId.toHex() + '-terms-cycleOfScalingIndex');
+  if (cycleOfScalingIndex == null) {
+    cycleOfScalingIndex = new Cycle(assetId.toHex() + '-terms-cycleOfScalingIndex');
+  }
   cycleOfScalingIndex.i = annTermsCallResult.value.cycleOfScalingIndex.i;
   cycleOfScalingIndex.p = annTermsCallResult.value.cycleOfScalingIndex.p;
   cycleOfScalingIndex.s = annTermsCallResult.value.cycleOfScalingIndex.s;
   cycleOfScalingIndex.isSet = annTermsCallResult.value.cycleOfScalingIndex.isSet;
   cycleOfScalingIndex.save();
 
-  let cycleOfFee = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfFee');
+  let cycleOfFee = Cycle.load(assetId.toHex() + '-terms-cycleOfFee');
+  if (cycleOfFee == null) {
+    cycleOfFee = new Cycle(assetId.toHex() + '-terms-cycleOfFee');
+  }
   cycleOfFee.i = annTermsCallResult.value.cycleOfFee.i;
   cycleOfFee.p = annTermsCallResult.value.cycleOfFee.p;
   cycleOfFee.s = annTermsCallResult.value.cycleOfFee.s;
   cycleOfFee.isSet = annTermsCallResult.value.cycleOfFee.isSet;
   cycleOfFee.save();
 
-  let cycleOfPrincipalRedemption = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfPrincipalRedemption');
+  let cycleOfPrincipalRedemption = Cycle.load(assetId.toHex() + '-terms-cycleOfPrincipalRedemption');
+  if (cycleOfPrincipalRedemption == null) {
+    cycleOfPrincipalRedemption = new Cycle(assetId.toHex() + '-terms-cycleOfPrincipalRedemption');
+  }
   cycleOfPrincipalRedemption.i = annTermsCallResult.value.cycleOfPrincipalRedemption.i;
   cycleOfPrincipalRedemption.p = annTermsCallResult.value.cycleOfPrincipalRedemption.p;
   cycleOfPrincipalRedemption.s = annTermsCallResult.value.cycleOfPrincipalRedemption.s;
   cycleOfPrincipalRedemption.isSet = annTermsCallResult.value.cycleOfPrincipalRedemption.isSet;
   cycleOfPrincipalRedemption.save();
-  
-  let terms = new ANNTerms(event.params.assetId.toHex() + '-terms');
+
+  let terms = ANNTerms.load(assetId.toHex() + '-terms')
+  if (terms == null) {
+    terms = new ANNTerms(assetId.toHex() + '-terms');
+  }
   terms.contractType = annTermsCallResult.value.contractType;
   terms.calendar = annTermsCallResult.value.calendar;
   terms.contractRole = annTermsCallResult.value.contractRole;
@@ -193,96 +348,6 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   terms.cycleOfScalingIndex = cycleOfScalingIndex.id;
   terms.cycleOfFee = cycleOfFee.id;
   terms.cycleOfPrincipalRedemption = cycleOfPrincipalRedemption.id;
-  terms.save();
 
-  let state = new State(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = stateCallResult.value.contractPerformance;
-  state.statusDate = stateCallResult.value.statusDate;
-  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
-  state.maturityDate = stateCallResult.value.maturityDate;
-  state.exerciseDate = stateCallResult.value.exerciseDate;
-  state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponDay = stateCallResult.value.lastCouponDay;
-  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
-  state.accruedInterest = stateCallResult.value.accruedInterest;
-  state.feeAccrued = stateCallResult.value.feeAccrued;
-  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
-  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
-  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = stateCallResult.value.exerciseAmount;
-  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
-  state.quantity = stateCallResult.value.quantity;
-  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
-  state.marginFactor = stateCallResult.value.marginFactor;
-  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
-  state.save();
-
-  // GrantedAccess event may be processed before or after RegisteredAsset event
-  let admins = Admins.load(event.params.assetId.toHex() + '-admins');
-  if (admins == null) {
-    admins = new Admins(event.params.assetId.toHex() + '-admins');
-    admins.accounts = [];
-  }
-  admins.save();
-
-  let asset = new ANNAsset(event.params.assetId.toHex());
-  asset.assetId = event.params.assetId;
-  asset.terms = terms.id;
-  asset.state = state.id;
-  asset.schedule = schedule.id;
-  asset.ownership = ownership.id;
-  asset.engine = engineCallResult.value;
-  asset.actor = actorCallResult.value;
-  asset.registry = event.address;
-  asset.admins = admins.id;
-  asset.createdOn = event.block.timestamp;
-  asset.save();
-}
-
-export function handleProgressedAssetANN(event: ProgressedAsset): void {
-  log.debug("Process event (ProgressedAsset) for asset ({})", [event.params.assetId.toHex()]);
-
-  let annActor = ANNActor.bind(event.address);
-  let annRegistry = ANNRegistry.bind(annActor.assetRegistry());
-  let stateCallResult = annRegistry.try_getState(event.params.assetId);
-  if (stateCallResult.reverted) { return; }
-  let nextScheduleIndexCallResult = annRegistry.try_getNextScheduleIndex(event.params.assetId);
-  if (nextScheduleIndexCallResult.reverted) { return; }
-  let pendingEventCallResult = annRegistry.try_getPendingEvent(event.params.assetId);
-  if (pendingEventCallResult.reverted) { return; }
-  let nextScheduledEventCallResult = annRegistry.try_getNextScheduledEvent(event.params.assetId);
-  if (nextScheduledEventCallResult.reverted) { return; }
-  let nextUnderlyingEventCallResult = annRegistry.try_getNextUnderlyingEvent(event.params.assetId);
-  if (nextUnderlyingEventCallResult.reverted) { return; }
-
-  let state = State.load(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = stateCallResult.value.contractPerformance;
-  state.statusDate = stateCallResult.value.statusDate;
-  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
-  state.maturityDate = stateCallResult.value.maturityDate;
-  state.exerciseDate = stateCallResult.value.exerciseDate;
-  state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponDay = stateCallResult.value.lastCouponDay;
-  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
-  state.accruedInterest = stateCallResult.value.accruedInterest;
-  state.feeAccrued = stateCallResult.value.feeAccrued;
-  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
-  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
-  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = stateCallResult.value.exerciseAmount;
-  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
-  state.quantity = stateCallResult.value.quantity;
-  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
-  state.marginFactor = stateCallResult.value.marginFactor;
-  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
-  state.save();
-
-  let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');
-  schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
-  schedule.pendingEvent = pendingEventCallResult.value;
-  schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
-  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
-  schedule.save();
+  return terms;
 }

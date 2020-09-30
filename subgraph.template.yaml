@@ -36,6 +36,14 @@ dataSources:
           handler: handleRevokedAccessANN
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiaryANN
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorANN
+        - event: UpdatedTerms(bytes32)
+          handler: handleUpdatedTermsANN
+        - event: UpdatedState(bytes32,uint256)
+          handler: handleUpdatedStateANN
+        - event: UpdatedFinalizedState(bytes32,uint256)
+          handler: handleUpdatedFinalizedStateANN
       file: ./src/ANN.ts
   - kind: ethereum/contract
     name: ANNActor
