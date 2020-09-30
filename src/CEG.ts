@@ -1,15 +1,15 @@
-import { log } from "@graphprotocol/graph-ts";
+import { log, Address, Bytes } from "@graphprotocol/graph-ts";
 
 import { CEGActor, ProgressedAsset } from '../generated/CEGActor/CEGActor';
-import { CEGRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary } from '../generated/CEGRegistry/CEGRegistry';
+import { CEGRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary, UpdatedObligor, UpdatedState, UpdatedFinalizedState } from '../generated/CEGRegistry/CEGRegistry';
 
-import { Admins, CEGAsset, AssetOwnership, Schedule, CEGTerms, Period, ContractReference, State, Cycle } from '../generated/schema';
+import { Admins, CEGAsset, AssetOwnership, Schedule, CEGTerms, Period, State, Cycle, ContractReference } from '../generated/schema';
 
 
 // GrantedAccess event may be processed before or after RegisteredAsset event,
 // hence wehave to store it as a separate entity
 export function handleGrantedAccessCEG(event: GrantedAccess): void {
-  log.debug("Process event (SetRootAsset) for asset ({})", [event.params.assetId.toHex()]);
+  log.debug("Process event (GrantedAccess) for asset ({})", [event.params.assetId.toHex()]);
 
   if (!event.params.methodSignature.toHex().includes('0x0')) { return; }
 
@@ -45,19 +45,6 @@ export function handleRevokedAccessCEG(event: RevokedAccess): void {
   admins.save();
 }
 
-export function handleUpdatedBeneficiaryCEG(event: UpdatedBeneficiary): void {
-  log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
-
-  let cegRegistry = CEGRegistry.bind(event.address);
-  let ownershipCallResult = cegRegistry.try_getOwnership(event.params.assetId);
-  if (ownershipCallResult.reverted) { return; }
-  
-  let ownership = AssetOwnership.load(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
-  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
-  ownership.save();
-}
-
 export function handleRegisteredAssetCEG(event: RegisteredAsset): void {
   log.debug("Process event (RegisteredAsset) for asset ({})", [event.params.assetId.toHex()]);
 
@@ -66,122 +53,18 @@ export function handleRegisteredAssetCEG(event: RegisteredAsset): void {
   if (engineCallResult.reverted) { return; }
   let actorCallResult = cegRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
-  let cegTermsCallResult = cegRegistry.try_getTerms(event.params.assetId);
-  if (cegTermsCallResult.reverted) { return; }
-  let stateCallResult = cegRegistry.try_getState(event.params.assetId);
-  if (stateCallResult.reverted) { return; }
-  let ownershipCallResult = cegRegistry.try_getOwnership(event.params.assetId);
-  if (ownershipCallResult.reverted) { return; }
-  let eventsCallResult = cegRegistry.try_getSchedule(event.params.assetId);
-  if (eventsCallResult.reverted) { return; }
-  let nextScheduleIndexCallResult = cegRegistry.try_getNextScheduleIndex(event.params.assetId);
-  if (nextScheduleIndexCallResult.reverted) { return; }
-  let pendingEventCallResult = cegRegistry.try_getPendingEvent(event.params.assetId);
-  if (pendingEventCallResult.reverted) { return; }
-  let nextScheduledEventCallResult = cegRegistry.try_getNextScheduledEvent(event.params.assetId);
-  if (nextScheduledEventCallResult.reverted) { return; }
-  let nextUnderlyingEventCallResult = cegRegistry.try_getNextUnderlyingEvent(event.params.assetId);
-  if (nextUnderlyingEventCallResult.reverted) { return; }
 
-  let ownership = new AssetOwnership(event.params.assetId.toHex() + '-ownership');
-  ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
-  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
-  ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
-  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
-  ownership.save();
+  const terms = fetchTerms(event.address, event.params.assetId);
+  const state = fetchState(event.address, event.params.assetId);
+  const ownership = fetchOwnership(event.address, event.params.assetId);
+  const schedule = fetchSchedule(event.address, event.params.assetId);
 
-  let schedule = new Schedule(event.params.assetId.toHex() + '-schedule');
-  schedule.events = eventsCallResult.value;
-  schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
-  schedule.pendingEvent = pendingEventCallResult.value;
-  schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
-  schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
-  schedule.save();
-
-  let contractReference_1 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_1');
-  contractReference_1.object = cegTermsCallResult.value.contractReference_1.object;
-  contractReference_1.object2 = cegTermsCallResult.value.contractReference_1.object2;
-  contractReference_1._type = cegTermsCallResult.value.contractReference_1._type;
-  contractReference_1.role = cegTermsCallResult.value.contractReference_1.role;
-  contractReference_1.save();
-
-  let contractReference_2 = new ContractReference(event.params.assetId.toHex() + '-terms-contractReference_2');
-  contractReference_2.object = cegTermsCallResult.value.contractReference_2.object;
-  contractReference_2.object2 = cegTermsCallResult.value.contractReference_2.object2;
-  contractReference_2._type = cegTermsCallResult.value.contractReference_2._type;
-  contractReference_2.role = cegTermsCallResult.value.contractReference_2.role;
-  contractReference_2.save();
-
-  let gracePeriod = new Period(event.params.assetId.toHex() + '-terms-gracePeriod');
-  gracePeriod.i = cegTermsCallResult.value.gracePeriod.i;
-  gracePeriod.p = cegTermsCallResult.value.gracePeriod.p;
-  gracePeriod.isSet = cegTermsCallResult.value.gracePeriod.isSet;
-  gracePeriod.save();
-
-  let delinquencyPeriod = new Period(event.params.assetId.toHex() + '-terms-delinquencyPeriod');
-  delinquencyPeriod.i = cegTermsCallResult.value.delinquencyPeriod.i;
-  delinquencyPeriod.p = cegTermsCallResult.value.delinquencyPeriod.p;
-  delinquencyPeriod.isSet = cegTermsCallResult.value.delinquencyPeriod.isSet;
-  delinquencyPeriod.save();
-
-  let cycleOfFee = new Cycle(event.params.assetId.toHex() + '-terms-cycleOfFee');
-  cycleOfFee.i = cegTermsCallResult.value.cycleOfFee.i;
-  cycleOfFee.p = cegTermsCallResult.value.cycleOfFee.p;
-  cycleOfFee.s = cegTermsCallResult.value.cycleOfFee.s;
-  cycleOfFee.isSet = cegTermsCallResult.value.cycleOfFee.isSet;
-  cycleOfFee.save();
-
-  let terms = new CEGTerms(event.params.assetId.toHex() + '-terms');
-  terms.contractType = cegTermsCallResult.value.contractType;
-  terms.calendar = cegTermsCallResult.value.calendar;
-  terms.contractRole = cegTermsCallResult.value.contractRole;
-  terms.dayCountConvention = cegTermsCallResult.value.dayCountConvention;
-  terms.businessDayConvention = cegTermsCallResult.value.businessDayConvention;
-  terms.endOfMonthConvention = cegTermsCallResult.value.endOfMonthConvention;
-  terms.feeBasis = cegTermsCallResult.value.feeBasis;
-  terms.creditEventTypeCovered = cegTermsCallResult.value.creditEventTypeCovered;
-  terms.currency = cegTermsCallResult.value.currency;
-  terms.settlementCurrency = cegTermsCallResult.value.settlementCurrency;
-  terms.contractDealDate = cegTermsCallResult.value.contractDealDate;
-  terms.statusDate = cegTermsCallResult.value.statusDate;
-  terms.maturityDate = cegTermsCallResult.value.maturityDate;
-  terms.purchaseDate = cegTermsCallResult.value.purchaseDate;
-  terms.cycleAnchorDateOfFee = cegTermsCallResult.value.cycleAnchorDateOfFee;
-  terms.notionalPrincipal = cegTermsCallResult.value.notionalPrincipal;
-  terms.feeRate = cegTermsCallResult.value.feeRate;
-  terms.feeAccrued = cegTermsCallResult.value.feeAccrued;
-  terms.delinquencyRate = cegTermsCallResult.value.delinquencyRate;
-  terms.priceAtPurchaseDate = cegTermsCallResult.value.priceAtPurchaseDate;
-  terms.coverageOfCreditEnhancement = cegTermsCallResult.value.coverageOfCreditEnhancement;
-  terms.gracePeriod = gracePeriod.id;
-  terms.delinquencyPeriod = delinquencyPeriod.id;
-  terms.cycleOfFee = cycleOfFee.id;
-  terms.contractReference_1 = contractReference_1.id;
-  terms.contractReference_2 = contractReference_2.id;
-  terms.save();
-
-  let state = new State(event.params.assetId.toHex() + '-state');
-  state.contractPerformance = stateCallResult.value.contractPerformance;
-  state.statusDate = stateCallResult.value.statusDate;
-  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
-  state.maturityDate = stateCallResult.value.maturityDate;
-  state.exerciseDate = stateCallResult.value.exerciseDate;
-  state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponDay = stateCallResult.value.lastCouponDay;
-  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
-  state.accruedInterest = stateCallResult.value.accruedInterest;
-  state.feeAccrued = stateCallResult.value.feeAccrued;
-  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
-  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
-  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = stateCallResult.value.exerciseAmount;
-  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
-  state.quantity = stateCallResult.value.quantity;
-  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
-  state.marginFactor = stateCallResult.value.marginFactor;
-  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
-  state.save();
+  if (terms && state && ownership && schedule) {
+    terms.save();
+    state.save();
+    ownership.save();
+    schedule.save();
+  }
 
   // GrantedAccess event may be processed before or after RegisteredAsset event
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
@@ -209,19 +92,71 @@ export function handleProgressedAssetCEG(event: ProgressedAsset): void {
   log.debug("Process event (ProgressedAsset) for asset ({})", [event.params.assetId.toHex()]);
 
   let cegActor = CEGActor.bind(event.address);
-  let cegRegistry = CEGRegistry.bind(cegActor.assetRegistry());
-  let stateCallResult = cegRegistry.try_getState(event.params.assetId);
-  if (stateCallResult.reverted) { return; }
-  let nextScheduleIndexCallResult = cegRegistry.try_getNextScheduleIndex(event.params.assetId);
-  if (nextScheduleIndexCallResult.reverted) { return; }
-  let pendingEventCallResult = cegRegistry.try_getPendingEvent(event.params.assetId);
-  if (pendingEventCallResult.reverted) { return; }
-  let nextScheduledEventCallResult = cegRegistry.try_getNextScheduledEvent(event.params.assetId);
-  if (nextScheduledEventCallResult.reverted) { return; }
-  let nextUnderlyingEventCallResult = cegRegistry.try_getNextUnderlyingEvent(event.params.assetId);
-  if (nextUnderlyingEventCallResult.reverted) { return; }
 
-  let state = State.load(event.params.assetId.toHex() + '-state');
+  const state = fetchState(cegActor.assetRegistry(), event.params.assetId);
+  const schedule = fetchSchedule(cegActor.assetRegistry(), event.params.assetId);
+
+  if (state && schedule) {
+    state.save();
+    schedule.save();
+  }
+}
+
+export function handleUpdatedBeneficiaryCEG(event: UpdatedBeneficiary): void {
+  log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
+
+  const ownership = fetchOwnership(event.address, event.params.assetId);
+  if (ownership) {
+    ownership.save();
+  }
+}
+
+export function handleUpdatedObligorCEG(event: UpdatedObligor): void {
+  log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
+
+  const ownership = fetchOwnership(event.address, event.params.assetId);
+  if (ownership) {
+    ownership.save();
+  }
+}
+
+export function handleUpdatedStateCEG(event: UpdatedState): void {
+  log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
+
+  const state = fetchState(event.address, event.params.assetId);
+  if (state) {
+    state.save();
+  }
+}
+
+export function handleUpdatedTermsCEG(event: UpdatedState): void {
+  log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
+
+  const terms = fetchTerms(event.address, event.params.assetId);
+  if (terms) {
+    terms.save();
+  }
+}
+
+export function handleUpdatedFinalizedStateCEG(event: UpdatedFinalizedState): void {
+  log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
+
+  const state = fetchState(event.address, event.params.assetId);
+  if (state) {
+    state.save();
+  }
+}
+
+function fetchState(assetRegistryAddress: Address, assetId: Bytes): State {
+
+  let cegRegistry = CEGRegistry.bind(assetRegistryAddress);
+  let stateCallResult = cegRegistry.try_getState(assetId);
+  if (stateCallResult.reverted) { throw new Error('Call Result Reverted'); }
+
+  let state = State.load(assetId.toHex() + '-state');
+  if (state == null) {
+    state = new State(assetId.toHex() + '-state');
+  }
   state.contractPerformance = stateCallResult.value.contractPerformance;
   state.statusDate = stateCallResult.value.statusDate;
   state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
@@ -242,12 +177,137 @@ export function handleProgressedAssetCEG(event: ProgressedAsset): void {
   state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
   state.marginFactor = stateCallResult.value.marginFactor;
   state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
-  state.save();
 
-  let schedule = Schedule.load(event.params.assetId.toHex() + '-schedule');
+  return state;
+}
+
+function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership {
+  let cegRegistry = CEGRegistry.bind(assetRegistryAddress);
+  let ownershipCallResult = cegRegistry.try_getOwnership(assetId);
+  if (ownershipCallResult.reverted) { return; }
+  
+  let ownership = AssetOwnership.load(assetId.toHex() + '-ownership');
+  if (ownership == null) {
+    ownership = new AssetOwnership(assetId.toHex() + '-ownership');
+  }
+  ownership.creatorBeneficiary = ownershipCallResult.value.creatorBeneficiary;
+  ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
+  ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
+  ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
+
+  return ownership;
+}
+
+function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule {
+  let cegRegistry = CEGRegistry.bind(assetRegistryAddress);
+
+  let eventsCallResult = cegRegistry.try_getSchedule(assetId);
+  if (eventsCallResult.reverted) { return; }
+  let nextScheduleIndexCallResult = cegRegistry.try_getNextScheduleIndex(assetId);
+  if (nextScheduleIndexCallResult.reverted) { return; }
+  let pendingEventCallResult = cegRegistry.try_getPendingEvent(assetId);
+  if (pendingEventCallResult.reverted) { return; }
+  let nextScheduledEventCallResult = cegRegistry.try_getNextScheduledEvent(assetId);
+  if (nextScheduledEventCallResult.reverted) { return; }
+  let nextUnderlyingEventCallResult = cegRegistry.try_getNextUnderlyingEvent(assetId);
+  if (nextUnderlyingEventCallResult.reverted) { return; }
+
+  let schedule = Schedule.load(assetId.toHex() + '-schedule');
+  if (schedule == null) {
+    schedule = new Schedule(assetId.toHex() + '-schedule');
+  }
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
-  schedule.save();
+
+  return schedule;
+}
+
+function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): CEGTerms {
+  let cegRegistry = CEGRegistry.bind(assetRegistryAddress);
+  let cegTermsCallResult = cegRegistry.try_getTerms(assetId);
+  if (cegTermsCallResult.reverted) { return; }
+
+  let contractReference_1 = ContractReference.load(assetId.toHex() + '-terms-contractReference_1');
+  if (contractReference_1 == null) {
+    contractReference_1 = new ContractReference(assetId.toHex() + '-terms-contractReference_1');
+  }
+  contractReference_1.object = cegTermsCallResult.value.contractReference_1.object;
+  contractReference_1.object2 = cegTermsCallResult.value.contractReference_1.object2;
+  contractReference_1._type = cegTermsCallResult.value.contractReference_1._type;
+  contractReference_1.role = cegTermsCallResult.value.contractReference_1.role;
+  contractReference_1.save();
+
+  let contractReference_2 = ContractReference.load(assetId.toHex() + '-terms-contractReference_2');
+  if (contractReference_2 == null) {
+    contractReference_2 = new ContractReference(assetId.toHex() + '-terms-contractReference_2');
+  }
+  contractReference_2.object = cegTermsCallResult.value.contractReference_2.object;
+  contractReference_2.object2 = cegTermsCallResult.value.contractReference_2.object2;
+  contractReference_2._type = cegTermsCallResult.value.contractReference_2._type;
+  contractReference_2.role = cegTermsCallResult.value.contractReference_2.role;
+  contractReference_2.save();
+
+  let gracePeriod = Period.load(assetId.toHex() + '-terms-gracePeriod');
+  if (gracePeriod == null) {
+    gracePeriod = new Period(assetId.toHex() + '-terms-gracePeriod');
+  }
+  gracePeriod.i = cegTermsCallResult.value.gracePeriod.i;
+  gracePeriod.p = cegTermsCallResult.value.gracePeriod.p;
+  gracePeriod.isSet = cegTermsCallResult.value.gracePeriod.isSet;
+  gracePeriod.save();
+
+  let delinquencyPeriod = Period.load(assetId.toHex() + '-terms-delinquencyPeriod');
+  if (delinquencyPeriod == null) {
+    delinquencyPeriod = new Period(assetId.toHex() + '-terms-delinquencyPeriod');
+  }
+  delinquencyPeriod.i = cegTermsCallResult.value.delinquencyPeriod.i;
+  delinquencyPeriod.p = cegTermsCallResult.value.delinquencyPeriod.p;
+  delinquencyPeriod.isSet = cegTermsCallResult.value.delinquencyPeriod.isSet;
+  delinquencyPeriod.save();
+
+
+  let cycleOfFee = Cycle.load(assetId.toHex() + '-terms-cycleOfFee');
+  if (cycleOfFee == null) {
+    cycleOfFee = new Cycle(assetId.toHex() + '-terms-cycleOfFee');
+  }
+  cycleOfFee.i = cegTermsCallResult.value.cycleOfFee.i;
+  cycleOfFee.p = cegTermsCallResult.value.cycleOfFee.p;
+  cycleOfFee.s = cegTermsCallResult.value.cycleOfFee.s;
+  cycleOfFee.isSet = cegTermsCallResult.value.cycleOfFee.isSet;
+  cycleOfFee.save();
+  
+  let terms = CEGTerms.load(assetId.toHex() + '-terms')
+  if (terms == null) {
+    terms = new CEGTerms(assetId.toHex() + '-terms');
+  }
+  terms.contractType = cegTermsCallResult.value.contractType;
+  terms.calendar = cegTermsCallResult.value.calendar;
+  terms.contractRole = cegTermsCallResult.value.contractRole;
+  terms.dayCountConvention = cegTermsCallResult.value.dayCountConvention;
+  terms.businessDayConvention = cegTermsCallResult.value.businessDayConvention;
+  terms.endOfMonthConvention = cegTermsCallResult.value.endOfMonthConvention;
+  terms.feeBasis = cegTermsCallResult.value.feeBasis;
+  terms.creditEventTypeCovered = cegTermsCallResult.value.creditEventTypeCovered;
+  terms.currency = cegTermsCallResult.value.currency;
+  terms.settlementCurrency = cegTermsCallResult.value.settlementCurrency;
+  terms.contractDealDate = cegTermsCallResult.value.contractDealDate;
+  terms.statusDate = cegTermsCallResult.value.statusDate;
+  terms.maturityDate = cegTermsCallResult.value.maturityDate;
+  terms.purchaseDate = cegTermsCallResult.value.purchaseDate;
+  terms.cycleAnchorDateOfFee = cegTermsCallResult.value.cycleAnchorDateOfFee;
+  terms.notionalPrincipal = cegTermsCallResult.value.notionalPrincipal;
+  terms.feeRate = cegTermsCallResult.value.feeRate;
+  terms.feeAccrued = cegTermsCallResult.value.feeAccrued;
+  terms.delinquencyRate = cegTermsCallResult.value.delinquencyRate;
+  terms.priceAtPurchaseDate = cegTermsCallResult.value.priceAtPurchaseDate;
+  terms.coverageOfCreditEnhancement = cegTermsCallResult.value.coverageOfCreditEnhancement;
+  terms.gracePeriod = gracePeriod.id;
+  terms.delinquencyPeriod = delinquencyPeriod.id;
+  terms.cycleOfFee = cycleOfFee.id;
+  terms.contractReference_1 = contractReference_1.id;
+  terms.contractReference_2 = contractReference_2.id;
+
+  return terms;
 }
