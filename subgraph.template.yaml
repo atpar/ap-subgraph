@@ -36,6 +36,14 @@ dataSources:
           handler: handleRevokedAccessANN
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiaryANN
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorANN
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsANN
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStateANN
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStateANN
       file: ./src/ANN.ts
   - kind: ethereum/contract
     name: ANNActor
@@ -91,6 +99,14 @@ dataSources:
           handler: handleRevokedAccessCEC
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiaryCEC
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorCEC
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsCEC
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStateCEC
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStateCEC
       file: ./src/CEC.ts
   - kind: ethereum/contract
     name: CECActor
@@ -146,6 +162,14 @@ dataSources:
           handler: handleRevokedAccessCEG
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiaryCEG
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorCEG
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsCEG
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStateCEG
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStateCEG
       file: ./src/CEG.ts
   - kind: ethereum/contract
     name: CEGActor
@@ -201,6 +225,14 @@ dataSources:
           handler: handleRevokedAccessCERTF
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiaryCERTF
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorCERTF
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsCERTF
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStateCERTF
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStateCERTF
       file: ./src/CERTF.ts
   - kind: ethereum/contract
     name: CERTFActor
@@ -256,6 +288,14 @@ dataSources:
           handler: handleRevokedAccessPAM
         - event: UpdatedBeneficiary(bytes32,address,address)
           handler: handleUpdatedBeneficiaryPAM
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorPAM
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsPAM
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStatePAM
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStatePAM
       file: ./src/PAM.ts
   - kind: ethereum/contract
     name: PAMActor
