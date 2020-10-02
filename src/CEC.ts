@@ -216,6 +216,7 @@ function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule 
   if (schedule == null) {
     schedule = new Schedule(assetId.toHex() + '-schedule');
   }
+  schedule.events = eventsCallResult.value;
   schedule.nextScheduleIndex = nextScheduleIndexCallResult.value;
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
