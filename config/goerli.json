@@ -1,6 +1,7 @@
 {
   "network": "goerli",
   "description": "ACTUS Protocol (goerli)",
+  "startBlock": 3000000,
   "ANNActor": "0x5eAE9Ff56AD6ced8B060a9072F2B4DbF11136924",
   "ANNEngine": "0xa15Cee3298C48aCe9c73A7e9f11C33ec936fFc80",
   "ANNRegistry": "0x02Dde1ab611ebb23d7aFAc622A28ACCE5587Eff9",

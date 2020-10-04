@@ -1,6 +1,7 @@
 {
   "network": "mainnet",
   "description": "ACTUS Protocol (local)",
+  "startBlock": 0,
   "ANNActor": "0xf8a1BfCC2d1d5FaD14B04BE317bf84C272560a62",
   "ANNEngine": "0xCA386B0fD4f446aA61957f87d0A1630042255b37",
   "ANNRegistry": "0xE82F1D585DBC1D3B2068487206d39CdAe3590e4A",

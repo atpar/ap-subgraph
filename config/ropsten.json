@@ -1,6 +1,7 @@
 {
   "network": "ropsten",
   "description": "ACTUS Protocol (ropsten)",
+  "startBlock": 8000000,
   "ANNActor": "0x19D8dd715eF788880eFa0Fa8521F1CBd99439698",
   "ANNEngine": "0x46fE248b680e49918a04A14055B7157F9114751e",
   "ANNRegistry": "0x9Eced95f4D7E96d494efc54a44D273B75ddd8B05",

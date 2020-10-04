@@ -1,6 +1,7 @@
 {
   "network": "rinkeby",
   "description": "ACTUS Protocol (rinkeby)",
+  "startBlock": 6000000,
   "ANNActor": "0x8B60Ec23435e1E0F77a9AE5D7987B1fFC40B6aFc",
   "ANNEngine": "0x9F6ad591542a842BD679Bf54c9fCa2dA284dFa99",
   "ANNRegistry": "0xc81C814aCBc8837ca587F8F8FdAa0775782fC13A",
