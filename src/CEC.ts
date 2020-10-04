@@ -54,17 +54,17 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
   let actorCallResult = cecRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
 
-  let terms = fetchTerms(event.address, event.params.assetId);
-  let state = fetchState(event.address, event.params.assetId);
-  let ownership = fetchOwnership(event.address, event.params.assetId);
-  let schedule = fetchSchedule(event.address, event.params.assetId);
+  let terms = updateTerms(event.address, event.params.assetId);
+  if (terms == null) { return; }
 
-  if (terms !== null && state !== null && ownership !== null && schedule !== null) {
-    terms.save();
-    state.save();
-    ownership.save();
-    schedule.save();
-  }
+  let state = updateState(event.address, event.params.assetId);
+  if (state == null) { return; }
+
+  let ownership = updateOwnership(event.address, event.params.assetId);
+  if (ownership == null) { return; }
+
+  let schedule = updateSchedule(event.address, event.params.assetId);
+  if (schedule == null) { return; }
 
   // GrantedAccess event may be processed before or after RegisteredAsset event
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
@@ -93,61 +93,41 @@ export function handleProgressedAssetCEC(event: ProgressedAsset): void {
 
   let cecActor = CECActor.bind(event.address);
 
-  let state = fetchState(cecActor.assetRegistry(), event.params.assetId);
-  let schedule = fetchSchedule(cecActor.assetRegistry(), event.params.assetId);
-
-  if (state !== null && schedule !== null) {
-    state.save();
-    schedule.save();
-  }
+  updateState(cecActor.assetRegistry(), event.params.assetId);
+  updateSchedule(cecActor.assetRegistry(), event.params.assetId);
 }
 
 export function handleUpdatedBeneficiaryCEC(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
-  let ownership = fetchOwnership(event.address, event.params.assetId);
-  if (ownership) {
-    ownership.save();
-  }
+  updateOwnership(event.address, event.params.assetId);
 }
 
 export function handleUpdatedObligorCEC(event: UpdatedObligor): void {
   log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
 
-  let ownership = fetchOwnership(event.address, event.params.assetId);
-  if (ownership) {
-    ownership.save();
-  }
+  updateOwnership(event.address, event.params.assetId);
 }
 
 export function handleUpdatedStateCEC(event: UpdatedState): void {
   log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  let state = fetchState(event.address, event.params.assetId);
-  if (state) {
-    state.save();
-  }
+  updateState(event.address, event.params.assetId);
 }
 
 export function handleUpdatedTermsCEC(event: UpdatedState): void {
   log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
 
-  let terms = fetchTerms(event.address, event.params.assetId);
-  if (terms) {
-    terms.save();
-  }
+  updateTerms(event.address, event.params.assetId);
 }
 
 export function handleUpdatedFinalizedStateCEC(event: UpdatedFinalizedState): void {
   log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  let state = fetchState(event.address, event.params.assetId);
-  if (state) {
-    state.save();
-  }
+  updateState(event.address, event.params.assetId);
 }
 
-function fetchState(assetRegistryAddress: Address, assetId: Bytes): State | null {
+function updateState(assetRegistryAddress: Address, assetId: Bytes): State | null {
 
   let cecRegistry = CECRegistry.bind(assetRegistryAddress);
   let stateCallResult = cecRegistry.try_getState(assetId);
@@ -177,11 +157,12 @@ function fetchState(assetRegistryAddress: Address, assetId: Bytes): State | null
   state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
   state.marginFactor = stateCallResult.value.marginFactor;
   state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
+  state.save();
 
   return state;
 }
 
-function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership | null {
+function updateOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership | null {
   let cecRegistry = CECRegistry.bind(assetRegistryAddress);
   let ownershipCallResult = cecRegistry.try_getOwnership(assetId);
   if (ownershipCallResult.reverted) { return null; }
@@ -194,11 +175,12 @@ function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwn
   ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
   ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
   ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
+  ownership.save();
 
   return ownership;
 }
 
-function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule | null {
+function updateSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule | null {
   let cecRegistry = CECRegistry.bind(assetRegistryAddress);
 
   let eventsCallResult = cecRegistry.try_getSchedule(assetId);
@@ -221,11 +203,12 @@ function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule 
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
+  schedule.save();
 
   return schedule;
 }
 
-function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): CECTerms | null {
+function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CECTerms | null {
   let cecRegistry = CECRegistry.bind(assetRegistryAddress);
   let cecTermsCallResult = cecRegistry.try_getTerms(assetId);
   if (cecTermsCallResult.reverted) { return null; }
@@ -269,6 +252,7 @@ function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): CECTerms | n
   terms.coverageOfCreditEnhancement = cecTermsCallResult.value.coverageOfCreditEnhancement;
   terms.contractReference_1 = contractReference_1.id;
   terms.contractReference_2 = contractReference_2.id;
+  terms.save();
 
   return terms;
 }

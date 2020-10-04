@@ -54,17 +54,17 @@ export function handleRegisteredAssetANN(event: RegisteredAsset): void {
   let actorCallResult = annRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
 
-  let terms = fetchTerms(event.address, event.params.assetId);
-  let state = fetchState(event.address, event.params.assetId);
-  let ownership = fetchOwnership(event.address, event.params.assetId);
-  let schedule = fetchSchedule(event.address, event.params.assetId);
+  let terms = updateTerms(event.address, event.params.assetId);
+  if (terms == null) { return; }
 
-  if (terms !== null && state !== null && ownership !== null && schedule !== null) {
-    terms.save();
-    state.save();
-    ownership.save();
-    schedule.save();
-  }
+  let state = updateState(event.address, event.params.assetId);
+  if (state == null) { return; }
+
+  let ownership = updateOwnership(event.address, event.params.assetId);
+  if (ownership == null) { return; }
+
+  let schedule = updateSchedule(event.address, event.params.assetId);
+  if (schedule == null) { return; }
 
   // GrantedAccess event may be processed before or after RegisteredAsset event
   let admins = Admins.load(event.params.assetId.toHex() + '-admins');
@@ -93,61 +93,41 @@ export function handleProgressedAssetANN(event: ProgressedAsset): void {
 
   let annActor = ANNActor.bind(event.address);
 
-  let state = fetchState(annActor.assetRegistry(), event.params.assetId);
-  let schedule = fetchSchedule(annActor.assetRegistry(), event.params.assetId);
-
-  if (state !== null && schedule !== null) {
-    state.save();
-    schedule.save();
-  }
+  updateState(annActor.assetRegistry(), event.params.assetId);
+  updateSchedule(annActor.assetRegistry(), event.params.assetId);
 }
 
 export function handleUpdatedBeneficiaryANN(event: UpdatedBeneficiary): void {
   log.debug("Process event (UpdatedBeneficiary) for asset ({})", [event.params.assetId.toHex()]);
 
-  let ownership = fetchOwnership(event.address, event.params.assetId);
-  if (ownership) {
-    ownership.save();
-  }
+  updateOwnership(event.address, event.params.assetId);
 }
 
 export function handleUpdatedObligorANN(event: UpdatedObligor): void {
   log.debug("Process event (UpdatedObligor) for asset ({})", [event.params.assetId.toHex()]);
 
-  let ownership = fetchOwnership(event.address, event.params.assetId);
-  if (ownership) {
-    ownership.save();
-  }
+  updateOwnership(event.address, event.params.assetId);
 }
 
 export function handleUpdatedStateANN(event: UpdatedState): void {
   log.debug("Process event (UpdatedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  let state = fetchState(event.address, event.params.assetId);
-  if (state) {
-    state.save();
-  }
+  updateState(event.address, event.params.assetId);
 }
 
 export function handleUpdatedTermsANN(event: UpdatedState): void {
   log.debug("Process event (UpdatedTerms) for asset ({})", [event.params.assetId.toHex()]);
 
-  let terms = fetchTerms(event.address, event.params.assetId);
-  if (terms) {
-    terms.save();
-  }
+  updateTerms(event.address, event.params.assetId);
 }
 
 export function handleUpdatedFinalizedStateANN(event: UpdatedFinalizedState): void {
   log.debug("Process event (UpdatedFinalizedState) for asset ({})", [event.params.assetId.toHex()]);
 
-  let state = fetchState(event.address, event.params.assetId);
-  if (state) {
-    state.save();
-  }
+  updateState(event.address, event.params.assetId);
 }
 
-function fetchState(assetRegistryAddress: Address, assetId: Bytes): State | null {
+function updateState(assetRegistryAddress: Address, assetId: Bytes): State | null {
 
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
   let stateCallResult = annRegistry.try_getState(assetId);
@@ -177,11 +157,12 @@ function fetchState(assetRegistryAddress: Address, assetId: Bytes): State | null
   state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
   state.marginFactor = stateCallResult.value.marginFactor;
   state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
+  state.save();
 
   return state;
 }
 
-function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership | null {
+function updateOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwnership | null {
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
   let ownershipCallResult = annRegistry.try_getOwnership(assetId);
   if (ownershipCallResult.reverted) { return null; }
@@ -194,11 +175,12 @@ function fetchOwnership(assetRegistryAddress: Address, assetId: Bytes): AssetOwn
   ownership.counterpartyBeneficiary = ownershipCallResult.value.counterpartyBeneficiary;
   ownership.creatorObligor = ownershipCallResult.value.creatorObligor;
   ownership.counterpartyObligor = ownershipCallResult.value.counterpartyObligor;
+  ownership.save();
 
   return ownership;
 }
 
-function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule | null {
+function updateSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule | null {
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
 
   let eventsCallResult = annRegistry.try_getSchedule(assetId);
@@ -221,11 +203,12 @@ function fetchSchedule(assetRegistryAddress: Address, assetId: Bytes): Schedule 
   schedule.pendingEvent = pendingEventCallResult.value;
   schedule.nextScheduledEvent = nextScheduledEventCallResult.value;
   schedule.nextUnderlyingEvent = nextUnderlyingEventCallResult.value;
+  schedule.save();
 
   return schedule;
 }
 
-function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms | null {
+function updateTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms | null {
   let annRegistry = ANNRegistry.bind(assetRegistryAddress);
   let annTermsCallResult = annRegistry.try_getTerms(assetId);
   if (annTermsCallResult.reverted) { return null; }
@@ -349,6 +332,7 @@ function fetchTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms | n
   terms.cycleOfScalingIndex = cycleOfScalingIndex.id;
   terms.cycleOfFee = cycleOfFee.id;
   terms.cycleOfPrincipalRedemption = cycleOfPrincipalRedemption.id;
+  terms.save();
 
   return terms;
 }
