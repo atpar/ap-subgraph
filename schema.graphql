@@ -84,7 +84,8 @@ type State @entity {
   maturityDate: BigInt!
   exerciseDate: BigInt!
   terminationDate: BigInt!
-  lastCouponDay: BigInt!
+  lastCouponFixingDate: BigInt!
+  lastDividendFixingDate: BigInt!
 
   notionalPrincipal: BigInt!
   # notionalPrincipal2: BigInt! not implemented
@@ -105,6 +106,8 @@ type State @entity {
   # exerciseQuantityOrdered: BigInt! not implemented
   marginFactor: BigInt!
   adjustmentFactor: BigInt!
+  dividendPaymentAmount: BigInt!
+  splitRatio: BigInt!
 
   asset: Asset! @derivedFrom(field: "state")
 }
@@ -307,7 +310,7 @@ type CERTFTerms @entity {
   delinquencyPeriod: Period!
   settlementPeriod: Period!
   fixingPeriod: Period!
-  exercisePeriod: Period!
+  redemptionExercisePeriod: Period!
 
   cycleOfRedemption: Cycle!
   cycleOfTermination: Cycle!
@@ -393,6 +396,47 @@ type PAMTerms @entity {
   asset: PAMAsset! @derivedFrom(field: "terms")
 }
 
+type STKTerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  redeemableByIssuer: Int!
+  # seniority: Int! not implemented
+
+  currency: Bytes!
+  settlementCurrency: Bytes!
+
+  # marketObjectCode: Bytes! not implemented
+
+  contractDealDate: BigInt!
+  statusDate: BigInt!
+  issueDate: BigInt!
+  purchaseDate: BigInt!
+  cycleAnchorDateOfDividend: BigInt!
+
+  nominalPrice: BigInt!
+  notionalPrincipal: BigInt!
+  issuePrice: BigInt!
+  quantity: BigInt!
+  priceAtPurchaseDate: BigInt!
+  redemptionPrice: BigInt!
+  # priceAtTerminationDate: BigInt! not implemented
+
+  dividendRecordPeriod: Period!
+  dividendPaymentPeriod: Period!
+  splitSettlementPeriod: Period!
+  redemptionRecordPeriod: Period!
+  redemptionPaymentPeriod: Period!
+
+  cycleOfDividend: Cycle!
+
+  asset: STKAsset! @derivedFrom(field: "terms")
+}
+
 type ANNAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
@@ -453,6 +497,20 @@ type PAMAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: PAMTerms!
+  state: State!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  registry: Bytes!
+  admins: Admins!
+  createdOn: BigInt!
+}
+
+type STKAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: STKTerms!
   state: State!
   schedule: Schedule!
   ownership: AssetOwnership!

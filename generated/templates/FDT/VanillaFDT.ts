@@ -216,6 +216,27 @@ export class VanillaFDT extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
+  burn(account: Address, amount: BigInt): boolean {
+    let result = super.call("burn", [
+      EthereumValue.fromAddress(account),
+      EthereumValue.fromUnsignedBigInt(amount)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_burn(account: Address, amount: BigInt): CallResult<boolean> {
+    let result = super.tryCall("burn", [
+      EthereumValue.fromAddress(account),
+      EthereumValue.fromUnsignedBigInt(amount)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
   decimals(): i32 {
     let result = super.call("decimals", []);
 
@@ -309,6 +330,27 @@ export class VanillaFDT extends SmartContract {
     return CallResult.fromValue(value[0].toBoolean());
   }
 
+  mint(account: Address, amount: BigInt): boolean {
+    let result = super.call("mint", [
+      EthereumValue.fromAddress(account),
+      EthereumValue.fromUnsignedBigInt(amount)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_mint(account: Address, amount: BigInt): CallResult<boolean> {
+    let result = super.tryCall("mint", [
+      EthereumValue.fromAddress(account),
+      EthereumValue.fromUnsignedBigInt(amount)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
   name(): string {
     let result = super.call("name", []);
 
@@ -369,44 +411,6 @@ export class VanillaFDT extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  withdrawableFundsOf(_owner: Address): BigInt {
-    let result = super.call("withdrawableFundsOf", [
-      EthereumValue.fromAddress(_owner)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_withdrawableFundsOf(_owner: Address): CallResult<BigInt> {
-    let result = super.tryCall("withdrawableFundsOf", [
-      EthereumValue.fromAddress(_owner)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
-  withdrawnFundsOf(_owner: Address): BigInt {
-    let result = super.call("withdrawnFundsOf", [
-      EthereumValue.fromAddress(_owner)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_withdrawnFundsOf(_owner: Address): CallResult<BigInt> {
-    let result = super.tryCall("withdrawnFundsOf", [
-      EthereumValue.fromAddress(_owner)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
-  }
-
   transfer(to: Address, value: BigInt): boolean {
     let result = super.call("transfer", [
       EthereumValue.fromAddress(to),
@@ -455,46 +459,42 @@ export class VanillaFDT extends SmartContract {
     return CallResult.fromValue(value[0].toBoolean());
   }
 
-  mint(account: Address, amount: BigInt): boolean {
-    let result = super.call("mint", [
-      EthereumValue.fromAddress(account),
-      EthereumValue.fromUnsignedBigInt(amount)
+  withdrawableFundsOf(_owner: Address): BigInt {
+    let result = super.call("withdrawableFundsOf", [
+      EthereumValue.fromAddress(_owner)
     ]);
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
-  try_mint(account: Address, amount: BigInt): CallResult<boolean> {
-    let result = super.tryCall("mint", [
-      EthereumValue.fromAddress(account),
-      EthereumValue.fromUnsignedBigInt(amount)
+  try_withdrawableFundsOf(_owner: Address): CallResult<BigInt> {
+    let result = super.tryCall("withdrawableFundsOf", [
+      EthereumValue.fromAddress(_owner)
     ]);
     if (result.reverted) {
       return new CallResult();
     }
     let value = result.value;
-    return CallResult.fromValue(value[0].toBoolean());
+    return CallResult.fromValue(value[0].toBigInt());
   }
 
-  burn(account: Address, amount: BigInt): boolean {
-    let result = super.call("burn", [
-      EthereumValue.fromAddress(account),
-      EthereumValue.fromUnsignedBigInt(amount)
+  withdrawnFundsOf(_owner: Address): BigInt {
+    let result = super.call("withdrawnFundsOf", [
+      EthereumValue.fromAddress(_owner)
     ]);
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
-  try_burn(account: Address, amount: BigInt): CallResult<boolean> {
-    let result = super.tryCall("burn", [
-      EthereumValue.fromAddress(account),
-      EthereumValue.fromUnsignedBigInt(amount)
+  try_withdrawnFundsOf(_owner: Address): CallResult<BigInt> {
+    let result = super.tryCall("withdrawnFundsOf", [
+      EthereumValue.fromAddress(_owner)
     ]);
     if (result.reverted) {
       return new CallResult();
     }
     let value = result.value;
-    return CallResult.fromValue(value[0].toBoolean());
+    return CallResult.fromValue(value[0].toBigInt());
   }
 }
 
@@ -582,6 +582,44 @@ export class ApproveCall__Outputs {
   }
 }
 
+export class BurnCall extends EthereumCall {
+  get inputs(): BurnCall__Inputs {
+    return new BurnCall__Inputs(this);
+  }
+
+  get outputs(): BurnCall__Outputs {
+    return new BurnCall__Outputs(this);
+  }
+}
+
+export class BurnCall__Inputs {
+  _call: BurnCall;
+
+  constructor(call: BurnCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class BurnCall__Outputs {
+  _call: BurnCall;
+
+  constructor(call: BurnCall) {
+    this._call = call;
+  }
+
+  get value0(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
 export class DecreaseAllowanceCall extends EthereumCall {
   get inputs(): DecreaseAllowanceCall__Inputs {
     return new DecreaseAllowanceCall__Inputs(this);
@@ -658,111 +696,87 @@ export class IncreaseAllowanceCall__Outputs {
   }
 }
 
-export class RenounceOwnershipCall extends EthereumCall {
-  get inputs(): RenounceOwnershipCall__Inputs {
-    return new RenounceOwnershipCall__Inputs(this);
+export class InitializeCall extends EthereumCall {
+  get inputs(): InitializeCall__Inputs {
+    return new InitializeCall__Inputs(this);
   }
 
-  get outputs(): RenounceOwnershipCall__Outputs {
-    return new RenounceOwnershipCall__Outputs(this);
+  get outputs(): InitializeCall__Outputs {
+    return new InitializeCall__Outputs(this);
   }
 }
 
-export class RenounceOwnershipCall__Inputs {
-  _call: RenounceOwnershipCall;
+export class InitializeCall__Inputs {
+  _call: InitializeCall;
 
-  constructor(call: RenounceOwnershipCall) {
+  constructor(call: InitializeCall) {
+    this._call = call;
+  }
+
+  get name(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get symbol(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get _fundsToken(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get owner(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
+
+  get initialAmount(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+}
+
+export class InitializeCall__Outputs {
+  _call: InitializeCall;
+
+  constructor(call: InitializeCall) {
     this._call = call;
   }
 }
 
-export class RenounceOwnershipCall__Outputs {
-  _call: RenounceOwnershipCall;
+export class MintCall extends EthereumCall {
+  get inputs(): MintCall__Inputs {
+    return new MintCall__Inputs(this);
+  }
 
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
+  get outputs(): MintCall__Outputs {
+    return new MintCall__Outputs(this);
   }
 }
 
-export class TransferOwnershipCall extends EthereumCall {
-  get inputs(): TransferOwnershipCall__Inputs {
-    return new TransferOwnershipCall__Inputs(this);
-  }
+export class MintCall__Inputs {
+  _call: MintCall;
 
-  get outputs(): TransferOwnershipCall__Outputs {
-    return new TransferOwnershipCall__Outputs(this);
-  }
-}
-
-export class TransferOwnershipCall__Inputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
+  constructor(call: MintCall) {
     this._call = call;
   }
 
-  get newOwner(): Address {
+  get account(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
+
+  get amount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
 }
 
-export class TransferOwnershipCall__Outputs {
-  _call: TransferOwnershipCall;
+export class MintCall__Outputs {
+  _call: MintCall;
 
-  constructor(call: TransferOwnershipCall) {
+  constructor(call: MintCall) {
     this._call = call;
   }
-}
 
-export class WithdrawFundsCall extends EthereumCall {
-  get inputs(): WithdrawFundsCall__Inputs {
-    return new WithdrawFundsCall__Inputs(this);
-  }
-
-  get outputs(): WithdrawFundsCall__Outputs {
-    return new WithdrawFundsCall__Outputs(this);
-  }
-}
-
-export class WithdrawFundsCall__Inputs {
-  _call: WithdrawFundsCall;
-
-  constructor(call: WithdrawFundsCall) {
-    this._call = call;
-  }
-}
-
-export class WithdrawFundsCall__Outputs {
-  _call: WithdrawFundsCall;
-
-  constructor(call: WithdrawFundsCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateFundsReceivedCall extends EthereumCall {
-  get inputs(): UpdateFundsReceivedCall__Inputs {
-    return new UpdateFundsReceivedCall__Inputs(this);
-  }
-
-  get outputs(): UpdateFundsReceivedCall__Outputs {
-    return new UpdateFundsReceivedCall__Outputs(this);
-  }
-}
-
-export class UpdateFundsReceivedCall__Inputs {
-  _call: UpdateFundsReceivedCall;
-
-  constructor(call: UpdateFundsReceivedCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateFundsReceivedCall__Outputs {
-  _call: UpdateFundsReceivedCall;
-
-  constructor(call: UpdateFundsReceivedCall) {
-    this._call = call;
+  get value0(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
   }
 }
 
@@ -792,6 +806,32 @@ export class PushFundsCall__Outputs {
   _call: PushFundsCall;
 
   constructor(call: PushFundsCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall extends EthereumCall {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
     this._call = call;
   }
 }
@@ -876,78 +916,84 @@ export class TransferFromCall__Outputs {
   }
 }
 
-export class MintCall extends EthereumCall {
-  get inputs(): MintCall__Inputs {
-    return new MintCall__Inputs(this);
+export class TransferOwnershipCall extends EthereumCall {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
   }
 
-  get outputs(): MintCall__Outputs {
-    return new MintCall__Outputs(this);
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
   }
 }
 
-export class MintCall__Inputs {
-  _call: MintCall;
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
 
-  constructor(call: MintCall) {
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
 
-  get account(): Address {
+  get newOwner(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
-
-  get amount(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
 }
 
-export class MintCall__Outputs {
-  _call: MintCall;
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
 
-  constructor(call: MintCall) {
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
+}
 
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
+export class UpdateFundsReceivedCall extends EthereumCall {
+  get inputs(): UpdateFundsReceivedCall__Inputs {
+    return new UpdateFundsReceivedCall__Inputs(this);
+  }
+
+  get outputs(): UpdateFundsReceivedCall__Outputs {
+    return new UpdateFundsReceivedCall__Outputs(this);
   }
 }
 
-export class BurnCall extends EthereumCall {
-  get inputs(): BurnCall__Inputs {
-    return new BurnCall__Inputs(this);
-  }
+export class UpdateFundsReceivedCall__Inputs {
+  _call: UpdateFundsReceivedCall;
 
-  get outputs(): BurnCall__Outputs {
-    return new BurnCall__Outputs(this);
-  }
-}
-
-export class BurnCall__Inputs {
-  _call: BurnCall;
-
-  constructor(call: BurnCall) {
+  constructor(call: UpdateFundsReceivedCall) {
     this._call = call;
   }
+}
 
-  get account(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
+export class UpdateFundsReceivedCall__Outputs {
+  _call: UpdateFundsReceivedCall;
 
-  get amount(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  constructor(call: UpdateFundsReceivedCall) {
+    this._call = call;
   }
 }
 
-export class BurnCall__Outputs {
-  _call: BurnCall;
-
-  constructor(call: BurnCall) {
-    this._call = call;
+export class WithdrawFundsCall extends EthereumCall {
+  get inputs(): WithdrawFundsCall__Inputs {
+    return new WithdrawFundsCall__Inputs(this);
   }
 
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
+  get outputs(): WithdrawFundsCall__Outputs {
+    return new WithdrawFundsCall__Outputs(this);
+  }
+}
+
+export class WithdrawFundsCall__Inputs {
+  _call: WithdrawFundsCall;
+
+  constructor(call: WithdrawFundsCall) {
+    this._call = call;
+  }
+}
+
+export class WithdrawFundsCall__Outputs {
+  _call: WithdrawFundsCall;
+
+  constructor(call: WithdrawFundsCall) {
+    this._call = call;
   }
 }

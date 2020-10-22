@@ -37,6 +37,32 @@ export class DeployedDistributor__Params {
   }
 }
 
+export class NewEip1167Proxy extends EthereumEvent {
+  get params(): NewEip1167Proxy__Params {
+    return new NewEip1167Proxy__Params(this);
+  }
+}
+
+export class NewEip1167Proxy__Params {
+  _event: NewEip1167Proxy;
+
+  constructor(event: NewEip1167Proxy) {
+    this._event = event;
+  }
+
+  get proxy(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get logic(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get salt(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class FDTFactory extends SmartContract {
   static bind(address: Address): FDTFactory {
     return new FDTFactory("FDTFactory", address);
@@ -78,6 +104,10 @@ export class CreateERC20DistributorCall__Inputs {
 
   get owner(): Address {
     return this._call.inputValues[4].value.toAddress();
+  }
+
+  get salt(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
   }
 }
 
@@ -124,6 +154,10 @@ export class CreateRestrictedERC20DistributorCall__Inputs {
 
   get owner(): Address {
     return this._call.inputValues[4].value.toAddress();
+  }
+
+  get salt(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
   }
 }
 

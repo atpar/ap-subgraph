@@ -143,7 +143,8 @@ function updateState(assetRegistryAddress: Address, assetId: Bytes): State | nul
   state.maturityDate = stateCallResult.value.maturityDate;
   state.exerciseDate = stateCallResult.value.exerciseDate;
   state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.lastCouponFixingDate = stateCallResult.value.lastCouponFixingDate;
+  state.lastDividendFixingDate = stateCallResult.value.lastDividendFixingDate;
   state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
   state.accruedInterest = stateCallResult.value.accruedInterest;
   state.feeAccrued = stateCallResult.value.feeAccrued;
@@ -157,6 +158,8 @@ function updateState(assetRegistryAddress: Address, assetId: Bytes): State | nul
   state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
   state.marginFactor = stateCallResult.value.marginFactor;
   state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
+  state.dividendPaymentAmount = stateCallResult.value.dividendPaymentAmount;
+  state.splitRatio = stateCallResult.value.splitRatio;
   state.save();
 
   return state;

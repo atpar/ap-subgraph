@@ -2,7 +2,7 @@
   "name": "ap-subgraph",
   "version": "0.0.0",
   "scripts": {
-    "build-contract": "truffle compile",
+    "build-contract": "rm -rf ./contracts && mkdir ./contracts/ && cp -R ./node_modules/@atpar/protocol/contracts ./ && node --max-old-space-size=4096 ./node_modules/.bin/truffle compile",
     "build": "graph build",
     "create-local": "graph create atpar/actus-protocol-local --node http://127.0.0.1:8020",
     "codegen": "graph codegen",
@@ -15,13 +15,12 @@
     "deploy:ropsten": "NETWORK=ropsten ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/ap-contracts": "0.4.0",
+    "@atpar/protocol": "0.0.1-alpha.3",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "mustache": "^4.0.0",
-    "openzeppelin-solidity": "3.0.2",
     "truffle": "^5.1.20",
     "@truffle/contract": "^4.1.15",
     "truffle-hdwallet-provider": "^1.0.9"

@@ -11,6 +11,8 @@ yarn-error.log
 
 # truffle
 build/
+contracts/
 
-# graph-node
+# graph
+generated/
 graph-node/

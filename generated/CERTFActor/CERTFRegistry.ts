@@ -41,6 +41,28 @@ export class GrantedAccess__Params {
   }
 }
 
+export class OwnershipTransferred extends EthereumEvent {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
+  }
+}
+
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
+
+  constructor(event: OwnershipTransferred) {
+    this._event = event;
+  }
+
+  get previousOwner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class RegisteredAsset extends EthereumEvent {
   get params(): RegisteredAsset__Params {
     return new RegisteredAsset__Params(this);
@@ -296,60 +318,72 @@ export class CERTFRegistry__getFinalizedStateResultValue0Struct extends Ethereum
     return this[5].toBigInt();
   }
 
-  get lastCouponDay(): BigInt {
+  get lastCouponFixingDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastDividendFixingDate(): BigInt {
     return this[7].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[8].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[9].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[10].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[11].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[13].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[14].toBigInt();
   }
 
-  get exerciseQuantity(): BigInt {
+  get exerciseAmount(): BigInt {
     return this[15].toBigInt();
   }
 
-  get quantity(): BigInt {
+  get exerciseQuantity(): BigInt {
     return this[16].toBigInt();
   }
 
-  get couponAmountFixed(): BigInt {
+  get quantity(): BigInt {
     return this[17].toBigInt();
   }
 
-  get marginFactor(): BigInt {
+  get couponAmountFixed(): BigInt {
     return this[18].toBigInt();
   }
 
-  get adjustmentFactor(): BigInt {
+  get marginFactor(): BigInt {
     return this[19].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get dividendPaymentAmount(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get splitRatio(): BigInt {
+    return this[22].toBigInt();
   }
 }
 
@@ -396,60 +430,72 @@ export class CERTFRegistry__getStateResultValue0Struct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get lastCouponDay(): BigInt {
+  get lastCouponFixingDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastDividendFixingDate(): BigInt {
     return this[7].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[8].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[9].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[10].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[11].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[13].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[14].toBigInt();
   }
 
-  get exerciseQuantity(): BigInt {
+  get exerciseAmount(): BigInt {
     return this[15].toBigInt();
   }
 
-  get quantity(): BigInt {
+  get exerciseQuantity(): BigInt {
     return this[16].toBigInt();
   }
 
-  get couponAmountFixed(): BigInt {
+  get quantity(): BigInt {
     return this[17].toBigInt();
   }
 
-  get marginFactor(): BigInt {
+  get couponAmountFixed(): BigInt {
     return this[18].toBigInt();
   }
 
-  get adjustmentFactor(): BigInt {
+  get marginFactor(): BigInt {
     return this[19].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get dividendPaymentAmount(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get splitRatio(): BigInt {
+    return this[22].toBigInt();
   }
 }
 
@@ -575,8 +621,8 @@ export class CERTFRegistry__getTermsResultValue0Struct extends EthereumTuple {
     return this[25].toTuple() as CERTFRegistry__getTermsResultValue0FixingPeriodStruct;
   }
 
-  get exercisePeriod(): CERTFRegistry__getTermsResultValue0ExercisePeriodStruct {
-    return this[26].toTuple() as CERTFRegistry__getTermsResultValue0ExercisePeriodStruct;
+  get redemptionExercisePeriod(): CERTFRegistry__getTermsResultValue0RedemptionExercisePeriodStruct {
+    return this[26].toTuple() as CERTFRegistry__getTermsResultValue0RedemptionExercisePeriodStruct;
   }
 
   get cycleOfRedemption(): CERTFRegistry__getTermsResultValue0CycleOfRedemptionStruct {
@@ -656,7 +702,7 @@ export class CERTFRegistry__getTermsResultValue0FixingPeriodStruct extends Ether
   }
 }
 
-export class CERTFRegistry__getTermsResultValue0ExercisePeriodStruct extends EthereumTuple {
+export class CERTFRegistry__getTermsResultValue0RedemptionExercisePeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
@@ -813,6 +859,25 @@ export class CERTFRegistry__getContractReferenceValueForTermsAttributeResultValu
 export class CERTFRegistry extends SmartContract {
   static bind(address: Address): CERTFRegistry {
     return new CERTFRegistry("CERTFRegistry", address);
+  }
+
+  approvedActors(param0: Address): boolean {
+    let result = super.call("approvedActors", [
+      EthereumValue.fromAddress(param0)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_approvedActors(param0: Address): CallResult<boolean> {
+    let result = super.tryCall("approvedActors", [
+      EthereumValue.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
   }
 
   decodeEvent(_event: Bytes): CERTFRegistry__decodeEventResult {
@@ -1300,6 +1365,21 @@ export class CERTFRegistry extends SmartContract {
     return CallResult.fromValue(value[0].toBoolean());
   }
 
+  owner(): Address {
+    let result = super.call("owner", []);
+
+    return result[0].toAddress();
+  }
+
+  try_owner(): CallResult<Address> {
+    let result = super.tryCall("owner", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
   popNextScheduledEvent(assetId: Bytes): Bytes {
     let result = super.call("popNextScheduledEvent", [
       EthereumValue.fromFixedBytes(assetId)
@@ -1601,6 +1681,36 @@ export class ConstructorCall__Outputs {
   }
 }
 
+export class ApproveActorCall extends EthereumCall {
+  get inputs(): ApproveActorCall__Inputs {
+    return new ApproveActorCall__Inputs(this);
+  }
+
+  get outputs(): ApproveActorCall__Outputs {
+    return new ApproveActorCall__Outputs(this);
+  }
+}
+
+export class ApproveActorCall__Inputs {
+  _call: ApproveActorCall;
+
+  constructor(call: ApproveActorCall) {
+    this._call = call;
+  }
+
+  get actor(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class ApproveActorCall__Outputs {
+  _call: ApproveActorCall;
+
+  constructor(call: ApproveActorCall) {
+    this._call = call;
+  }
+}
+
 export class GrantAccessCall extends EthereumCall {
   get inputs(): GrantAccessCall__Inputs {
     return new GrantAccessCall__Inputs(this);
@@ -1855,6 +1965,32 @@ export class PushPendingEventCall__Outputs {
   _call: PushPendingEventCall;
 
   constructor(call: PushPendingEventCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall extends EthereumCall {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
     this._call = call;
   }
 }
@@ -2160,60 +2296,72 @@ export class SetFinalizedStateCallStateStruct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get lastCouponDay(): BigInt {
+  get lastCouponFixingDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastDividendFixingDate(): BigInt {
     return this[7].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[8].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[9].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[10].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[11].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[13].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[14].toBigInt();
   }
 
-  get exerciseQuantity(): BigInt {
+  get exerciseAmount(): BigInt {
     return this[15].toBigInt();
   }
 
-  get quantity(): BigInt {
+  get exerciseQuantity(): BigInt {
     return this[16].toBigInt();
   }
 
-  get couponAmountFixed(): BigInt {
+  get quantity(): BigInt {
     return this[17].toBigInt();
   }
 
-  get marginFactor(): BigInt {
+  get couponAmountFixed(): BigInt {
     return this[18].toBigInt();
   }
 
-  get adjustmentFactor(): BigInt {
+  get marginFactor(): BigInt {
     return this[19].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get dividendPaymentAmount(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get splitRatio(): BigInt {
+    return this[22].toBigInt();
   }
 }
 
@@ -2276,60 +2424,102 @@ export class SetStateCallStateStruct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get lastCouponDay(): BigInt {
+  get lastCouponFixingDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastDividendFixingDate(): BigInt {
     return this[7].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[8].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[9].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[10].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[11].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[13].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[14].toBigInt();
   }
 
-  get exerciseQuantity(): BigInt {
+  get exerciseAmount(): BigInt {
     return this[15].toBigInt();
   }
 
-  get quantity(): BigInt {
+  get exerciseQuantity(): BigInt {
     return this[16].toBigInt();
   }
 
-  get couponAmountFixed(): BigInt {
+  get quantity(): BigInt {
     return this[17].toBigInt();
   }
 
-  get marginFactor(): BigInt {
+  get couponAmountFixed(): BigInt {
     return this[18].toBigInt();
   }
 
-  get adjustmentFactor(): BigInt {
+  get marginFactor(): BigInt {
     return this[19].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get dividendPaymentAmount(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get splitRatio(): BigInt {
+    return this[22].toBigInt();
+  }
+}
+
+export class TransferOwnershipCall extends EthereumCall {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
   }
 }
 
@@ -2496,8 +2686,8 @@ export class RegisterAssetCallTermsStruct extends EthereumTuple {
     return this[25].toTuple() as RegisterAssetCallTermsFixingPeriodStruct;
   }
 
-  get exercisePeriod(): RegisterAssetCallTermsExercisePeriodStruct {
-    return this[26].toTuple() as RegisterAssetCallTermsExercisePeriodStruct;
+  get redemptionExercisePeriod(): RegisterAssetCallTermsRedemptionExercisePeriodStruct {
+    return this[26].toTuple() as RegisterAssetCallTermsRedemptionExercisePeriodStruct;
   }
 
   get cycleOfRedemption(): RegisterAssetCallTermsCycleOfRedemptionStruct {
@@ -2577,7 +2767,7 @@ export class RegisterAssetCallTermsFixingPeriodStruct extends EthereumTuple {
   }
 }
 
-export class RegisterAssetCallTermsExercisePeriodStruct extends EthereumTuple {
+export class RegisterAssetCallTermsRedemptionExercisePeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
@@ -2706,60 +2896,72 @@ export class RegisterAssetCallStateStruct extends EthereumTuple {
     return this[5].toBigInt();
   }
 
-  get lastCouponDay(): BigInt {
+  get lastCouponFixingDate(): BigInt {
     return this[6].toBigInt();
   }
 
-  get notionalPrincipal(): BigInt {
+  get lastDividendFixingDate(): BigInt {
     return this[7].toBigInt();
   }
 
-  get accruedInterest(): BigInt {
+  get notionalPrincipal(): BigInt {
     return this[8].toBigInt();
   }
 
-  get feeAccrued(): BigInt {
+  get accruedInterest(): BigInt {
     return this[9].toBigInt();
   }
 
-  get nominalInterestRate(): BigInt {
+  get feeAccrued(): BigInt {
     return this[10].toBigInt();
   }
 
-  get interestScalingMultiplier(): BigInt {
+  get nominalInterestRate(): BigInt {
     return this[11].toBigInt();
   }
 
-  get notionalScalingMultiplier(): BigInt {
+  get interestScalingMultiplier(): BigInt {
     return this[12].toBigInt();
   }
 
-  get nextPrincipalRedemptionPayment(): BigInt {
+  get notionalScalingMultiplier(): BigInt {
     return this[13].toBigInt();
   }
 
-  get exerciseAmount(): BigInt {
+  get nextPrincipalRedemptionPayment(): BigInt {
     return this[14].toBigInt();
   }
 
-  get exerciseQuantity(): BigInt {
+  get exerciseAmount(): BigInt {
     return this[15].toBigInt();
   }
 
-  get quantity(): BigInt {
+  get exerciseQuantity(): BigInt {
     return this[16].toBigInt();
   }
 
-  get couponAmountFixed(): BigInt {
+  get quantity(): BigInt {
     return this[17].toBigInt();
   }
 
-  get marginFactor(): BigInt {
+  get couponAmountFixed(): BigInt {
     return this[18].toBigInt();
   }
 
-  get adjustmentFactor(): BigInt {
+  get marginFactor(): BigInt {
     return this[19].toBigInt();
+  }
+
+  get adjustmentFactor(): BigInt {
+    return this[20].toBigInt();
+  }
+
+  get dividendPaymentAmount(): BigInt {
+    return this[21].toBigInt();
+  }
+
+  get splitRatio(): BigInt {
+    return this[22].toBigInt();
   }
 }
 
@@ -2920,8 +3122,8 @@ export class SetTermsCallTermsStruct extends EthereumTuple {
     return this[25].toTuple() as SetTermsCallTermsFixingPeriodStruct;
   }
 
-  get exercisePeriod(): SetTermsCallTermsExercisePeriodStruct {
-    return this[26].toTuple() as SetTermsCallTermsExercisePeriodStruct;
+  get redemptionExercisePeriod(): SetTermsCallTermsRedemptionExercisePeriodStruct {
+    return this[26].toTuple() as SetTermsCallTermsRedemptionExercisePeriodStruct;
   }
 
   get cycleOfRedemption(): SetTermsCallTermsCycleOfRedemptionStruct {
@@ -3001,7 +3203,7 @@ export class SetTermsCallTermsFixingPeriodStruct extends EthereumTuple {
   }
 }
 
-export class SetTermsCallTermsExercisePeriodStruct extends EthereumTuple {
+export class SetTermsCallTermsRedemptionExercisePeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }

@@ -143,7 +143,8 @@ function updateState(assetRegistryAddress: Address, assetId: Bytes): State | nul
   state.maturityDate = stateCallResult.value.maturityDate;
   state.exerciseDate = stateCallResult.value.exerciseDate;
   state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponDay = stateCallResult.value.lastCouponDay;
+  state.lastCouponFixingDate = stateCallResult.value.lastCouponFixingDate;
+  state.lastDividendFixingDate = stateCallResult.value.lastDividendFixingDate;
   state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
   state.accruedInterest = stateCallResult.value.accruedInterest;
   state.feeAccrued = stateCallResult.value.feeAccrued;
@@ -157,6 +158,8 @@ function updateState(assetRegistryAddress: Address, assetId: Bytes): State | nul
   state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
   state.marginFactor = stateCallResult.value.marginFactor;
   state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
+  state.dividendPaymentAmount = stateCallResult.value.dividendPaymentAmount;
+  state.splitRatio = stateCallResult.value.splitRatio;
   state.save();
 
   return state;
@@ -270,14 +273,14 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms 
   fixingPeriod.save();
 
 
-  let exercisePeriod = Period.load(assetId.toHex() + '-terms-exercisePeriod');
-  if (exercisePeriod == null) {
-    exercisePeriod = new Period(assetId.toHex() + '-terms-exercisePeriod');
+  let redemptionExercisePeriod = Period.load(assetId.toHex() + '-terms-redemptionExercisePeriod');
+  if (redemptionExercisePeriod == null) {
+    redemptionExercisePeriod = new Period(assetId.toHex() + '-terms-redemptionExercisePeriod');
   }
-  exercisePeriod.i = certfTermsCallResult.value.exercisePeriod.i;
-  exercisePeriod.p = certfTermsCallResult.value.exercisePeriod.p;
-  exercisePeriod.isSet = certfTermsCallResult.value.exercisePeriod.isSet;
-  exercisePeriod.save();
+  redemptionExercisePeriod.i = certfTermsCallResult.value.redemptionExercisePeriod.i;
+  redemptionExercisePeriod.p = certfTermsCallResult.value.redemptionExercisePeriod.p;
+  redemptionExercisePeriod.isSet = certfTermsCallResult.value.redemptionExercisePeriod.isSet;
+  redemptionExercisePeriod.save();
 
   let cycleOfRedemption = Cycle.load(assetId.toHex() + '-terms-cycleOfRedemption');
   if (cycleOfRedemption == null) {
@@ -339,7 +342,7 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms 
   terms.settlementPeriod = settlementPeriod.id;
   terms.delinquencyPeriod = delinquencyPeriod.id;
   terms.fixingPeriod = fixingPeriod.id;
-  terms.exercisePeriod = exercisePeriod.id;
+  terms.redemptionExercisePeriod = redemptionExercisePeriod.id;
   terms.cycleOfRedemption = cycleOfRedemption.id;
   terms.cycleOfTermination = cycleOfTermination.id;
   terms.cycleOfCoupon = cycleOfCoupon.id;

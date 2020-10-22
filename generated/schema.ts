@@ -755,13 +755,22 @@ export class State extends Entity {
     this.set("terminationDate", Value.fromBigInt(value));
   }
 
-  get lastCouponDay(): BigInt {
-    let value = this.get("lastCouponDay");
+  get lastCouponFixingDate(): BigInt {
+    let value = this.get("lastCouponFixingDate");
     return value.toBigInt();
   }
 
-  set lastCouponDay(value: BigInt) {
-    this.set("lastCouponDay", Value.fromBigInt(value));
+  set lastCouponFixingDate(value: BigInt) {
+    this.set("lastCouponFixingDate", Value.fromBigInt(value));
+  }
+
+  get lastDividendFixingDate(): BigInt {
+    let value = this.get("lastDividendFixingDate");
+    return value.toBigInt();
+  }
+
+  set lastDividendFixingDate(value: BigInt) {
+    this.set("lastDividendFixingDate", Value.fromBigInt(value));
   }
 
   get notionalPrincipal(): BigInt {
@@ -879,6 +888,24 @@ export class State extends Entity {
 
   set adjustmentFactor(value: BigInt) {
     this.set("adjustmentFactor", Value.fromBigInt(value));
+  }
+
+  get dividendPaymentAmount(): BigInt {
+    let value = this.get("dividendPaymentAmount");
+    return value.toBigInt();
+  }
+
+  set dividendPaymentAmount(value: BigInt) {
+    this.set("dividendPaymentAmount", Value.fromBigInt(value));
+  }
+
+  get splitRatio(): BigInt {
+    let value = this.get("splitRatio");
+    return value.toBigInt();
+  }
+
+  set splitRatio(value: BigInt) {
+    this.set("splitRatio", Value.fromBigInt(value));
   }
 
   get asset(): string {
@@ -2067,13 +2094,13 @@ export class CERTFTerms extends Entity {
     this.set("fixingPeriod", Value.fromString(value));
   }
 
-  get exercisePeriod(): string {
-    let value = this.get("exercisePeriod");
+  get redemptionExercisePeriod(): string {
+    let value = this.get("redemptionExercisePeriod");
     return value.toString();
   }
 
-  set exercisePeriod(value: string) {
-    this.set("exercisePeriod", Value.fromString(value));
+  set redemptionExercisePeriod(value: string) {
+    this.set("redemptionExercisePeriod", Value.fromString(value));
   }
 
   get cycleOfRedemption(): string {
@@ -2555,6 +2582,280 @@ export class PAMTerms extends Entity {
 
   set cycleOfFee(value: string) {
     this.set("cycleOfFee", Value.fromString(value));
+  }
+
+  get asset(): string {
+    let value = this.get("asset");
+    return value.toString();
+  }
+
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
+  }
+}
+
+export class STKTerms extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save STKTerms entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save STKTerms entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("STKTerms", id.toString(), this);
+  }
+
+  static load(id: string): STKTerms | null {
+    return store.get("STKTerms", id) as STKTerms | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get contractType(): i32 {
+    let value = this.get("contractType");
+    return value.toI32();
+  }
+
+  set contractType(value: i32) {
+    this.set("contractType", Value.fromI32(value));
+  }
+
+  get calendar(): i32 {
+    let value = this.get("calendar");
+    return value.toI32();
+  }
+
+  set calendar(value: i32) {
+    this.set("calendar", Value.fromI32(value));
+  }
+
+  get contractRole(): i32 {
+    let value = this.get("contractRole");
+    return value.toI32();
+  }
+
+  set contractRole(value: i32) {
+    this.set("contractRole", Value.fromI32(value));
+  }
+
+  get dayCountConvention(): i32 {
+    let value = this.get("dayCountConvention");
+    return value.toI32();
+  }
+
+  set dayCountConvention(value: i32) {
+    this.set("dayCountConvention", Value.fromI32(value));
+  }
+
+  get businessDayConvention(): i32 {
+    let value = this.get("businessDayConvention");
+    return value.toI32();
+  }
+
+  set businessDayConvention(value: i32) {
+    this.set("businessDayConvention", Value.fromI32(value));
+  }
+
+  get endOfMonthConvention(): i32 {
+    let value = this.get("endOfMonthConvention");
+    return value.toI32();
+  }
+
+  set endOfMonthConvention(value: i32) {
+    this.set("endOfMonthConvention", Value.fromI32(value));
+  }
+
+  get redeemableByIssuer(): i32 {
+    let value = this.get("redeemableByIssuer");
+    return value.toI32();
+  }
+
+  set redeemableByIssuer(value: i32) {
+    this.set("redeemableByIssuer", Value.fromI32(value));
+  }
+
+  get currency(): Bytes {
+    let value = this.get("currency");
+    return value.toBytes();
+  }
+
+  set currency(value: Bytes) {
+    this.set("currency", Value.fromBytes(value));
+  }
+
+  get settlementCurrency(): Bytes {
+    let value = this.get("settlementCurrency");
+    return value.toBytes();
+  }
+
+  set settlementCurrency(value: Bytes) {
+    this.set("settlementCurrency", Value.fromBytes(value));
+  }
+
+  get contractDealDate(): BigInt {
+    let value = this.get("contractDealDate");
+    return value.toBigInt();
+  }
+
+  set contractDealDate(value: BigInt) {
+    this.set("contractDealDate", Value.fromBigInt(value));
+  }
+
+  get statusDate(): BigInt {
+    let value = this.get("statusDate");
+    return value.toBigInt();
+  }
+
+  set statusDate(value: BigInt) {
+    this.set("statusDate", Value.fromBigInt(value));
+  }
+
+  get issueDate(): BigInt {
+    let value = this.get("issueDate");
+    return value.toBigInt();
+  }
+
+  set issueDate(value: BigInt) {
+    this.set("issueDate", Value.fromBigInt(value));
+  }
+
+  get purchaseDate(): BigInt {
+    let value = this.get("purchaseDate");
+    return value.toBigInt();
+  }
+
+  set purchaseDate(value: BigInt) {
+    this.set("purchaseDate", Value.fromBigInt(value));
+  }
+
+  get cycleAnchorDateOfDividend(): BigInt {
+    let value = this.get("cycleAnchorDateOfDividend");
+    return value.toBigInt();
+  }
+
+  set cycleAnchorDateOfDividend(value: BigInt) {
+    this.set("cycleAnchorDateOfDividend", Value.fromBigInt(value));
+  }
+
+  get nominalPrice(): BigInt {
+    let value = this.get("nominalPrice");
+    return value.toBigInt();
+  }
+
+  set nominalPrice(value: BigInt) {
+    this.set("nominalPrice", Value.fromBigInt(value));
+  }
+
+  get notionalPrincipal(): BigInt {
+    let value = this.get("notionalPrincipal");
+    return value.toBigInt();
+  }
+
+  set notionalPrincipal(value: BigInt) {
+    this.set("notionalPrincipal", Value.fromBigInt(value));
+  }
+
+  get issuePrice(): BigInt {
+    let value = this.get("issuePrice");
+    return value.toBigInt();
+  }
+
+  set issuePrice(value: BigInt) {
+    this.set("issuePrice", Value.fromBigInt(value));
+  }
+
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
+  }
+
+  get priceAtPurchaseDate(): BigInt {
+    let value = this.get("priceAtPurchaseDate");
+    return value.toBigInt();
+  }
+
+  set priceAtPurchaseDate(value: BigInt) {
+    this.set("priceAtPurchaseDate", Value.fromBigInt(value));
+  }
+
+  get redemptionPrice(): BigInt {
+    let value = this.get("redemptionPrice");
+    return value.toBigInt();
+  }
+
+  set redemptionPrice(value: BigInt) {
+    this.set("redemptionPrice", Value.fromBigInt(value));
+  }
+
+  get dividendRecordPeriod(): string {
+    let value = this.get("dividendRecordPeriod");
+    return value.toString();
+  }
+
+  set dividendRecordPeriod(value: string) {
+    this.set("dividendRecordPeriod", Value.fromString(value));
+  }
+
+  get dividendPaymentPeriod(): string {
+    let value = this.get("dividendPaymentPeriod");
+    return value.toString();
+  }
+
+  set dividendPaymentPeriod(value: string) {
+    this.set("dividendPaymentPeriod", Value.fromString(value));
+  }
+
+  get splitSettlementPeriod(): string {
+    let value = this.get("splitSettlementPeriod");
+    return value.toString();
+  }
+
+  set splitSettlementPeriod(value: string) {
+    this.set("splitSettlementPeriod", Value.fromString(value));
+  }
+
+  get redemptionRecordPeriod(): string {
+    let value = this.get("redemptionRecordPeriod");
+    return value.toString();
+  }
+
+  set redemptionRecordPeriod(value: string) {
+    this.set("redemptionRecordPeriod", Value.fromString(value));
+  }
+
+  get redemptionPaymentPeriod(): string {
+    let value = this.get("redemptionPaymentPeriod");
+    return value.toString();
+  }
+
+  set redemptionPaymentPeriod(value: string) {
+    this.set("redemptionPaymentPeriod", Value.fromString(value));
+  }
+
+  get cycleOfDividend(): string {
+    let value = this.get("cycleOfDividend");
+    return value.toString();
+  }
+
+  set cycleOfDividend(value: string) {
+    this.set("cycleOfDividend", Value.fromString(value));
   }
 
   get asset(): string {
@@ -3070,6 +3371,127 @@ export class PAMAsset extends Entity {
 
   static load(id: string): PAMAsset | null {
     return store.get("PAMAsset", id) as PAMAsset | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get assetId(): Bytes {
+    let value = this.get("assetId");
+    return value.toBytes();
+  }
+
+  set assetId(value: Bytes) {
+    this.set("assetId", Value.fromBytes(value));
+  }
+
+  get terms(): string {
+    let value = this.get("terms");
+    return value.toString();
+  }
+
+  set terms(value: string) {
+    this.set("terms", Value.fromString(value));
+  }
+
+  get state(): string {
+    let value = this.get("state");
+    return value.toString();
+  }
+
+  set state(value: string) {
+    this.set("state", Value.fromString(value));
+  }
+
+  get schedule(): string {
+    let value = this.get("schedule");
+    return value.toString();
+  }
+
+  set schedule(value: string) {
+    this.set("schedule", Value.fromString(value));
+  }
+
+  get ownership(): string {
+    let value = this.get("ownership");
+    return value.toString();
+  }
+
+  set ownership(value: string) {
+    this.set("ownership", Value.fromString(value));
+  }
+
+  get engine(): Bytes {
+    let value = this.get("engine");
+    return value.toBytes();
+  }
+
+  set engine(value: Bytes) {
+    this.set("engine", Value.fromBytes(value));
+  }
+
+  get actor(): Bytes {
+    let value = this.get("actor");
+    return value.toBytes();
+  }
+
+  set actor(value: Bytes) {
+    this.set("actor", Value.fromBytes(value));
+  }
+
+  get registry(): Bytes {
+    let value = this.get("registry");
+    return value.toBytes();
+  }
+
+  set registry(value: Bytes) {
+    this.set("registry", Value.fromBytes(value));
+  }
+
+  get admins(): string {
+    let value = this.get("admins");
+    return value.toString();
+  }
+
+  set admins(value: string) {
+    this.set("admins", Value.fromString(value));
+  }
+
+  get createdOn(): BigInt {
+    let value = this.get("createdOn");
+    return value.toBigInt();
+  }
+
+  set createdOn(value: BigInt) {
+    this.set("createdOn", Value.fromBigInt(value));
+  }
+}
+
+export class STKAsset extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save STKAsset entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save STKAsset entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("STKAsset", id.toString(), this);
+  }
+
+  static load(id: string): STKAsset | null {
+    return store.get("STKAsset", id) as STKAsset | null;
   }
 
   get id(): string {

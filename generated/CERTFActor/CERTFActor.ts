@@ -313,21 +313,6 @@ export class CERTFActor extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  issuers(param0: Address): boolean {
-    let result = super.call("issuers", [EthereumValue.fromAddress(param0)]);
-
-    return result[0].toBoolean();
-  }
-
-  try_issuers(param0: Address): CallResult<boolean> {
-    let result = super.tryCall("issuers", [EthereumValue.fromAddress(param0)]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(value[0].toBoolean());
-  }
-
   owner(): Address {
     let result = super.call("owner", []);
 
@@ -341,6 +326,76 @@ export class CERTFActor extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toAddress());
+  }
+
+  shiftCalcTime(
+    timestamp: BigInt,
+    convention: i32,
+    calendar: i32,
+    maturityDate: BigInt
+  ): BigInt {
+    let result = super.call("shiftCalcTime", [
+      EthereumValue.fromUnsignedBigInt(timestamp),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(convention)),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
+      EthereumValue.fromUnsignedBigInt(maturityDate)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_shiftCalcTime(
+    timestamp: BigInt,
+    convention: i32,
+    calendar: i32,
+    maturityDate: BigInt
+  ): CallResult<BigInt> {
+    let result = super.tryCall("shiftCalcTime", [
+      EthereumValue.fromUnsignedBigInt(timestamp),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(convention)),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
+      EthereumValue.fromUnsignedBigInt(maturityDate)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  shiftEventTime(
+    timestamp: BigInt,
+    convention: i32,
+    calendar: i32,
+    maturityDate: BigInt
+  ): BigInt {
+    let result = super.call("shiftEventTime", [
+      EthereumValue.fromUnsignedBigInt(timestamp),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(convention)),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
+      EthereumValue.fromUnsignedBigInt(maturityDate)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_shiftEventTime(
+    timestamp: BigInt,
+    convention: i32,
+    calendar: i32,
+    maturityDate: BigInt
+  ): CallResult<BigInt> {
+    let result = super.tryCall("shiftEventTime", [
+      EthereumValue.fromUnsignedBigInt(timestamp),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(convention)),
+      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(calendar)),
+      EthereumValue.fromUnsignedBigInt(maturityDate)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
   }
 }
 
@@ -438,36 +493,6 @@ export class ProgressWithCall__Outputs {
   _call: ProgressWithCall;
 
   constructor(call: ProgressWithCall) {
-    this._call = call;
-  }
-}
-
-export class RegisterIssuerCall extends EthereumCall {
-  get inputs(): RegisterIssuerCall__Inputs {
-    return new RegisterIssuerCall__Inputs(this);
-  }
-
-  get outputs(): RegisterIssuerCall__Outputs {
-    return new RegisterIssuerCall__Outputs(this);
-  }
-}
-
-export class RegisterIssuerCall__Inputs {
-  _call: RegisterIssuerCall;
-
-  constructor(call: RegisterIssuerCall) {
-    this._call = call;
-  }
-
-  get issuer(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class RegisterIssuerCall__Outputs {
-  _call: RegisterIssuerCall;
-
-  constructor(call: RegisterIssuerCall) {
     this._call = call;
   }
 }
@@ -679,8 +704,8 @@ export class InitializeCallTermsStruct extends EthereumTuple {
     return this[25].toTuple() as InitializeCallTermsFixingPeriodStruct;
   }
 
-  get exercisePeriod(): InitializeCallTermsExercisePeriodStruct {
-    return this[26].toTuple() as InitializeCallTermsExercisePeriodStruct;
+  get redemptionExercisePeriod(): InitializeCallTermsRedemptionExercisePeriodStruct {
+    return this[26].toTuple() as InitializeCallTermsRedemptionExercisePeriodStruct;
   }
 
   get cycleOfRedemption(): InitializeCallTermsCycleOfRedemptionStruct {
@@ -760,7 +785,7 @@ export class InitializeCallTermsFixingPeriodStruct extends EthereumTuple {
   }
 }
 
-export class InitializeCallTermsExercisePeriodStruct extends EthereumTuple {
+export class InitializeCallTermsRedemptionExercisePeriodStruct extends EthereumTuple {
   get i(): BigInt {
     return this[0].toBigInt();
   }
