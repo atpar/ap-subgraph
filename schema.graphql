@@ -13,20 +13,6 @@ type DataSet @entity {
   lastUpdated: BigInt
 }
 
-type Holder @entity {
-  id: ID!
-  address: Bytes!
-  balanceOf: BigInt!
-  withdrawnFundsOf: BigInt!
-  distributor: Distributor! @derivedFrom(field: "holder")
-}
-
-type Distributor @entity {
-  id: ID!
-  address: Bytes!
-  holder: [Holder!]!
-} 
-
 type Period @entity {
   id: ID!
   i: BigInt!
@@ -121,7 +107,7 @@ type ANNTerms @entity {
   businessDayConvention: Int!
   endOfMonthConvention: Int!
   scalingEffect: Int!
-  penaltyType: Int!
+  # penaltyType: Int! not implemented
   feeBasis: Int!
   # contractPerformance: Int! state only
   # seniority: Int! not implemented
@@ -135,7 +121,7 @@ type ANNTerms @entity {
   marketObjectCodeRateReset: Bytes!
   # marketObjectCodeOfScalingIndex: Bytes! not implemented
 
-  contractDealDate: BigInt!
+  issueDate: BigInt!
   statusDate: BigInt!
   initialExchangeDate: BigInt!
   maturityDate: BigInt!
@@ -161,11 +147,11 @@ type ANNTerms @entity {
   nextResetRate: BigInt!
   feeRate: BigInt!
   feeAccrued: BigInt!
-  penaltyRate: BigInt!
-  delinquencyRate: BigInt!
+  # penaltyRate: BigInt! not implemented
+  # delinquencyRate: BigInt! not implemented
   premiumDiscountAtIED: BigInt!
   priceAtPurchaseDate: BigInt!
-  # priceAtTerminationDate: BigInt! not implemented
+  priceAtTerminationDate: BigInt!
   # creditLineAmount: BigInt! not implemented
   # scalingIndexAtStatusDate: BigInt! not implemented
   # marketValueObserved: BigInt! not implemented
@@ -237,7 +223,7 @@ type CEGTerms @entity {
   currency: Bytes!
   settlementCurrency: Bytes!
 
-  contractDealDate: BigInt!
+  # contractDealDate: BigInt! not implemented
   statusDate: BigInt!
   maturityDate: BigInt!
   purchaseDate: BigInt!
@@ -250,7 +236,7 @@ type CEGTerms @entity {
   feeAccrued: BigInt!
   feeRate: BigInt!
   priceAtPurchaseDate: BigInt!
-  # priceAtTerminationDate: BigInt! not implemented
+  priceAtTerminationDate: BigInt!
   coverageOfCreditEnhancement: BigInt!
   # exerciseAmount: BigInt! state only
   
@@ -282,7 +268,7 @@ type CERTFTerms @entity {
 
   # marketObjectCode: Bytes! not implemented
 
-  contractDealDate: BigInt!
+  # contractDealDate: BigInt! not implemented
   statusDate: BigInt!
   initialExchangeDate: BigInt!
   maturityDate: BigInt!
@@ -310,7 +296,7 @@ type CERTFTerms @entity {
   delinquencyPeriod: Period!
   settlementPeriod: Period!
   fixingPeriod: Period!
-  redemptionExercisePeriod: Period!
+  redemptionRecordPeriod: Period!
 
   cycleOfRedemption: Cycle!
   cycleOfTermination: Cycle!
@@ -331,7 +317,7 @@ type PAMTerms @entity {
   businessDayConvention: Int!
   endOfMonthConvention: Int!
   scalingEffect: Int!
-  penaltyType: Int!
+  # penaltyType: Int! not implemented
   feeBasis: Int!
   # contractPerformance: Int! state only
   # seniority: Int! not implemented
@@ -346,7 +332,8 @@ type PAMTerms @entity {
   marketObjectCodeRateReset: Bytes!
   # marketObjectCodeOfScalingIndex: Bytes! not implemented
 
-  contractDealDate: BigInt!
+  # contractDealDate: BigInt! not implemented
+  issueDate: BigInt!
   statusDate: BigInt!
   initialExchangeDate: BigInt!
   maturityDate: BigInt!
@@ -369,11 +356,11 @@ type PAMTerms @entity {
   nextResetRate: BigInt!
   feeRate: BigInt!
   feeAccrued: BigInt!
-  penaltyRate: BigInt!
-  delinquencyRate: BigInt!
+  # penaltyRate: BigInt! not implemented
+  # delinquencyRate: BigInt! not implemented
   premiumDiscountAtIED: BigInt!
   priceAtPurchaseDate: BigInt!
-  # priceAtTerminationDate: BigInt! not implemented
+  priceAtTerminationDate: BigInt!
   # creditLineAmount: BigInt! not implemented
   # scalingIndexAtStatusDate: BigInt! not implemented
   # marketValueObserved: BigInt! not implemented
@@ -424,7 +411,7 @@ type STKTerms @entity {
   quantity: BigInt!
   priceAtPurchaseDate: BigInt!
   redemptionPrice: BigInt!
-  # priceAtTerminationDate: BigInt! not implemented
+  priceAtTerminationDate: BigInt!
 
   dividendRecordPeriod: Period!
   dividendPaymentPeriod: Period!

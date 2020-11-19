@@ -273,14 +273,14 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms 
   fixingPeriod.save();
 
 
-  let redemptionExercisePeriod = Period.load(assetId.toHex() + '-terms-redemptionExercisePeriod');
-  if (redemptionExercisePeriod == null) {
-    redemptionExercisePeriod = new Period(assetId.toHex() + '-terms-redemptionExercisePeriod');
+  let redemptionRecordPeriod = Period.load(assetId.toHex() + '-terms-redemptionRecordPeriod');
+  if (redemptionRecordPeriod == null) {
+    redemptionRecordPeriod = new Period(assetId.toHex() + '-terms-redemptionRecordPeriod');
   }
-  redemptionExercisePeriod.i = certfTermsCallResult.value.redemptionExercisePeriod.i;
-  redemptionExercisePeriod.p = certfTermsCallResult.value.redemptionExercisePeriod.p;
-  redemptionExercisePeriod.isSet = certfTermsCallResult.value.redemptionExercisePeriod.isSet;
-  redemptionExercisePeriod.save();
+  redemptionRecordPeriod.i = certfTermsCallResult.value.redemptionRecordPeriod.i;
+  redemptionRecordPeriod.p = certfTermsCallResult.value.redemptionRecordPeriod.p;
+  redemptionRecordPeriod.isSet = certfTermsCallResult.value.redemptionRecordPeriod.isSet;
+  redemptionRecordPeriod.save();
 
   let cycleOfRedemption = Cycle.load(assetId.toHex() + '-terms-cycleOfRedemption');
   if (cycleOfRedemption == null) {
@@ -325,7 +325,6 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms 
   terms.couponType = certfTermsCallResult.value.couponType;
   terms.currency = certfTermsCallResult.value.currency;
   terms.settlementCurrency = certfTermsCallResult.value.settlementCurrency;
-  terms.contractDealDate = certfTermsCallResult.value.contractDealDate;
   terms.statusDate = certfTermsCallResult.value.statusDate;
   terms.initialExchangeDate = certfTermsCallResult.value.initialExchangeDate;
   terms.maturityDate = certfTermsCallResult.value.maturityDate;
@@ -342,7 +341,7 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CERTFTerms 
   terms.settlementPeriod = settlementPeriod.id;
   terms.delinquencyPeriod = delinquencyPeriod.id;
   terms.fixingPeriod = fixingPeriod.id;
-  terms.redemptionExercisePeriod = redemptionExercisePeriod.id;
+  terms.redemptionRecordPeriod = redemptionRecordPeriod.id;
   terms.cycleOfRedemption = cycleOfRedemption.id;
   terms.cycleOfTermination = cycleOfTermination.id;
   terms.cycleOfCoupon = cycleOfCoupon.id;

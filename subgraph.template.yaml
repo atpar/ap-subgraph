@@ -330,11 +330,76 @@ dataSources:
           handler: handleProgressedAssetPAM
       file: ./src/PAM.ts
   - kind: ethereum/contract
-    name: DataRegistry
+    name: STKRegistry
     network: {{network}}
     source:
-      address: '{{DataRegistry}}'
-      abi: DataRegistry
+      address: '{{STKRegistry}}'
+      abi: STKRegistry
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - PAMAsset
+        - PAMTerms
+        - State
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
+        - Admins
+      abis:
+        - name: STKRegistry
+          file: ./build/contracts/STKRegistry.json
+      eventHandlers:
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAssetPAM
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessPAM
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccessPAM
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiaryPAM
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorPAM
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsPAM
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStatePAM
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStatePAM
+      file: ./src/PAM.ts
+  - kind: ethereum/contract
+    name: STKActor
+    network: {{network}}
+    source:
+      address: '{{STKActor}}'
+      abi: STKActor
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - State
+        - Schedule
+      abis:
+        - name: STKActor
+          file: ./build/contracts/STKActor.json
+        - name: PAMRegistry
+          file: ./build/contracts/PAMRegistry.json
+      eventHandlers:
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
+          handler: handleProgressedAssetPAM
+      file: ./src/PAM.ts
+  - kind: ethereum/contract
+    name: DataRegistryProxy
+    network: {{network}}
+    source:
+      address: '{{DataRegistryProxy}}'
+      abi: DataRegistryProxy
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
@@ -344,35 +409,14 @@ dataSources:
         - DataSet
         - DataPoint
       abis:
-        - name: DataRegistry
-          file: ./build/contracts/DataRegistry.json
+        - name: DataRegistryProxy
+          file: ./build/contracts/DataRegistryProxy.json
       eventHandlers:
         - event: UpdatedDataProvider(indexed bytes32,address)
           handler: handleUpdatedDataProvider
         - event: PublishedDataPoint(indexed bytes32,int256,uint256)
           handler:  handlePublishedDataPoint
       file: ./src/DR.ts
-  - kind: ethereum/contract
-    name: FDTFactory
-    network: {{network}}
-    source:
-      address: '{{FDTFactory}}'
-      abi: FDTFactory
-      startBlock: {{startBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Distributor
-        - Holder
-      abis:
-        - name: FDTFactory
-          file: ./build/contracts/FDTFactory.json
-      eventHandlers:
-        - event: DeployedDistributor(address,address)
-          handler: handleDeployedDistributor
-      file: ./src/FDT.ts
   - kind: ethereum/contract
     name: DvPSettlement
     network: {{network}}
@@ -397,24 +441,3 @@ dataSources:
         - event: SettlementExpired(indexed uint256)
           handler: handleSettlementExpired
       file: ./src/DvP.ts
-templates:
-  - kind: ethereum/contract
-    name: FDT
-    network: {{network}}
-    source:
-      abi: VanillaFDT
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Distributor
-        - Holder
-      abis:
-        - name: VanillaFDT
-          file: ./build/contracts/VanillaFDT.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/FDT.ts
-

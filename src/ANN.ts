@@ -295,12 +295,11 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms | 
   terms.businessDayConvention = annTermsCallResult.value.businessDayConvention;
   terms.endOfMonthConvention = annTermsCallResult.value.endOfMonthConvention;
   terms.scalingEffect = annTermsCallResult.value.scalingEffect;
-  terms.penaltyType = annTermsCallResult.value.penaltyType;
   terms.feeBasis = annTermsCallResult.value.feeBasis;
   terms.currency = annTermsCallResult.value.currency;
   terms.settlementCurrency = annTermsCallResult.value.settlementCurrency;
   terms.marketObjectCodeRateReset = annTermsCallResult.value.marketObjectCodeRateReset;
-  terms.contractDealDate = annTermsCallResult.value.contractDealDate;
+  terms.issueDate = annTermsCallResult.value.issueDate;
   terms.statusDate = annTermsCallResult.value.statusDate;
   terms.initialExchangeDate = annTermsCallResult.value.initialExchangeDate;
   terms.maturityDate = annTermsCallResult.value.maturityDate;
@@ -319,10 +318,9 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): ANNTerms | 
   terms.nextResetRate = annTermsCallResult.value.nextResetRate;
   terms.feeRate = annTermsCallResult.value.feeRate;
   terms.feeAccrued = annTermsCallResult.value.feeAccrued;
-  terms.penaltyRate = annTermsCallResult.value.penaltyRate;
-  terms.delinquencyRate = annTermsCallResult.value.delinquencyRate;
   terms.premiumDiscountAtIED = annTermsCallResult.value.premiumDiscountAtIED;
   terms.priceAtPurchaseDate = annTermsCallResult.value.priceAtPurchaseDate;
+  terms.priceAtTerminationDate = annTermsCallResult.value.priceAtTerminationDate;
   terms.nextPrincipalRedemptionPayment = annTermsCallResult.value.nextPrincipalRedemptionPayment;
   terms.lifeCap = annTermsCallResult.value.lifeCap;
   terms.lifeFloor = annTermsCallResult.value.lifeFloor;

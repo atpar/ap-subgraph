@@ -1,6 +1,6 @@
 import { log } from "@graphprotocol/graph-ts";
 
-import { UpdatedDataProvider, PublishedDataPoint } from '../generated/DataRegistry/DataRegistry';
+import { UpdatedDataProvider, PublishedDataPoint } from '../generated/DataRegistryProxy/DataRegistryProxy';
 
 import { DataSet, DataPoint } from '../generated/schema';
 
