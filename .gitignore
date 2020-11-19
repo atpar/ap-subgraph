@@ -16,3 +16,4 @@ contracts/
 # graph
 generated/
 graph-node/
+subgraph.yaml
