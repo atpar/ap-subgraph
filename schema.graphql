@@ -1,3 +1,18 @@
+
+type DvPSettlementData @entity {
+  id: ID!
+  settlementId: BigInt!
+  creator: Bytes!
+  creatorToken: Bytes!
+  creatorAmount: BigInt!
+  creatorBeneficiary: Bytes!
+  counterparty: Bytes!
+  counterpartyToken: Bytes!
+  counterpartyAmount: BigInt!
+  expirationDate: BigInt!
+  status: Int!
+}
+
 type DataPoint @entity {
   id: ID!
   dataPoint: BigInt!
@@ -59,43 +74,6 @@ type Admins @entity {
   id: ID!
   accounts: [Bytes!]!
   asset: Asset! @derivedFrom(field: "admins")
-}
-
-type State @entity {
-  id: ID!
-  contractPerformance: Int!
-
-  statusDate: BigInt!
-  nonPerformingDate: BigInt!
-  maturityDate: BigInt!
-  exerciseDate: BigInt!
-  terminationDate: BigInt!
-  lastCouponFixingDate: BigInt!
-  lastDividendFixingDate: BigInt!
-
-  notionalPrincipal: BigInt!
-  # notionalPrincipal2: BigInt! not implemented
-  accruedInterest: BigInt!
-  # accruedInterest2: BigInt! not implemented
-  feeAccrued: BigInt!
-  nominalInterestRate: BigInt!
-  # nominalInterestRate2: BigInt! not implemented
-  # interestCalculationBaseAmount: BigInt! not implemented
-  interestScalingMultiplier: BigInt!
-  notionalScalingMultiplier: BigInt!
-  nextPrincipalRedemptionPayment: BigInt!
-  exerciseAmount: BigInt!
-  exerciseQuantity: BigInt!
-  
-  quantity: BigInt!
-  couponAmountFixed: BigInt!
-  # exerciseQuantityOrdered: BigInt! not implemented
-  marginFactor: BigInt!
-  adjustmentFactor: BigInt!
-  dividendPaymentAmount: BigInt!
-  splitRatio: BigInt!
-
-  asset: Asset! @derivedFrom(field: "state")
 }
 
 type ANNTerms @entity {
@@ -179,6 +157,30 @@ type ANNTerms @entity {
   asset: ANNAsset! @derivedFrom(field: "terms")
 }
 
+type ANNState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  terminationDate: BigInt!
+
+  notionalPrincipal: BigInt!
+  # notionalPrincipal2: BigInt! not implemented
+  accruedInterest: BigInt!
+  # accruedInterest2: BigInt! not implemented
+  feeAccrued: BigInt!
+  nominalInterestRate: BigInt!
+  # nominalInterestRate2: BigInt! not implemented
+  # interestCalculationBaseAmount: BigInt! not implemented
+  interestScalingMultiplier: BigInt!
+  notionalScalingMultiplier: BigInt!
+  nextPrincipalRedemptionPayment: BigInt!
+
+  asset: ANNAsset! @derivedFrom(field: "state")
+}
+
 type CECTerms @entity {
   id: ID!
   contractType: Int!
@@ -205,6 +207,21 @@ type CECTerms @entity {
   contractReference_2: ContractReference!
 
   asset: CECAsset! @derivedFrom(field: "terms")
+}
+
+type CECState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  maturityDate: BigInt!
+  exerciseDate: BigInt!
+  terminationDate: BigInt!
+
+  feeAccrued: BigInt!
+  exerciseAmount: BigInt!
+
+  asset: CECAsset! @derivedFrom(field: "state")
 }
 
 type CEGTerms @entity {
@@ -250,6 +267,23 @@ type CEGTerms @entity {
   contractReference_2: ContractReference!
 
   asset: CEGAsset! @derivedFrom(field: "terms")
+}
+
+type CEGState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  exerciseDate: BigInt!
+  terminationDate: BigInt!
+
+  notionalPrincipal: BigInt!
+  feeAccrued: BigInt!
+  exerciseAmount: BigInt!
+
+  asset: CEGAsset! @derivedFrom(field: "state")
 }
 
 type CERTFTerms @entity {
@@ -306,6 +340,27 @@ type CERTFTerms @entity {
   contractReference_2: ContractReference!
 
   asset: CERTFAsset! @derivedFrom(field: "terms")
+}
+
+type CERTFState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  exerciseDate: BigInt!
+  terminationDate: BigInt!
+  lastCouponFixingDate: BigInt!
+  exerciseAmount: BigInt!
+  exerciseQuantity: BigInt!  
+  quantity: BigInt!
+  couponAmountFixed: BigInt!
+  # exerciseQuantityOrdered: BigInt! not implemented
+  marginFactor: BigInt!
+  adjustmentFactor: BigInt!
+
+  asset: CERTFAsset! @derivedFrom(field: "state")
 }
 
 type PAMTerms @entity {
@@ -383,6 +438,29 @@ type PAMTerms @entity {
   asset: PAMAsset! @derivedFrom(field: "terms")
 }
 
+type PAMState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  terminationDate: BigInt!
+
+  notionalPrincipal: BigInt!
+  # notionalPrincipal2: BigInt! not implemented
+  accruedInterest: BigInt!
+  # accruedInterest2: BigInt! not implemented
+  feeAccrued: BigInt!
+  nominalInterestRate: BigInt!
+  # nominalInterestRate2: BigInt! not implemented
+  # interestCalculationBaseAmount: BigInt! not implemented
+  interestScalingMultiplier: BigInt!
+  notionalScalingMultiplier: BigInt!
+
+  asset: PAMAsset! @derivedFrom(field: "state")
+}
+
 type STKTerms @entity {
   id: ID!
   contractType: Int!
@@ -399,7 +477,6 @@ type STKTerms @entity {
 
   # marketObjectCode: Bytes! not implemented
 
-  contractDealDate: BigInt!
   statusDate: BigInt!
   issueDate: BigInt!
   purchaseDate: BigInt!
@@ -424,11 +501,90 @@ type STKTerms @entity {
   asset: STKAsset! @derivedFrom(field: "terms")
 }
 
+type STKState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  exerciseDate: BigInt!
+  terminationDate: BigInt!
+  lastDividendFixingDate: BigInt!
+
+  notionalPrincipal: BigInt!
+  exerciseAmount: BigInt!
+  exerciseQuantity: BigInt!
+  quantity: BigInt!
+  couponAmountFixed: BigInt!
+  # exerciseQuantityOrdered: BigInt! not implemented
+  marginFactor: BigInt!
+  adjustmentFactor: BigInt!
+  dividendPaymentAmount: BigInt!
+  splitRatio: BigInt!
+
+  asset: STKAsset! @derivedFrom(field: "state")
+}
+
+type COLLATerms @entity {
+  id: ID!
+  contractType: Int!
+  calendar: Int!
+  contractRole: Int!
+  dayCountConvention: Int!
+  businessDayConvention: Int!
+  endOfMonthConvention: Int!
+  # contractPerformance: Int! state only
+
+  marketObjectCodeOfCollateral: Bytes!
+
+  currency: Bytes!
+  settlementCurrency: Bytes!
+  collateralCurrency: Bytes!
+
+  statusDate: BigInt!
+  initialExchangeDate: BigInt!
+  maturityDate: BigInt!
+  # nonPerformingDate: BigInt! state only
+  cycleAnchorDateOfInterestPayment: BigInt!
+
+  notionalPrincipal: BigInt!
+  nominalInterestRate: BigInt!
+  accruedInterest: BigInt!
+  premiumDiscountAtIED: BigInt!
+  coverageOfCollateral: BigInt!
+
+  gracePeriod: Period!
+  delinquencyPeriod: Period!
+
+  cycleOfInterestPayment: Cycle!
+
+  asset: COLLAAsset! @derivedFrom(field: "terms")
+}
+
+type COLLAState @entity {
+  id: ID!
+  contractPerformance: Int!
+
+  statusDate: BigInt!
+  nonPerformingDate: BigInt!
+  maturityDate: BigInt!
+  terminationDate: BigInt!
+
+  notionalPrincipal: BigInt!
+  accruedInterest: BigInt!
+  nominalInterestRate: BigInt!
+  interestScalingMultiplier: BigInt!
+  notionalScalingMultiplier: BigInt!
+
+  asset: COLLAAsset! @derivedFrom(field: "state")
+}
+
 type ANNAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: ANNTerms!
-  state: State!
+  state: ANNState!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -442,7 +598,7 @@ type CECAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: CECTerms!
-  state: State!
+  state: CECState!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -456,7 +612,7 @@ type CEGAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: CEGTerms!
-  state: State!
+  state: CEGState!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -470,7 +626,7 @@ type CERTFAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: CERTFTerms!
-  state: State!
+  state: CERTFState!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -484,7 +640,7 @@ type PAMAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: PAMTerms!
-  state: State!
+  state: PAMState!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -498,7 +654,21 @@ type STKAsset implements Asset @entity {
   id: ID!
   assetId: Bytes!
   terms: STKTerms!
-  state: State!
+  state: STKState!
+  schedule: Schedule!
+  ownership: AssetOwnership!
+  engine: Bytes!
+  actor: Bytes!
+  registry: Bytes!
+  admins: Admins!
+  createdOn: BigInt!
+}
+
+type COLLAAsset implements Asset @entity {
+  id: ID!
+  assetId: Bytes!
+  terms: COLLATerms!
+  state: COLLAState!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -511,7 +681,6 @@ type STKAsset implements Asset @entity {
 interface Asset @entity {
   id: ID!
   assetId: Bytes!
-  state: State!
   schedule: Schedule!
   ownership: AssetOwnership!
   engine: Bytes!
@@ -519,18 +688,4 @@ interface Asset @entity {
   registry: Bytes!
   admins: Admins!
   createdOn: BigInt!
-}
-
-type DvPSettlementData @entity {
-  id: ID!
-  settlementId: BigInt!
-  creator: Bytes!
-  creatorToken: Bytes!
-  creatorAmount: BigInt!
-  creatorBeneficiary: Bytes!
-  counterparty: Bytes!
-  counterpartyToken: Bytes!
-  counterpartyAmount: BigInt!
-  expirationDate: BigInt!
-  status: Int!
 }

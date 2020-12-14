@@ -13,7 +13,7 @@
     "deploy:rinkeby-staging": "NETWORK=rinkeby-staging ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/protocol": "0.0.1-alpha.6",
+    "@atpar/protocol": "0.0.1-alpha.7",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "mustache": "^4.0.0",

@@ -18,7 +18,7 @@ dataSources:
       entities:
         - ANNAsset
         - ANNTerms
-        - State
+        - ANNState
         - AssetOwnership
         - Schedule
         - Period
@@ -58,7 +58,7 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - State
+        - ANNState
         - Schedule
       abis:
         - name: ANNActor
@@ -83,7 +83,7 @@ dataSources:
       entities:
         - CECAsset
         - CECTerms
-        - State
+        - CECState
         - AssetOwnership
         - Schedule
         - Period
@@ -123,7 +123,7 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - State
+        - CECState
         - Schedule
       abis:
         - name: CECActor
@@ -148,7 +148,7 @@ dataSources:
       entities:
         - CEGAsset
         - CEGTerms
-        - State
+        - CEGState
         - AssetOwnership
         - Schedule
         - Period
@@ -188,7 +188,7 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - State
+        - CEGState
         - Schedule
       abis:
         - name: CEGActor
@@ -213,7 +213,7 @@ dataSources:
       entities:
         - CERTFAsset
         - CERTFTerms
-        - State
+        - CERTFState
         - AssetOwnership
         - Schedule
         - Period
@@ -253,7 +253,7 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - State
+        - CERTFState
         - Schedule
       abis:
         - name: CERTFActor
@@ -278,7 +278,7 @@ dataSources:
       entities:
         - PAMAsset
         - PAMTerms
-        - State
+        - PAMState
         - AssetOwnership
         - Schedule
         - Period
@@ -318,7 +318,7 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - State
+        - PAMState
         - Schedule
       abis:
         - name: PAMActor
@@ -341,9 +341,9 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - PAMAsset
-        - PAMTerms
-        - State
+        - STKAsset
+        - STKTerms
+        - STKState
         - AssetOwnership
         - Schedule
         - Period
@@ -355,22 +355,22 @@ dataSources:
           file: ./build/contracts/STKRegistry.json
       eventHandlers:
         - event: RegisteredAsset(bytes32)
-          handler: handleRegisteredAssetPAM
+          handler: handleRegisteredAssetSTK
         - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
-          handler: handleGrantedAccessPAM
+          handler: handleGrantedAccessSTK
         - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
-          handler: handleRevokedAccessPAM
+          handler: handleRevokedAccessSTK
         - event: UpdatedBeneficiary(bytes32,address,address)
-          handler: handleUpdatedBeneficiaryPAM
+          handler: handleUpdatedBeneficiarySTK
         - event: UpdatedObligor(bytes32,address,address)
-          handler: handleUpdatedObligorPAM
+          handler: handleUpdatedObligorSTK
         - event: UpdatedTerms(indexed bytes32)
-          handler: handleUpdatedTermsPAM
+          handler: handleUpdatedTermsSTK
         - event: UpdatedState(indexed bytes32,uint256)
-          handler: handleUpdatedStatePAM
+          handler: handleUpdatedStateSTK
         - event: UpdatedFinalizedState(indexed bytes32,uint256)
-          handler: handleUpdatedFinalizedStatePAM
-      file: ./src/PAM.ts
+          handler: handleUpdatedFinalizedStateSTK
+      file: ./src/STK.ts
   - kind: ethereum/contract
     name: STKActor
     network: {{network}}
@@ -383,17 +383,82 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - State
+        - STKState
         - Schedule
       abis:
         - name: STKActor
           file: ./build/contracts/STKActor.json
-        - name: PAMRegistry
-          file: ./build/contracts/PAMRegistry.json
+        - name: STKRegistry
+          file: ./build/contracts/STKRegistry.json
       eventHandlers:
         - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
-          handler: handleProgressedAssetPAM
-      file: ./src/PAM.ts
+          handler: handleProgressedAssetSTK
+      file: ./src/STK.ts
+  - kind: ethereum/contract
+    name: COLLARegistry
+    network: {{network}}
+    source:
+      address: '{{COLLARegistry}}'
+      abi: COLLARegistry
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - COLLAAsset
+        - COLLATerms
+        - COLLAState
+        - AssetOwnership
+        - Schedule
+        - Period
+        - Cycle
+        - ContractReference
+        - Admins
+      abis:
+        - name: COLLARegistry
+          file: ./build/contracts/COLLARegistry.json
+      eventHandlers:
+        - event: RegisteredAsset(bytes32)
+          handler: handleRegisteredAssetCOLLA
+        - event: GrantedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleGrantedAccessCOLLA
+        - event: RevokedAccess(indexed bytes32,indexed address,bytes4)
+          handler: handleRevokedAccessCOLLA
+        - event: UpdatedBeneficiary(bytes32,address,address)
+          handler: handleUpdatedBeneficiaryCOLLA
+        - event: UpdatedObligor(bytes32,address,address)
+          handler: handleUpdatedObligorCOLLA
+        - event: UpdatedTerms(indexed bytes32)
+          handler: handleUpdatedTermsCOLLA
+        - event: UpdatedState(indexed bytes32,uint256)
+          handler: handleUpdatedStateCOLLA
+        - event: UpdatedFinalizedState(indexed bytes32,uint256)
+          handler: handleUpdatedFinalizedStateCOLLA
+      file: ./src/COLLA.ts
+  - kind: ethereum/contract
+    name: COLLAActor
+    network: {{network}}
+    source:
+      address: '{{COLLAActor}}'
+      abi: COLLAActor
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - COLLAState
+        - Schedule
+      abis:
+        - name: COLLAActor
+          file: ./build/contracts/COLLAActor.json
+        - name: COLLARegistry
+          file: ./build/contracts/COLLARegistry.json
+      eventHandlers:
+        - event: ProgressedAsset(indexed bytes32,uint8,uint256,int256)
+          handler: handleProgressedAssetCOLLA
+      file: ./src/COLLA.ts
   - kind: ethereum/contract
     name: DataRegistryProxy
     network: {{network}}

@@ -3,7 +3,7 @@ import { log, Address, Bytes } from "@graphprotocol/graph-ts";
 import { PAMActor, ProgressedAsset } from '../generated/PAMActor/PAMActor';
 import { PAMRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary, UpdatedObligor, UpdatedState, UpdatedFinalizedState } from '../generated/PAMRegistry/PAMRegistry';
 
-import { Admins, PAMAsset, AssetOwnership, Schedule, PAMTerms, Period, State, Cycle } from '../generated/schema';
+import { Admins, PAMAsset, AssetOwnership, Schedule, PAMTerms, Period, PAMState, Cycle } from '../generated/schema';
 
 
 // GrantedAccess event may be processed before or after RegisteredAsset event,
@@ -127,39 +127,27 @@ export function handleUpdatedFinalizedStatePAM(event: UpdatedFinalizedState): vo
   updateState(event.address, event.params.assetId);
 }
 
-function updateState(assetRegistryAddress: Address, assetId: Bytes): State | null {
+function updateState(assetRegistryAddress: Address, assetId: Bytes): PAMState | null {
 
   let pamRegistry = PAMRegistry.bind(assetRegistryAddress);
   let stateCallResult = pamRegistry.try_getState(assetId);
   if (stateCallResult.reverted) { return null; }
 
-  let state = State.load(assetId.toHex() + '-state');
+  let state = PAMState.load(assetId.toHex() + '-state');
   if (state == null) {
-    state = new State(assetId.toHex() + '-state');
+    state = new PAMState(assetId.toHex() + '-state');
   }
   state.contractPerformance = stateCallResult.value.contractPerformance;
   state.statusDate = stateCallResult.value.statusDate;
   state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
   state.maturityDate = stateCallResult.value.maturityDate;
-  state.exerciseDate = stateCallResult.value.exerciseDate;
   state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponFixingDate = stateCallResult.value.lastCouponFixingDate;
-  state.lastDividendFixingDate = stateCallResult.value.lastDividendFixingDate;
   state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
   state.accruedInterest = stateCallResult.value.accruedInterest;
   state.feeAccrued = stateCallResult.value.feeAccrued;
   state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
   state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
   state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
-  state.exerciseAmount = stateCallResult.value.exerciseAmount;
-  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
-  state.quantity = stateCallResult.value.quantity;
-  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
-  state.marginFactor = stateCallResult.value.marginFactor;
-  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
-  state.dividendPaymentAmount = stateCallResult.value.dividendPaymentAmount;
-  state.splitRatio = stateCallResult.value.splitRatio;
   state.save();
 
   return state;
