@@ -251,6 +251,7 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): COLLATerms 
   terms.statusDate = collaTermsCallResult.value.statusDate;
   terms.initialExchangeDate = collaTermsCallResult.value.initialExchangeDate;
   terms.maturityDate = collaTermsCallResult.value.maturityDate;
+  terms.capitalizationEndDate = collaTermsCallResult.value.capitalizationEndDate;
   terms.cycleAnchorDateOfInterestPayment = collaTermsCallResult.value.cycleAnchorDateOfInterestPayment;
   terms.notionalPrincipal = collaTermsCallResult.value.notionalPrincipal;
   terms.nominalInterestRate = collaTermsCallResult.value.nominalInterestRate;

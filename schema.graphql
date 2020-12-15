@@ -545,6 +545,7 @@ type COLLATerms @entity {
   statusDate: BigInt!
   initialExchangeDate: BigInt!
   maturityDate: BigInt!
+  capitalizationEndDate: BigInt!
   # nonPerformingDate: BigInt! state only
   cycleAnchorDateOfInterestPayment: BigInt!
 
