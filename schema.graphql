@@ -591,6 +591,7 @@ type ANNAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -605,6 +606,7 @@ type CECAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -619,6 +621,7 @@ type CEGAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -633,6 +636,7 @@ type CERTFAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -647,6 +651,7 @@ type PAMAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -661,6 +666,7 @@ type STKAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -675,6 +681,7 @@ type COLLAAsset implements Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }
 
@@ -687,5 +694,6 @@ interface Asset @entity {
   actor: Bytes!
   registry: Bytes!
   admins: Admins!
+  extension: Bytes!
   createdOn: BigInt!
 }

@@ -53,6 +53,8 @@ export function handleRegisteredAssetSTK(event: RegisteredAsset): void {
   if (engineCallResult.reverted) { return; }
   let actorCallResult = stkRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
+  let extensionCallResult = stkRegistry.try_getExtension(event.params.assetId);
+  if (extensionCallResult.reverted) { return; }
 
   let terms = updateTerms(event.address, event.params.assetId);
   if (terms == null) { return; }
@@ -84,6 +86,7 @@ export function handleRegisteredAssetSTK(event: RegisteredAsset): void {
   asset.actor = actorCallResult.value;
   asset.registry = event.address;
   asset.admins = admins.id;
+  asset.extension = extensionCallResult.value;
   asset.createdOn = event.block.timestamp;
   asset.save();
 }
