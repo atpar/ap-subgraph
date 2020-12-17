@@ -14,7 +14,7 @@
     "deploy:rinkeby-staging-backup": "NETWORK=rinkeby-staging IPFS_NODE=http://ap-subgraph.actus-protocol.io:5001 GRAPH_NODE=http://ap-subgraph.actus-protocol.io:8020 ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/protocol": "0.0.1-alpha.7",
+    "@atpar/protocol": "0.0.1-alpha.8",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "mustache": "^4.0.0",
