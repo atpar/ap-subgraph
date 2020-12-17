@@ -249,9 +249,9 @@ type CEGTerms @entity {
   # nonPerformingDate: BigInt! state only
 
   notionalPrincipal: BigInt!
-  delinquencyRate: BigInt!
   feeAccrued: BigInt!
   feeRate: BigInt!
+  # delinquencyRate: BigInt not implemented
   priceAtPurchaseDate: BigInt!
   priceAtTerminationDate: BigInt!
   coverageOfCreditEnhancement: BigInt!

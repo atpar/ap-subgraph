@@ -273,8 +273,8 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): CEGTerms | 
   terms.purchaseDate = cegTermsCallResult.value.purchaseDate;
   terms.cycleAnchorDateOfFee = cegTermsCallResult.value.cycleAnchorDateOfFee;
   terms.notionalPrincipal = cegTermsCallResult.value.notionalPrincipal;
-  terms.feeRate = cegTermsCallResult.value.feeRate;
   terms.feeAccrued = cegTermsCallResult.value.feeAccrued;
+  terms.feeRate = cegTermsCallResult.value.feeRate;
   terms.priceAtPurchaseDate = cegTermsCallResult.value.priceAtPurchaseDate;
   terms.coverageOfCreditEnhancement = cegTermsCallResult.value.coverageOfCreditEnhancement;
   terms.gracePeriod = gracePeriod.id;
