@@ -86,7 +86,7 @@ export function handleRegisteredAssetCERTF(event: RegisteredAsset): void {
   asset.actor = actorCallResult.value;
   asset.registry = event.address;
   asset.admins = admins.id;
-  asset.extension extensionCallResult.value;
+  asset.extension = extensionCallResult.value;
   asset.createdOn = event.block.timestamp;
   asset.save();
 }
