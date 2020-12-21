@@ -253,7 +253,7 @@ type CEGTerms @entity {
   feeRate: BigInt!
   # delinquencyRate: BigInt not implemented
   priceAtPurchaseDate: BigInt!
-  priceAtTerminationDate: BigInt!
+  # priceAtTerminationDate: BigInt! not implemented
   coverageOfCreditEnhancement: BigInt!
   # exerciseAmount: BigInt! state only
   
