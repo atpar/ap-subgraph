@@ -4,9 +4,9 @@
 set -o errexit
 
 # Validate network
-networks=(local goerli ropsten goerli-staging rinkeby rinkeby-staging rinkeby-2)
+networks=(local goerli goerli-staging rinkeby rinkeby-staging)
 if [[ -z $NETWORK || ! " ${networks[@]} " =~ " ${NETWORK} " ]]; then
-  echo 'Please make sure the network provided is either local, goerli, goerli-staging, ropsten, rinkeby, rinkeby-staging, rinkeby-2.'
+  echo 'Please make sure the network provided is either local, goerli, goerli-staging, rinkeby, rinkeby-staging.'
   exit 1
 fi
 
@@ -24,8 +24,12 @@ if [[ "$NETWORK" = "local" ]]; then
   IPFS_NODE="http://localhost:5001"
   GRAPH_NODE="http://127.0.0.1:8020"
 else
-  IPFS_NODE="https://api.thegraph.com/ipfs/"
-  GRAPH_NODE="https://api.thegraph.com/deploy/"
+  if [ -z "$IPFS_NODE" ]
+    then IPFS_NODE="https://api.thegraph.com/ipfs/"
+  fi
+  if [ -z "$GRAPH_NODE" ]
+    then GRAPH_NODE="https://api.thegraph.com/deploy/"
+  fi
 fi
 
 # # Create subgraph if missing

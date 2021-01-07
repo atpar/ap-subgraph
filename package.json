@@ -10,10 +10,11 @@
     "deploy:goerli": "NETWORK=goerli ./deploy.sh",
     "deploy:goerli-staging": "NETWORK=goerli-staging ./deploy.sh",
     "deploy:rinkeby": "NETWORK=rinkeby ./deploy.sh",
-    "deploy:rinkeby-staging": "NETWORK=rinkeby-staging ./deploy.sh"
+    "deploy:rinkeby-staging": "NETWORK=rinkeby-staging ./deploy.sh",
+    "deploy:rinkeby-staging-backup": "NETWORK=rinkeby-staging IPFS_NODE=http://localhost:5001 GRAPH_NODE=http://localhost:8020 ./deploy.sh"
   },
   "devDependencies": {
-    "@atpar/protocol": "0.0.1-alpha.6",
+    "@atpar/protocol": "0.0.1-alpha.8",
     "@graphprotocol/graph-cli": "^0.17.0",
     "@graphprotocol/graph-ts": "^0.17.0",
     "mustache": "^4.0.0",

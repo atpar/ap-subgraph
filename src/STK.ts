@@ -3,7 +3,7 @@ import { log, Address, Bytes } from "@graphprotocol/graph-ts";
 import { STKActor, ProgressedAsset } from '../generated/STKActor/STKActor';
 import { STKRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary, UpdatedObligor, UpdatedState, UpdatedFinalizedState } from '../generated/STKRegistry/STKRegistry';
 
-import { Admins, STKAsset, AssetOwnership, Schedule, STKTerms, State, ContractReference, Period, Cycle } from '../generated/schema';
+import { Admins, STKAsset, AssetOwnership, Schedule, STKTerms, STKState, ContractReference, Period, Cycle } from '../generated/schema';
 
 
 // GrantedAccess event may be processed before or after RegisteredAsset event,
@@ -53,6 +53,8 @@ export function handleRegisteredAssetSTK(event: RegisteredAsset): void {
   if (engineCallResult.reverted) { return; }
   let actorCallResult = stkRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
+  let extensionCallResult = stkRegistry.try_getExtension(event.params.assetId);
+  if (extensionCallResult.reverted) { return; }
 
   let terms = updateTerms(event.address, event.params.assetId);
   if (terms == null) { return; }
@@ -84,6 +86,7 @@ export function handleRegisteredAssetSTK(event: RegisteredAsset): void {
   asset.actor = actorCallResult.value;
   asset.registry = event.address;
   asset.admins = admins.id;
+  asset.extension = extensionCallResult.value;
   asset.createdOn = event.block.timestamp;
   asset.save();
 }
@@ -127,15 +130,15 @@ export function handleUpdatedFinalizedStateSTK(event: UpdatedFinalizedState): vo
   updateState(event.address, event.params.assetId);
 }
 
-function updateState(assetRegistryAddress: Address, assetId: Bytes): State | null {
+function updateState(assetRegistryAddress: Address, assetId: Bytes): STKState | null {
 
   let stkRegistry = STKRegistry.bind(assetRegistryAddress);
   let stateCallResult = stkRegistry.try_getState(assetId);
   if (stateCallResult.reverted) { return null; }
 
-  let state = State.load(assetId.toHex() + '-state');
+  let state = STKState.load(assetId.toHex() + '-state');
   if (state == null) {
-    state = new State(assetId.toHex() + '-state');
+    state = new STKState(assetId.toHex() + '-state');
   }
   state.contractPerformance = stateCallResult.value.contractPerformance;
   state.statusDate = stateCallResult.value.statusDate;
@@ -143,15 +146,8 @@ function updateState(assetRegistryAddress: Address, assetId: Bytes): State | nul
   state.maturityDate = stateCallResult.value.maturityDate;
   state.exerciseDate = stateCallResult.value.exerciseDate;
   state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponFixingDate = stateCallResult.value.lastCouponFixingDate;
   state.lastDividendFixingDate = stateCallResult.value.lastDividendFixingDate;
   state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
-  state.accruedInterest = stateCallResult.value.accruedInterest;
-  state.feeAccrued = stateCallResult.value.feeAccrued;
-  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
-  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
-  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
   state.exerciseAmount = stateCallResult.value.exerciseAmount;
   state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
   state.quantity = stateCallResult.value.quantity;
@@ -284,7 +280,6 @@ function updateTerms(assetRegistryAddress: Address, assetId: Bytes): STKTerms | 
   terms.redeemableByIssuer = stkTermsCallResult.value.redeemableByIssuer;
   terms.currency = stkTermsCallResult.value.currency;
   terms.settlementCurrency = stkTermsCallResult.value.settlementCurrency;
-  terms.contractDealDate = stkTermsCallResult.value.contractDealDate;
   terms.statusDate = stkTermsCallResult.value.statusDate;
   terms.issueDate = stkTermsCallResult.value.issueDate;
   terms.purchaseDate = stkTermsCallResult.value.purchaseDate;

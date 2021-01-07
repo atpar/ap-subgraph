@@ -3,7 +3,7 @@ import { log, Address, Bytes } from "@graphprotocol/graph-ts";
 import { CECActor, ProgressedAsset } from '../generated/CECActor/CECActor';
 import { CECRegistry, RegisteredAsset, GrantedAccess, RevokedAccess, UpdatedBeneficiary, UpdatedObligor, UpdatedState, UpdatedFinalizedState } from '../generated/CECRegistry/CECRegistry';
 
-import { Admins, CECAsset, AssetOwnership, Schedule, CECTerms, State, ContractReference } from '../generated/schema';
+import { Admins, CECAsset, AssetOwnership, Schedule, CECTerms, CECState, ContractReference } from '../generated/schema';
 
 
 // GrantedAccess event may be processed before or after RegisteredAsset event,
@@ -53,6 +53,8 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
   if (engineCallResult.reverted) { return; }
   let actorCallResult = cecRegistry.try_getActor(event.params.assetId);
   if (actorCallResult.reverted) { return; }
+  let extensionCallResult = cecRegistry.try_getExtension(event.params.assetId);
+  if (extensionCallResult.reverted) { return; }
 
   let terms = updateTerms(event.address, event.params.assetId);
   if (terms == null) { return; }
@@ -84,6 +86,7 @@ export function handleRegisteredAssetCEC(event: RegisteredAsset): void {
   asset.actor = actorCallResult.value;
   asset.registry = event.address;
   asset.admins = admins.id;
+  asset.extension = extensionCallResult.value;
   asset.createdOn = event.block.timestamp;
   asset.save();
 }
@@ -127,39 +130,23 @@ export function handleUpdatedFinalizedStateCEC(event: UpdatedFinalizedState): vo
   updateState(event.address, event.params.assetId);
 }
 
-function updateState(assetRegistryAddress: Address, assetId: Bytes): State | null {
+function updateState(assetRegistryAddress: Address, assetId: Bytes): CECState | null {
 
   let cecRegistry = CECRegistry.bind(assetRegistryAddress);
   let stateCallResult = cecRegistry.try_getState(assetId);
   if (stateCallResult.reverted) { return null; }
 
-  let state = State.load(assetId.toHex() + '-state');
+  let state = CECState.load(assetId.toHex() + '-state');
   if (state == null) {
-    state = new State(assetId.toHex() + '-state');
+    state = new CECState(assetId.toHex() + '-state');
   }
   state.contractPerformance = stateCallResult.value.contractPerformance;
   state.statusDate = stateCallResult.value.statusDate;
-  state.nonPerformingDate = stateCallResult.value.nonPerformingDate;
   state.maturityDate = stateCallResult.value.maturityDate;
   state.exerciseDate = stateCallResult.value.exerciseDate;
   state.terminationDate = stateCallResult.value.terminationDate;
-  state.lastCouponFixingDate = stateCallResult.value.lastCouponFixingDate;
-  state.lastDividendFixingDate = stateCallResult.value.lastDividendFixingDate;
-  state.notionalPrincipal = stateCallResult.value.notionalPrincipal;
-  state.accruedInterest = stateCallResult.value.accruedInterest;
   state.feeAccrued = stateCallResult.value.feeAccrued;
-  state.nominalInterestRate = stateCallResult.value.nominalInterestRate;
-  state.interestScalingMultiplier = stateCallResult.value.interestScalingMultiplier;
-  state.notionalScalingMultiplier = stateCallResult.value.notionalScalingMultiplier;
-  state.nextPrincipalRedemptionPayment = stateCallResult.value.nextPrincipalRedemptionPayment;
   state.exerciseAmount = stateCallResult.value.exerciseAmount;
-  state.exerciseQuantity = stateCallResult.value.exerciseQuantity;
-  state.quantity = stateCallResult.value.quantity;
-  state.couponAmountFixed = stateCallResult.value.couponAmountFixed;
-  state.marginFactor = stateCallResult.value.marginFactor;
-  state.adjustmentFactor = stateCallResult.value.adjustmentFactor;
-  state.dividendPaymentAmount = stateCallResult.value.dividendPaymentAmount;
-  state.splitRatio = stateCallResult.value.splitRatio;
   state.save();
 
   return state;
