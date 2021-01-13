@@ -9,6 +9,7 @@
     "deploy:local": "NETWORK=local ./deploy.sh",
     "deploy:goerli": "NETWORK=goerli ./deploy.sh",
     "deploy:goerli-staging": "NETWORK=goerli-staging ./deploy.sh",
+    "deploy:kovan": "NETWORK=kovan ./deploy.sh",
     "deploy:rinkeby": "NETWORK=rinkeby ./deploy.sh",
     "deploy:rinkeby-staging": "NETWORK=rinkeby-staging ./deploy.sh",
     "deploy:rinkeby-staging-backup": "NETWORK=rinkeby-staging IPFS_NODE=http://localhost:5001 GRAPH_NODE=http://localhost:8020 ./deploy.sh"
